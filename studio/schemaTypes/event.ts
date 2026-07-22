@@ -18,6 +18,14 @@ export const event = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'slug',
+      title: 'Slug',
+      description: 'Used in the URL, e.g. /archive/domashnyaya-rabota',
+      type: 'slug',
+      options: {source: 'title', maxLength: 96},
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       name: 'venue',
       title: 'Venue',
       type: 'reference',
@@ -42,17 +50,18 @@ export const event = defineType({
       type: 'blockContent',
     }),
     defineField({
-      name: 'images',
-      title: 'Event images',
+      name: 'galleries',
+      title: 'Galleries',
+      description: 'Named image galleries for this event, in display order (drag to reorder). The first one is treated as the main gallery.',
       type: 'array',
-      of: [defineArrayMember({type: 'image', options: {hotspot: true}})],
+      of: [defineArrayMember({type: 'gallery'})],
     }),
   ],
   preview: {
     select: {
       title: 'title',
       date: 'date',
-      media: 'images.0',
+      media: 'galleries.0.images.0',
     },
     prepare({title, date, media}) {
       return {

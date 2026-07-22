@@ -4,7 +4,50 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>139 Documentary Center</title>
+  <!-- Hyphenopoly disabled for now
+  <script src="https://cdn.jsdelivr.net/npm/hyphenopoly@5/Hyphenopoly_Loader.js"></script>
+  <script>
+    (function () {
+      let hyphSettings = {};
+      try {
+        hyphSettings = JSON.parse(localStorage.getItem('typographySettings') || '{}');
+      } catch (err) {}
+      const minWordLength = Number(hyphSettings.hyphMinWordLength) || 4;
+      const leftmin = Number(hyphSettings.hyphLeftmin) || 2;
+      const rightmin = Number(hyphSettings.hyphRightmin) || 2;
+
+      Hyphenopoly.config({
+        require: {
+          'en-us': 'FORCEHYPHENOPOLY',
+          'ru': 'FORCEHYPHENOPOLY',
+        },
+        setup: {
+          selectors: {
+            '.hyphenate': { minWordLength, leftmin, rightmin },
+          },
+          CORScredentials: 'omit',
+        },
+      });
+    })();
+  </script>
+  -->
   <style>
+    :root {
+      --page-padding: 10px;
+      --site-font-size: 18px;
+      --site-line-height: 1.1;
+      --site-letter-spacing: 1px;
+      --site-color: #000000;
+      --color-about: #000000;
+      --color-archive: #000000;
+      --color-event-title: #000000;
+      --color-event-text: #000000;
+      --color-menu: #000000;
+      --bg-about: #ffffff;
+      --bg-archive: #ffffff;
+      --bg-event: #ffffff;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -14,30 +57,201 @@
     body {
       min-height: 100vh;
       background: #fff;
-      overflow: hidden;
-      font-family: 'Arial Narrow', ArialNarrow, Arial, sans-serif;
+      font-family: Arial, sans-serif;
+      font-size: var(--site-font-size);
+      line-height: var(--site-line-height);
+      letter-spacing: var(--site-letter-spacing);
+      color: var(--site-color);
     }
 
-    .main-content {
-      position: fixed;
-      top: 0;
-      left: 260px;
-      right: 0;
-      bottom: 0;
+    .layout {
+      display: flex;
+      flex-direction: column;
+      width: 100vw;
+    }
+
+    .home-section {
+      position: relative;
+      width: 100%;
+    }
+
+    .home-row {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .info-col {
+      width: 100%;
+    }
+
+    .menu-col {
+      width: 100%;
+      position: relative;
+    }
+
+    .about-overlay {
+      display: block;
+      position: relative;
+      margin: var(--page-padding) var(--page-padding) 0 var(--page-padding);
+      max-width: 720px;
+      color: var(--color-about);
+      background: var(--bg-about);
+    }
+
+    .about-overlay p {
+      margin-bottom: 16px;
+    }
+
+    .about-overlay p:last-child {
+      margin-bottom: 0;
+    }
+
+    .about-highlight {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .archive-section {
+      display: none;
+      position: relative;
+      width: 100%;
+    }
+
+    .archive-close {
+      margin-left: auto;
+      text-decoration: none;
+      cursor: pointer;
+      color: #000000 !important;
+    }
+
+    #archiveClose {
+      display: none;
+    }
+
+    .archive-detail-top-row {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      background: var(--bg-event);
+    }
+
+    #detailClose {
+      margin-left: auto;
+    }
+
+    .archive-section.visible {
+      display: block;
+    }
+
+    .menu-bar {
+      display: flex;
+      align-items: center;
+      padding: 0 var(--page-padding);
+      border-top: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+      margin: 0;
+    }
+
+    .menu-container {
+      position: relative;
+      width: auto;
+      max-width: 100%;
+    }
+
+    .menu-nav-wrap {
+      position: relative;
+      height: auto;
+    }
+
+    .content-container {
+      display: none;
+      width: 100%;
+      background: var(--bg-event);
+      padding: 0 var(--page-padding);
+      gap: 0;
+    }
+
+    .content-container.visible {
       display: flex;
       flex-direction: column;
     }
 
-    .main-image {
-      flex: 1;
-      min-height: 0;
-      overflow: hidden;
+    .content-body-row {
+      display: flex;
+      flex-direction: row;
     }
 
-    .main-image img {
-      max-width: 100%;
-      max-height: 100%;
+    .content-media-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      width: 60%;
+      align-self: flex-start;
+    }
+
+    .content-gallery-col {
+      position: relative;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      height: 25vh;
+    }
+
+    .content-gallery-col-auto {
+      height: auto;
+    }
+
+    .content-gallery-strip {
+      display: flex;
+      flex-direction: row;
+      height: calc(25vh - 24px);
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+
+    .content-gallery-strip-item {
+      position: relative;
+      cursor: pointer;
+      display: block;
+      flex: 0 0 auto;
+      height: 100%;
+    }
+
+    .content-gallery-strip-item img {
+      display: block;
+      width: auto;
+      height: 100%;
       object-fit: contain;
+    }
+
+    .content-gallery-horizontal {
+      position: relative;
+      cursor: pointer;
+      display: block;
+      width: 100%;
+    }
+
+    .content-gallery-horizontal img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .content-image-count {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 8px;
+      margin-top: 0;
+    }
+
+    .content-text-col {
+      width: 40%;
+      min-width: 0;
+      padding-right: 20px;
+      margin-top: 0;
     }
 
     svg {
@@ -46,222 +260,1147 @@
       overflow: visible;
     }
 
-    #svg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 10;
-    }
-
-    .logo-static {
-      position: fixed;
-      top: 0;
-      left: 0;
-      font-family: 'Arial Narrow', ArialNarrow, Arial, sans-serif;
-      font-size: 16px;
-      color: black;
-      line-height: 1;
-      padding: 0;
-      letter-spacing: 0.5px;
-      display: none;
-    }
-
     .nav-static {
-      position: fixed;
-      top: 20px;
-      left: 0;
-      display: none;
-      flex-direction: column;
+      display: flex;
+      flex-direction: row;
+      gap: 40px;
     }
 
     .nav-static a {
-      font-family: 'Arial Narrow', ArialNarrow, Arial, sans-serif;
-      font-size: 16px;
-      color: black;
       text-decoration: none;
       padding: 2px 0;
+      cursor: pointer;
+      color: var(--color-menu);
+      opacity: 0.4;
+    }
+
+    .nav-static a:hover {
+      text-decoration: none;
+    }
+
+    .nav-static a.active {
+      opacity: 1;
+      color: #000000;
+    }
+
+    .archive {
+      display: block;
+      width: 100%;
+      padding: 0 var(--page-padding);
+      overflow-x: hidden;
+      background: var(--bg-archive);
+    }
+
+    .archive-header {
+      display: flex;
+      align-items: center;
+      padding: 0 var(--page-padding);
+      margin: 0 calc(-1 * var(--page-padding));
+      color: var(--color-archive);
+      background: #ffffff;
+    }
+
+    .archive-header-labels {
+      display: none;
+      align-items: center;
+      gap: 24px;
+      flex: 1;
+    }
+
+    .archive-header .archive-date {
+      flex: 0 0 220px;
+    }
+
+    .archive-header .archive-title {
+      flex: 0 0 340px;
+    }
+
+    .archive-header .archive-authors {
+      flex: 0 0 380px;
+    }
+
+    .archive-header .archive-number {
+      flex: 0 0 30px;
+    }
+
+    .archive-row {
+      width: 100%;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .archive-item {
+      display: flex;
+      gap: 24px;
+      padding: 0 10px 0 0;
+      text-decoration: none;
+      color: var(--color-archive);
+    }
+
+    .archive-item .archive-date {
+      flex: 0 0 220px;
+    }
+
+    .archive-item .archive-authors {
+      flex: 0 0 380px;
+    }
+
+    .archive-item .archive-title {
+      flex: 0 0 340px;
+    }
+
+    .archive-item .archive-number {
+      flex: 0 0 30px;
+    }
+
+    .archive-item.active {
+      cursor: pointer;
+    }
+
+    .archive-item.active:hover {
+      color: #000000;
+    }
+
+    .archive-item.has-image:hover .archive-number,
+    .archive-item.has-image:hover .archive-title,
+    .archive-item.has-image:hover .archive-authors,
+    .archive-item.has-image:hover .archive-date {
+      background-image: var(--row-image);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+
+    @media (max-width: 700px) {
+      .archive-header-labels {
+        display: none;
+      }
+
+      .archive-item {
+        flex-direction: column;
+        gap: 0;
+        padding: 12px 0;
+      }
+
+      .archive-item .archive-date,
+      .archive-item .archive-title,
+      .archive-item .archive-authors,
+      .archive-item .archive-number {
+        flex: none;
+        margin-left: 0 !important;
+      }
+
+      .content-body-row {
+        flex-direction: column;
+      }
+
+      .content-media-col {
+        width: 100%;
+        margin-top: 0;
+        order: -1;
+      }
+
+      .content-text-col {
+        width: 100%;
+        padding-right: 0;
+        margin-top: 24px;
+      }
+    }
+
+    .archive-detail-lines {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 0;
+    }
+
+    .archive-detail-line {
+      display: block;
+    }
+
+    .archive-detail-title,
+    .archive-detail-date,
+    .archive-detail-authors {
+      color: var(--color-event-title);
+    }
+
+    .archive-detail-spacer {
+      height: 1.3em;
+    }
+
+    .archive-detail-body {
+      color: var(--color-event-text);
+    }
+
+    .archive-detail-body p,
+    .archive-detail-body h2,
+    .archive-detail-body h3,
+    .archive-detail-body blockquote,
+    .archive-detail-body ul,
+    .archive-detail-body ol {
+      margin-bottom: 16px;
+    }
+
+    .archive-detail-body blockquote {
+      border-left: 2px solid #ccc;
+      padding-left: 16px;
+      font-style: italic;
+    }
+
+    .archive-detail-body a {
+      text-decoration: underline;
+    }
+
+    .archive-detail-body img {
+      max-width: 100%;
+      display: block;
+      margin-bottom: 16px;
+    }
+
+    .archive-empty,
+    .archive-loading {
+      padding: 10px 0;
+    }
+
+    .dev-panel {
+      display: none;
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      background: #e3f5ec;
+      border: 1px solid #ccc;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+      padding: 16px;
+      width: 260px;
+      overflow-y: auto;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      color: #222;
+    }
+
+    .dev-panel.visible {
+      display: block;
+    }
+
+    .dev-panel h4 {
+      font-size: 12px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
       letter-spacing: 0.5px;
+    }
+
+    .dev-panel label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .dev-panel label span {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .dev-panel-hex {
+      border: none;
+      background: transparent;
+      font: inherit;
+      color: inherit;
+      text-align: right;
+      width: 80px;
+      padding: 0;
+    }
+
+    .dev-panel input[type="range"] {
+      width: 100%;
+      -webkit-appearance: none;
+      appearance: none;
+      background: transparent;
+      margin: 8px 0;
+    }
+
+    .dev-panel input[type="range"]::-webkit-slider-runnable-track {
+      height: 1px;
+      background: black;
+    }
+
+    .dev-panel input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #e3f5ec;
+      border: 1px solid black;
+      margin-top: -6px;
+      cursor: pointer;
+    }
+
+    .dev-panel input[type="range"]::-moz-range-track {
+      height: 1px;
+      background: black;
+    }
+
+    .dev-panel input[type="range"]::-moz-range-thumb {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #e3f5ec;
+      border: 1px solid black;
+      cursor: pointer;
+    }
+
+    .dev-panel input[type="color"] {
+      width: 100%;
+      height: 32px;
+      border: 1px solid #ccc;
+      padding: 0;
+      cursor: pointer;
+      background: none;
+    }
+
+    .dev-panel .dev-panel-hint {
+      color: #888;
+      margin-top: 4px;
+      font-size: 11px;
+    }
+
+    .dev-panel-save {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      background: #222;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+    }
+
+    .dev-panel-save:hover {
+      background: #000;
+    }
+
+    .carousel {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #ffffff;
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .carousel.visible {
+      display: flex;
+    }
+
+    .carousel-close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: #000000;
+      font-family: Arial, sans-serif;
+      font-size: 28px;
+      cursor: pointer;
+      line-height: 1;
+      user-select: none;
+    }
+
+    .carousel-counter {
+      position: absolute;
+      top: 26px;
+      left: 30px;
+      color: #000000;
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      letter-spacing: 0.3px;
+      user-select: none;
+    }
+
+    .carousel-arrow {
+      color: #000000;
+      font-family: Arial, sans-serif;
+      font-size: 40px;
+      cursor: pointer;
+      user-select: none;
+      padding: 0 30px;
+      flex: 0 0 auto;
+    }
+
+    .carousel-image-wrap {
+      flex: 1 1 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 80vw;
+      height: 100vh;
+    }
+
+    .carousel-image-wrap img {
+      max-width: 80vw;
+      height: 100vh;
+      display: block;
+      object-fit: contain;
     }
   </style>
 </head>
 <body>
-  <div class="logo-static" id="logoStatic">139DocumentaryCenter</div>
-  <div class="nav-static" id="navStatic">
-    <a href="#">About</a>
-    <a href="#">Archive</a>
-    <a href="#">Special Programs</a>
-    <a href="#">Activities</a>
-  </div>
+  <div class="layout">
+    <div class="home-section" id="homeSection">
+      <div class="home-row">
+        <div class="info-col">
+          <div class="about-overlay" id="aboutOverlay"></div>
+        </div>
 
-  <div class="main-content">
-    <div class="main-image">
-      <img src="139-Documentary-Center-scaled.webp" alt="139 Documentary Center">
+        <div class="menu-col">
+          <div class="menu-bar">
+            <div class="menu-container">
+              <div class="menu-nav-wrap">
+                <div class="nav-static" id="navStatic">
+                  <a href="#" data-view="archive">Archive</a>
+                  <a href="#" data-view="program">Program</a>
+                  <a href="#" data-view="special-projects">Special Projects</a>
+                </div>
+              </div>
+            </div>
+            <a href="#" class="archive-close" id="archiveClose">Close</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="archive-section" id="archiveSection">
+      <div class="archive" id="archiveView">
+        <div class="archive-header">
+          <div class="archive-header-labels">
+            <div class="archive-number"></div>
+            <div class="archive-title">Title</div>
+            <div class="archive-authors">Authors</div>
+            <div class="archive-date">Date</div>
+          </div>
+        </div>
+        <div class="archive-loading" id="archiveLoading">Loading…</div>
+        <div id="archiveList"></div>
+      </div>
+
+      <div class="content-container" id="archiveDetail">
+        <div class="archive-detail-placeholder">Select an event to view details.</div>
+      </div>
     </div>
   </div>
 
-  <svg id="svg" xmlns="http://www.w3.org/2000/svg" width="2000" height="400">
-    <defs>
-      <filter id="goo" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="1" result="blur" />
-        <feColorMatrix in="blur" type="matrix"
-          values="1 0 0 0 0
-                  0 1 0 0 0
-                  0 0 1 0 0
-                  0 0 0 25 -10" result="goo" />
-      </filter>
-    </defs>
-    <g id="textGroup" filter="url(#goo)"></g>
-  </svg>
+  <div class="carousel" id="carousel">
+    <div class="carousel-counter" id="carouselCounter"></div>
+    <div class="carousel-close" id="carouselClose">&times;</div>
+    <div class="carousel-arrow" id="carouselPrev">&#8249;</div>
+    <div class="carousel-image-wrap">
+      <img id="carouselImage" src="" alt="">
+    </div>
+    <div class="carousel-arrow" id="carouselNext">&#8250;</div>
+  </div>
+
+  <div class="dev-panel" id="devPanel">
+    <h4>Site Typography</h4>
+    <label>
+      <span><span>Text size (px)</span><span id="siteFontSizeVal">18</span></span>
+      <input type="range" id="siteFontSize" min="10" max="36" step="1" value="18">
+    </label>
+    <label>
+      <span><span>Line height</span><span id="siteLineHeightVal">1.10</span></span>
+      <input type="range" id="siteLineHeight" min="0.9" max="2" step="0.05" value="1.1">
+    </label>
+    <label>
+      <span><span>Letter spacing (px)</span><span id="siteLetterSpacingVal">1.00</span></span>
+      <input type="range" id="siteLetterSpacing" min="-1" max="4" step="0.05" value="1">
+    </label>
+    <label>
+      <span><span>Color</span><input type="text" class="dev-panel-hex" id="siteColorVal" value="#000000"></span>
+      <input type="color" id="siteColor" value="#000000">
+    </label>
+    <label>
+      <span><span>About color</span><input type="text" class="dev-panel-hex" id="colorAboutVal" value="#000000"></span>
+      <input type="color" id="colorAbout" value="#000000">
+    </label>
+    <label>
+      <span><span>Archive color</span><input type="text" class="dev-panel-hex" id="colorArchiveVal" value="#000000"></span>
+      <input type="color" id="colorArchive" value="#000000">
+    </label>
+    <label>
+      <span><span>Event title color</span><input type="text" class="dev-panel-hex" id="colorEventTitleVal" value="#000000"></span>
+      <input type="color" id="colorEventTitle" value="#000000">
+    </label>
+    <label>
+      <span><span>Event text color</span><input type="text" class="dev-panel-hex" id="colorEventTextVal" value="#000000"></span>
+      <input type="color" id="colorEventText" value="#000000">
+    </label>
+    <label>
+      <span><span>Menu color</span><input type="text" class="dev-panel-hex" id="colorMenuVal" value="#000000"></span>
+      <input type="color" id="colorMenu" value="#000000">
+    </label>
+    <label>
+      <span><span>About bg</span><input type="text" class="dev-panel-hex" id="bgAboutVal" value="#ffffff"></span>
+      <input type="color" id="bgAbout" value="#ffffff">
+    </label>
+    <label>
+      <span><span>Archive bg</span><input type="text" class="dev-panel-hex" id="bgArchiveVal" value="#ffffff"></span>
+      <input type="color" id="bgArchive" value="#ffffff">
+    </label>
+    <label>
+      <span><span>Event bg</span><input type="text" class="dev-panel-hex" id="bgEventVal" value="#ffffff"></span>
+      <input type="color" id="bgEvent" value="#ffffff">
+    </label>
+
+    <h4>Hyphenation (reloads on release)</h4>
+    <label>
+      <span><span>Min word length</span><span id="hyphMinWordLengthVal">4</span></span>
+      <input type="range" id="hyphMinWordLength" min="3" max="10" step="1" value="4">
+    </label>
+    <label>
+      <span><span>Left min</span><span id="hyphLeftminVal">2</span></span>
+      <input type="range" id="hyphLeftmin" min="0" max="4" step="1" value="2">
+    </label>
+    <label>
+      <span><span>Right min</span><span id="hyphRightminVal">2</span></span>
+      <input type="range" id="hyphRightmin" min="0" max="4" step="1" value="2">
+    </label>
+
+    <button class="dev-panel-save" id="allSave">Save as .md</button>
+    <button class="dev-panel-save" id="allApply">Apply saved settings</button>
+    <div class="dev-panel-hint">Changes auto-save to this browser. Press "D" to toggle this panel.</div>
+  </div>
 
   <script>
-    const NS = 'http://www.w3.org/2000/svg';
-    const svg = document.getElementById('svg');
-    const group = document.getElementById('textGroup');
-    const allChars = [];
-    const FONT_SIZE = 24;
-    const LETTER_SPACING = 0.75;
-    const LINE_HEIGHT = 30;
-
-    const RADIUS = 40;
-    const MAX_STROKE = 3;
-    const PULSE_AMOUNT = 1;
-    const PULSE_SPEED = 4;
-    const BREATH_AMOUNT = 0.2;
-
-    let mouseX = -9999;
-    let mouseY = -9999;
-
-    const lines = [
-      { text: '139DocumentaryCenter', hasHover: true },
-      { text: 'About', hasHover: false },
-      { text: 'Archive', hasHover: false },
-      { text: 'Special Programs', hasHover: false },
-      { text: 'Activities', hasHover: false },
-    ];
-
-    let maxWidth = 0;
-
-    lines.forEach((line, lineIdx) => {
-      const yPos = FONT_SIZE + lineIdx * LINE_HEIGHT;
-
-      // Measure
-      const measure = document.createElementNS(NS, 'text');
-      measure.setAttribute('font-family', "'Arial Narrow', ArialNarrow, Arial, sans-serif");
-      measure.setAttribute('font-size', FONT_SIZE.toString());
-      measure.setAttribute('letter-spacing', LETTER_SPACING.toString());
-      measure.setAttribute('y', yPos.toString());
-      measure.setAttribute('x', '0');
-      measure.textContent = line.text;
-      svg.appendChild(measure);
-
-      const positions = [];
-      for (let i = 0; i < line.text.length; i++) {
-        positions.push(measure.getSubStringLength(0, i));
+    const devPanel = document.getElementById('devPanel');
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'd' || e.key === 'D') {
+        devPanel.classList.toggle('visible');
       }
-      const lineWidth = measure.getSubStringLength(0, line.text.length);
-      if (lineWidth > maxWidth) maxWidth = lineWidth;
-      svg.removeChild(measure);
-
-      // Create chars
-      positions.forEach((xPos, i) => {
-        const el = document.createElementNS(NS, 'text');
-        el.setAttribute('font-family', "'Arial Narrow', ArialNarrow, Arial, sans-serif");
-        el.setAttribute('font-size', FONT_SIZE.toString());
-        el.setAttribute('fill', 'black');
-        el.setAttribute('stroke', 'black');
-        el.setAttribute('stroke-width', '0');
-        el.setAttribute('stroke-linejoin', 'round');
-        el.setAttribute('stroke-linecap', 'round');
-        el.setAttribute('paint-order', 'stroke fill');
-        el.setAttribute('letter-spacing', LETTER_SPACING.toString());
-        el.setAttribute('x', xPos.toString());
-        el.setAttribute('y', yPos.toString());
-        el.textContent = line.text[i];
-        group.appendChild(el);
-
-        allChars.push({
-          el,
-          hasHover: line.hasHover,
-          phase: (lineIdx * 20 + i) * 0.4,
-          breathSpeed1: 0.8 + Math.random() * 0.7,
-          breathSpeed2: 1.3 + Math.random() * 0.9,
-          breathPhase1: Math.random() * Math.PI * 2,
-          breathPhase2: Math.random() * Math.PI * 2,
-          breathAmount: BREATH_AMOUNT + Math.random() * BREATH_AMOUNT,
-        });
-      });
     });
 
-    // Resize SVG
-    const PAD = 4;
-    const totalH = FONT_SIZE + (lines.length - 1) * LINE_HEIGHT + 6;
-    const w = maxWidth + PAD * 2;
-    const h = totalH + PAD * 2;
-    svg.setAttribute('width', w.toString());
-    svg.setAttribute('height', h.toString());
-    svg.setAttribute('viewBox', `${-PAD} ${-PAD} ${w} ${h}`);
+    const SANITY_PROJECT_ID = 'jvmgvacm';
+    const SANITY_DATASET = 'production';
 
-    function animate(time) {
-      const t = time / 1000;
-      allChars.forEach((c) => {
-        const { el, hasHover, phase, breathSpeed1, breathSpeed2, breathPhase1, breathPhase2, breathAmount } = c;
+    const homeSection = document.getElementById('homeSection');
+    const archiveSection = document.getElementById('archiveSection');
+    document.getElementById('archiveClose').addEventListener('click', (e) => {
+      e.preventDefault();
+      archiveSection.classList.remove('visible');
+      archiveDetail.classList.remove('visible');
+      navigate('home');
+    });
+    const archiveView = document.getElementById('archiveView');
+    const archiveLoading = document.getElementById('archiveLoading');
+    const archiveList = document.getElementById('archiveList');
+    const archiveDetail = document.getElementById('archiveDetail');
+    const navStatic = document.getElementById('navStatic');
+    const navLinksOriginalOrder = Array.from(navStatic.children);
 
-        // Breathing for all characters
-        const breath = (Math.sin(t * breathSpeed1 + breathPhase1) * 0.5 + 0.5)
-                      * (Math.sin(t * breathSpeed2 + breathPhase2) * 0.4 + 0.6);
-        const idleStroke = breath * breathAmount;
+    let archiveLoaded = false;
+    let currentView = 'home';
+    let archiveEvents = [];
+    let pendingSlug = null;
 
-        let strokeW = idleStroke;
-
-        // Cursor hover fatness only for logo
-        if (hasHover) {
-          const rect = el.getBoundingClientRect();
-          const cx = rect.left + rect.width / 2;
-          const cy = rect.top + rect.height / 2;
-          const dist = Math.sqrt((mouseX - cx) ** 2 + (mouseY - cy) ** 2);
-          const proximity = Math.max(0, 1 - dist / RADIUS);
-          const pulse = Math.sin(t * PULSE_SPEED + phase) * 0.5 + 0.5;
-          const cursorStroke = proximity * (MAX_STROKE + pulse * PULSE_AMOUNT * proximity);
-          strokeW = Math.max(idleStroke, cursorStroke);
-        }
-
-        el.setAttribute('stroke-width', strokeW.toFixed(2));
-      });
-      requestAnimationFrame(animate);
+    function parsePath(path) {
+      const parts = path.replace(/\/+$/, '').split('/').filter(Boolean);
+      if (parts[0] === 'archive') {
+        return { view: 'archive', slug: parts[1] || null };
+      }
+      return { view: 'home', slug: null };
     }
 
-    document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    });
+    function pathForRoute(view, slug) {
+      if (view === 'archive') return slug ? `/archive/${slug}` : '/archive';
+      return '/';
+    }
 
-    document.addEventListener('mouseleave', () => {
-      mouseX = -9999;
-      mouseY = -9999;
-    });
+    function scrollToArchive(behavior) {
+      archiveSection.scrollIntoView({ behavior, block: 'start' });
+    }
 
-    let animationId = requestAnimationFrame(animate);
-    let animationOn = true;
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        animationOn = !animationOn;
-        const svgEl = document.getElementById('svg');
-        const staticLogo = document.getElementById('logoStatic');
-        const staticNav = document.getElementById('navStatic');
-        if (animationOn) {
-          svgEl.style.display = '';
-          staticLogo.style.display = 'none';
-          staticNav.style.display = 'none';
-          animationId = requestAnimationFrame(animate);
+    function setView(view, { scroll = 'smooth' } = {}) {
+      currentView = view;
+      navLinksOriginalOrder.forEach((a) => {
+        a.classList.toggle('active', a.dataset.view === view && view !== 'home');
+      });
+      const activeLink = navLinksOriginalOrder.find((a) => a.classList.contains('active'));
+      const ordered = activeLink
+        ? [activeLink, ...navLinksOriginalOrder.filter((a) => a !== activeLink)]
+        : navLinksOriginalOrder;
+      ordered.forEach((a) => navStatic.appendChild(a));
+      if (view === 'archive') {
+        archiveSection.classList.add('visible');
+        if (!archiveLoaded) loadArchive();
+      } else {
+        archiveSection.classList.remove('visible');
+        archiveDetail.classList.remove('visible');
+      }
+      document.getElementById('archiveClose').style.display = view === 'archive' ? 'block' : 'none';
+      if (scroll) {
+        if (view === 'archive') {
+          scrollToArchive(scroll);
         } else {
-          cancelAnimationFrame(animationId);
-          svgEl.style.display = 'none';
-          staticLogo.style.display = 'block';
-          staticNav.style.display = 'flex';
+          homeSection.scrollIntoView({ behavior: scroll, block: 'start' });
         }
       }
+    }
+
+    function navigate(view, { replace, scroll = 'smooth' } = {}) {
+      setView(view, { scroll });
+      const path = pathForRoute(view, null);
+      if (location.pathname !== path) {
+        if (replace) {
+          history.replaceState({ view }, '', path);
+        } else {
+          history.pushState({ view }, '', path);
+        }
+      }
+    }
+
+    function applyRoute(path, { isInitial } = {}) {
+      const { view, slug } = parsePath(path);
+      if (view === 'archive' && slug && !archiveEvents.length) {
+        pendingSlug = slug;
+      }
+      setView(view, { scroll: isInitial ? 'auto' : 'smooth' });
+      if (view === 'archive' && slug && archiveEvents.length) {
+        openEventBySlug(slug, { updateUrl: false });
+      }
+    }
+
+    window.addEventListener('popstate', () => {
+      applyRoute(location.pathname);
     });
+
+    async function loadArchive() {
+      archiveLoaded = true;
+      const query = encodeURIComponent(`*[_type == "event"] | order(date desc){
+        title,
+        date,
+        "slug": slug.current,
+        "venue": venue->title,
+        "curatedBy": curatedBy->name,
+        "authors": authors[]->name,
+        text[]{
+          ...,
+          markDefs[]{...},
+          _type == "image" => { ..., "url": asset->url }
+        },
+        galleries[]{
+          name,
+          type,
+          images[]{ ..., "url": asset->url }
+        }
+      }`);
+      const url = `https://${SANITY_PROJECT_ID}.apicdn.sanity.io/v2024-01-01/data/query/${SANITY_DATASET}?query=${query}`;
+      try {
+        const res = await fetch(url);
+        const { result } = await res.json();
+        archiveEvents = result || [];
+        renderArchive(archiveEvents);
+        if (pendingSlug) {
+          openEventBySlug(pendingSlug, { updateUrl: false });
+          pendingSlug = null;
+        } else if (currentView === 'archive') {
+          scrollToArchive('smooth');
+        }
+      } catch (err) {
+        archiveLoading.textContent = 'Could not load archive.';
+      }
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str || '';
+      return div.innerHTML;
+    }
+
+    const RU_MONTHS = [
+      'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+      'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря',
+    ];
+
+    function fmtDate(d) {
+      if (!d) return '';
+      const [y, m, day] = d.split('-');
+      const monthName = RU_MONTHS[Number(m) - 1] || m;
+      return `${Number(day)} ${monthName} ${y}`;
+    }
+
+    function hasContent(e) {
+      return (e.text && e.text.length > 0) || (e.galleries && e.galleries.length > 0);
+    }
+
+    function renderArchive(events) {
+      archiveLoading.style.display = 'none';
+      if (!events.length) {
+        archiveList.innerHTML = '<div class="archive-empty">No events yet.</div>';
+        return;
+      }
+      archiveList.innerHTML = events
+        .map((e, i) => {
+          const authors = (e.authors || []).filter(Boolean).join(', ');
+          const parts = [authors, e.venue].filter(Boolean).join(' — ');
+          const active = true;
+          const tag = 'a';
+          const href = e.slug ? ` href="/archive/${escapeHtml(e.slug)}"` : ` href="#"`;
+          const firstGalleryImage = ((e.galleries || [])[0] || {}).images || [];
+          const firstImage = firstGalleryImage[0];
+          const hasImage = Boolean(firstImage && firstImage.url);
+          const rowStyle = hasImage ? ` style="--row-image: url('${imageUrl(firstImage.url, 988)}');"` : '';
+          return `
+            <div class="archive-row">
+              <${tag} class="archive-item${active ? ' active' : ''}${hasImage ? ' has-image' : ''}" data-index="${i}"${href}${rowStyle}>
+                <div class="archive-number">${i + 1}</div>
+                <div class="archive-title" style="margin-left: ${(i + 1) * 20}px;">${escapeHtml(e.title)}</div>
+                <div class="archive-authors">${escapeHtml(parts)}</div>
+                <div class="archive-date">${fmtDate(e.date)}</div>
+              </${tag}>
+            </div>
+          `;
+        })
+        .join('');
+
+      archiveList.querySelectorAll('.archive-item.active').forEach((el) => {
+        el.addEventListener('click', (e) => {
+          e.preventDefault();
+          selectEvent(Number(el.dataset.index));
+        });
+      });
+    }
+
+    function openEventBySlug(slug, { updateUrl } = {}) {
+      const idx = archiveEvents.findIndex((e) => e.slug === slug);
+      if (idx >= 0) selectEvent(idx, { updateUrl });
+    }
+
+    function selectEvent(index, { updateUrl = true } = {}) {
+      const e = archiveEvents[index];
+      if (!e) return;
+
+      archiveList.querySelectorAll('.archive-item').forEach((el) => {
+        el.classList.toggle('selected', Number(el.dataset.index) === index);
+      });
+
+      if (updateUrl && e.slug) {
+        const path = `/archive/${e.slug}`;
+        if (location.pathname !== path) {
+          history.pushState({ view: 'archive', slug: e.slug }, '', path);
+        }
+      }
+
+      const authors = (e.authors || []).filter(Boolean).join(', ');
+
+      const bodyHtml = renderPortableText(e.text || []);
+
+      function galleryBlockHtml(images, name, type, index) {
+        const nameHtml = name ? `<span class="content-gallery-name">${escapeHtml(name)}</span>` : '';
+
+        if (type === 'photoHorizontal') {
+          return `
+            <div class="content-gallery-col content-gallery-col-auto" data-gallery-index="${index}">
+              <div class="content-gallery-horizontal" data-gallery-index="${index}" data-image-index="0">
+                <img src="${imageUrl(images[0].url, 1800)}" alt="">
+              </div>
+              <div class="content-image-count">${nameHtml}</div>
+            </div>
+          `;
+        }
+
+        const stripItems = images
+          .map((img, imgIndex) => `
+            <div class="content-gallery-strip-item" data-gallery-index="${index}" data-image-index="${imgIndex}">
+              <img src="${imageUrl(img.url, 1800)}" alt="">
+            </div>
+          `)
+          .join('');
+        return `
+          <div class="content-gallery-col" data-gallery-index="${index}">
+            <div class="content-gallery-strip">
+              ${stripItems}
+            </div>
+            <div class="content-image-count">${nameHtml}</div>
+          </div>
+        `;
+      }
+
+      const galleries = (e.galleries || []).filter((g) => g.images && g.images.length);
+      const galleryBlocksHtml = galleries
+        .map((g, gi) => galleryBlockHtml(g.images, g.name, g.type, gi))
+        .join('');
+
+      archiveDetail.innerHTML = `
+        <div class="archive-detail-top-row">
+          <div class="archive-detail-lines">
+            <div class="archive-detail-line archive-detail-title">${escapeHtml(e.title)}</div>
+            <div class="archive-detail-line archive-detail-date">${fmtDate(e.date)}</div>
+            ${authors ? `<div class="archive-detail-line archive-detail-authors">${escapeHtml(authors)}</div>` : ''}
+          </div>
+          <a href="#" class="archive-close" id="detailClose">Close</a>
+        </div>
+        <div class="content-body-row">
+          <div class="content-text-col">
+            <div class="archive-detail-spacer"></div>
+            <div class="archive-detail-body hyphenate" lang="ru">${bodyHtml}</div>
+          </div>
+          <div class="content-media-col">
+            ${galleryBlocksHtml}
+          </div>
+        </div>
+      `;
+
+      archiveDetail.querySelectorAll('.content-gallery-strip-item, .content-gallery-horizontal').forEach((item) => {
+        const gi = Number(item.dataset.galleryIndex);
+        const imgIndex = Number(item.dataset.imageIndex);
+        item.addEventListener('click', () => openCarousel(galleries[gi].images, imgIndex));
+      });
+
+      if (window.Hyphenopoly && Hyphenopoly.hyphenators && Hyphenopoly.hyphenators.ru) {
+        Hyphenopoly.hyphenators.ru.then((hyphenateRU) => {
+          const el = archiveDetail.querySelector('.archive-detail-body');
+          if (el) hyphenateRU(el);
+        });
+      }
+
+      document.getElementById('detailClose').addEventListener('click', (e) => {
+        e.preventDefault();
+        archiveDetail.classList.remove('visible');
+        archiveList.querySelectorAll('.archive-item').forEach((el) => el.classList.remove('selected'));
+      });
+
+      archiveDetail.classList.add('visible');
+      const topRowEl = archiveDetail.querySelector('.archive-detail-top-row');
+      (topRowEl || archiveDetail).scrollIntoView({ behavior: 'smooth', block: 'start' });
+      updateDetailTopHeight();
+    }
+
+    function updateDetailTopHeight() {
+      const topRow = archiveDetail.querySelector('.archive-detail-top-row');
+      if (topRow) {
+        document.documentElement.style.setProperty('--detail-top-height', `${topRow.offsetHeight}px`);
+      }
+    }
+
+    window.addEventListener('resize', updateDetailTopHeight);
+
+    function imageUrl(url, width) {
+      if (!url) return '';
+      return width ? `${url}?w=${width}&q=90&auto=format` : url;
+    }
+
+    const carousel = document.getElementById('carousel');
+    const carouselImage = document.getElementById('carouselImage');
+    const carouselCounter = document.getElementById('carouselCounter');
+    const carouselClose = document.getElementById('carouselClose');
+    const carouselPrev = document.getElementById('carouselPrev');
+    const carouselNext = document.getElementById('carouselNext');
+
+    let carouselImages = [];
+    let carouselIndex = 0;
+
+    function openCarousel(images, startIndex) {
+      if (!images.length) return;
+      carouselImages = images;
+      carouselIndex = startIndex;
+      showCarouselImage();
+      carousel.classList.add('visible');
+    }
+
+    function closeCarousel() {
+      carousel.classList.remove('visible');
+    }
+
+    function showCarouselImage() {
+      const img = carouselImages[carouselIndex];
+      carouselImage.src = imageUrl(img.url, 1600);
+      carouselCounter.textContent = `${carouselIndex + 1} / ${carouselImages.length}`;
+    }
+
+    function carouselStep(delta) {
+      carouselIndex = (carouselIndex + delta + carouselImages.length) % carouselImages.length;
+      showCarouselImage();
+    }
+
+    carouselClose.addEventListener('click', closeCarousel);
+    carouselPrev.addEventListener('click', () => carouselStep(-1));
+    carouselNext.addEventListener('click', () => carouselStep(1));
+    carousel.addEventListener('click', (e) => {
+      if (e.target === carousel) closeCarousel();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!carousel.classList.contains('visible')) return;
+      if (e.key === 'Escape') closeCarousel();
+      if (e.key === 'ArrowLeft') carouselStep(-1);
+      if (e.key === 'ArrowRight') carouselStep(1);
+    });
+
+    function renderSpan(child, markDefs) {
+      let text = escapeHtml(child.text || '').replace(/\n/g, '<br>');
+      if (child.marks && child.marks.length) {
+        child.marks.forEach((mark) => {
+          if (mark === 'strong') text = `<strong>${text}</strong>`;
+          else if (mark === 'em') text = `<em>${text}</em>`;
+          else if (mark === 'underline') text = `<u>${text}</u>`;
+          else {
+            const def = (markDefs || []).find((d) => d._key === mark);
+            if (def && def._type === 'link' && def.href) {
+              const target = def.blank ? ' target="_blank" rel="noopener"' : '';
+              text = `<a href="${escapeHtml(def.href)}"${target}>${text}</a>`;
+            }
+          }
+        });
+      }
+      return text;
+    }
+
+    function renderPortableText(blocks) {
+      let html = '';
+      let listOpen = null;
+
+      const closeList = () => {
+        if (listOpen) {
+          html += listOpen === 'bullet' ? '</ul>' : '</ol>';
+          listOpen = null;
+        }
+      };
+
+      blocks.forEach((block) => {
+        if (block._type === 'image') {
+          closeList();
+          html += `<img src="${imageUrl(block.url, 800)}" alt="">`;
+          return;
+        }
+        if (block._type !== 'block') return;
+
+        const listItem = block.listItem;
+        if (listItem) {
+          if (listOpen !== listItem) {
+            closeList();
+            html += listItem === 'bullet' ? '<ul>' : '<ol>';
+            listOpen = listItem;
+          }
+          const inner = (block.children || []).map((c) => renderSpan(c, block.markDefs)).join('');
+          html += `<li>${inner}</li>`;
+          return;
+        }
+
+        closeList();
+        const inner = (block.children || []).map((c) => renderSpan(c, block.markDefs)).join('');
+        const tag = { h2: 'h2', h3: 'h3', blockquote: 'blockquote' }[block.style] || 'p';
+        html += `<${tag}>${inner}</${tag}>`;
+      });
+
+      closeList();
+      return html;
+    }
+
+    const aboutOverlay = document.getElementById('aboutOverlay');
+
+    async function loadAbout() {
+      const query = encodeURIComponent(`*[_id == "about"][0]{
+        text[]{
+          ...,
+          markDefs[]{...},
+          _type == "image" => { ..., "url": asset->url }
+        }
+      }`);
+      const url = `https://${SANITY_PROJECT_ID}.apicdn.sanity.io/v2024-01-01/data/query/${SANITY_DATASET}?query=${query}`;
+      try {
+        const res = await fetch(url);
+        const { result } = await res.json();
+        const html = renderPortableText((result && result.text) || []);
+        aboutOverlay.innerHTML = html.replace(
+          /139 Documentary Center/g,
+          '<span class="about-highlight">139 Documentary Center</span>'
+        );
+        aboutOverlay.querySelectorAll('.about-highlight').forEach((el) => {
+          el.addEventListener('click', () => {
+            archiveSection.classList.remove('visible');
+            archiveDetail.classList.remove('visible');
+            navigate('home');
+          });
+        });
+      } catch (err) {
+        aboutOverlay.innerHTML = '<p>Could not load About.</p>';
+      }
+    }
+
+    loadAbout();
+
+    navStatic.querySelectorAll('a').forEach((a) => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        navigate(a.dataset.view);
+      });
+    });
+
+    const redirectPath = sessionStorage.getItem('redirectPath');
+    if (redirectPath) {
+      sessionStorage.removeItem('redirectPath');
+      history.replaceState(null, '', redirectPath);
+    }
+    applyRoute(location.pathname, { isInitial: true });
+
+    function downloadMarkdown(filename, content) {
+      const blob = new Blob([content], { type: 'text/markdown' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // --- Site typography controls ---
+    const siteFontSize = document.getElementById('siteFontSize');
+    const siteLineHeight = document.getElementById('siteLineHeight');
+    const siteLetterSpacing = document.getElementById('siteLetterSpacing');
+    const siteColor = document.getElementById('siteColor');
+
+    const siteFontSizeVal = document.getElementById('siteFontSizeVal');
+    const siteLineHeightVal = document.getElementById('siteLineHeightVal');
+    const siteLetterSpacingVal = document.getElementById('siteLetterSpacingVal');
+    const siteColorVal = document.getElementById('siteColorVal');
+
+    siteFontSize.addEventListener('input', () => {
+      document.documentElement.style.setProperty('--site-font-size', `${siteFontSize.value}px`);
+      siteFontSizeVal.textContent = siteFontSize.value;
+      updateDetailTopHeight();
+    });
+
+    siteLineHeight.addEventListener('input', () => {
+      document.documentElement.style.setProperty('--site-line-height', siteLineHeight.value);
+      siteLineHeightVal.textContent = Number(siteLineHeight.value).toFixed(2);
+      updateDetailTopHeight();
+    });
+
+    siteLetterSpacing.addEventListener('input', () => {
+      document.documentElement.style.setProperty('--site-letter-spacing', `${siteLetterSpacing.value}px`);
+      siteLetterSpacingVal.textContent = Number(siteLetterSpacing.value).toFixed(2);
+      updateDetailTopHeight();
+    });
+
+    const HEX_COLOR_RE = /^#[0-9a-f]{6}$/i;
+
+    function wireColorPair(colorInput, hexInput, cssVar) {
+      colorInput.addEventListener('input', () => {
+        document.documentElement.style.setProperty(cssVar, colorInput.value);
+        hexInput.value = colorInput.value;
+      });
+      hexInput.addEventListener('input', () => {
+        if (!HEX_COLOR_RE.test(hexInput.value)) return;
+        colorInput.value = hexInput.value;
+        document.documentElement.style.setProperty(cssVar, hexInput.value);
+        colorInput.dispatchEvent(new Event('change'));
+        saveSettings();
+      });
+    }
+
+    wireColorPair(siteColor, siteColorVal, '--site-color');
+
+    // --- Section colors ---
+    const SECTION_COLORS = [
+      { id: 'colorAbout', cssVar: '--color-about' },
+      { id: 'colorArchive', cssVar: '--color-archive' },
+      { id: 'colorEventTitle', cssVar: '--color-event-title' },
+      { id: 'colorEventText', cssVar: '--color-event-text' },
+      { id: 'colorMenu', cssVar: '--color-menu' },
+      { id: 'bgAbout', cssVar: '--bg-about' },
+      { id: 'bgArchive', cssVar: '--bg-archive' },
+      { id: 'bgEvent', cssVar: '--bg-event' },
+    ];
+
+    SECTION_COLORS.forEach(({ id, cssVar }) => {
+      const input = document.getElementById(id);
+      const valEl = document.getElementById(`${id}Val`);
+      wireColorPair(input, valEl, cssVar);
+    });
+
+    // --- Hyphenation tuning (requires reload to take effect) ---
+    ['hyphMinWordLength', 'hyphLeftmin', 'hyphRightmin'].forEach((id) => {
+      const input = document.getElementById(id);
+      const valEl = document.getElementById(`${id}Val`);
+      input.addEventListener('input', () => {
+        valEl.textContent = input.value;
+      });
+      input.addEventListener('change', () => {
+        saveSettings();
+        location.reload();
+      });
+    });
+
+    document.getElementById('allSave').addEventListener('click', () => {
+      const md = `# Site Typography Settings
+
+- Text size: ${siteFontSize.value}px
+- Line height: ${siteLineHeight.value}
+- Letter spacing: ${siteLetterSpacing.value}px
+- Color: ${siteColor.value}
+- About color: ${document.getElementById('colorAbout').value}
+- Archive color: ${document.getElementById('colorArchive').value}
+- Event title color: ${document.getElementById('colorEventTitle').value}
+- Event text color: ${document.getElementById('colorEventText').value}
+- Menu color: ${document.getElementById('colorMenu').value}
+- About bg: ${document.getElementById('bgAbout').value}
+- Archive bg: ${document.getElementById('bgArchive').value}
+- Event bg: ${document.getElementById('bgEvent').value}
+`;
+      downloadMarkdown('site-typography-settings.md', md);
+    });
+
+    // --- Persist typography settings in this browser ---
+    const TYPOGRAPHY_STORAGE_KEY = 'typographySettings';
+    const SLIDER_IDS = ['siteFontSize', 'siteLineHeight', 'siteLetterSpacing', 'siteColor', 'colorAbout', 'colorArchive', 'colorEventTitle', 'colorEventText', 'colorMenu', 'bgAbout', 'bgArchive', 'bgEvent', 'hyphMinWordLength', 'hyphLeftmin', 'hyphRightmin'];
+
+    function collectSettings() {
+      const settings = {};
+      SLIDER_IDS.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) settings[id] = el.value;
+      });
+      return settings;
+    }
+
+    function saveSettings() {
+      localStorage.setItem(TYPOGRAPHY_STORAGE_KEY, JSON.stringify(collectSettings()));
+    }
+
+    function applySettings(settings) {
+      SLIDER_IDS.forEach((id) => {
+        if (settings[id] === undefined) return;
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.value = settings[id];
+        el.dispatchEvent(new Event('input'));
+      });
+    }
+
+    devPanel.addEventListener('input', (e) => {
+      if (e.target.matches('input[type="range"], input[type="color"]')) saveSettings();
+    });
+
+    document.getElementById('allApply').addEventListener('click', () => {
+      const saved = localStorage.getItem(TYPOGRAPHY_STORAGE_KEY);
+      if (saved) applySettings(JSON.parse(saved));
+    });
+
+    const savedTypography = localStorage.getItem(TYPOGRAPHY_STORAGE_KEY);
+    if (savedTypography) {
+      try {
+        applySettings(JSON.parse(savedTypography));
+      } catch (err) {
+        // ignore corrupt saved settings
+      }
+    }
   </script>
 </body>
 </html>
