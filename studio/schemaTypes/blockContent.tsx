@@ -1,5 +1,15 @@
 import {defineArrayMember, defineType} from 'sanity'
 
+const H1Style = (props: {children?: React.ReactNode}) => (
+  <p style={{fontSize: 'inherit', fontWeight: 'bold', margin: 0}}>{props.children}</p>
+)
+
+const DividerBlock = () => (
+  <div style={{padding: '0.5em 0'}}>
+    <hr style={{border: 'none', borderTop: '1px dashed #ccc', margin: 0}} />
+  </div>
+)
+
 export const blockContent = defineType({
   name: 'blockContent',
   title: 'Text',
@@ -9,6 +19,7 @@ export const blockContent = defineType({
       type: 'block',
       styles: [
         {title: 'Normal', value: 'normal'},
+        {title: 'H1', value: 'h1', component: H1Style},
         {title: 'H2', value: 'h2'},
         {title: 'H3', value: 'h3'},
         {title: 'Quote', value: 'blockquote'},
@@ -51,6 +62,20 @@ export const blockContent = defineType({
     defineArrayMember({
       type: 'image',
       options: {hotspot: true},
+    }),
+    defineArrayMember({
+      type: 'object',
+      name: 'divider',
+      title: 'Divider',
+      fields: [{name: 'isDivider', type: 'boolean', hidden: true, initialValue: true}],
+      preview: {
+        prepare() {
+          return {title: '— Divider —'}
+        },
+      },
+      components: {
+        block: DividerBlock,
+      },
     }),
   ],
 })

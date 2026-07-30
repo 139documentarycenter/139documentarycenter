@@ -33,9 +33,13 @@
   -->
   <style>
     :root {
-      --page-padding: 10px;
+      --page-padding-top: 8px;
+      --page-padding-right: 10px;
+      --page-padding-bottom: 10px;
+      --page-padding-left: 10px;
       --site-font-size: 18px;
-      --site-line-height: 1.1;
+      --nav-font-size: 18px;
+      --site-line-height: 1.3;
       --site-letter-spacing: 1px;
       --site-color: #000000;
       --color-about: #000000;
@@ -57,11 +61,13 @@
     body {
       min-height: 100vh;
       background: #fff;
-      font-family: Arial, sans-serif;
+      font-family: 'Helvetica Neue', 'Helvetica', sans-serif;
       font-size: var(--site-font-size);
       line-height: var(--site-line-height);
       letter-spacing: var(--site-letter-spacing);
       color: var(--site-color);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
     }
 
     .layout {
@@ -70,52 +76,71 @@
       width: 100vw;
     }
 
-    .home-section {
+    .ver2-section {
       position: relative;
       width: 100%;
     }
 
-    .home-row {
+    .ver2-top-screen {
       display: flex;
       flex-direction: column;
       width: 100%;
     }
 
-    .info-col {
+    .ver2-nav-bar {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+      padding: var(--page-padding-top) var(--page-padding-right) 0 var(--page-padding-left);
+      width: 100%;
+      flex: 0 0 auto;
+    }
+
+    .ver2-nav-bar .nav-static {
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .ver2-detail-full {
       width: 100%;
     }
 
-    .menu-col {
+    .ver2-section-label {
+      display: none;
+      align-items: center;
+      flex: 0 0 auto;
+      padding: 0 var(--page-padding-right) 0 var(--page-padding-left);
+      background: #f2f2f2;
+      color: var(--color-archive);
+    }
+
+    .ver2-section-label.visible {
+      display: flex;
+    }
+
+    .ver2-hero-about {
+      flex: 0 0 auto;
       width: 100%;
-      position: relative;
+      padding: 0 var(--page-padding-right) 0 var(--page-padding-left);
+      color: var(--color-menu);
     }
 
-    .about-overlay {
-      display: block;
-      position: relative;
-      margin: var(--page-padding) var(--page-padding) 0 var(--page-padding);
-      max-width: 720px;
-      color: var(--color-about);
-      background: var(--bg-about);
-    }
-
-    .about-overlay p {
+    .ver2-hero-about p {
       margin-bottom: 16px;
     }
 
-    .about-overlay p:last-child {
+    .ver2-hero-about p:last-child {
       margin-bottom: 0;
     }
 
-    .about-highlight {
+    .ver2-wordmark {
+      text-decoration: none;
+      color: #000000;
       cursor: pointer;
-      text-decoration: underline;
-    }
-
-    .archive-section {
-      display: none;
-      position: relative;
-      width: 100%;
+      flex: 0 0 auto;
+      font-size: var(--nav-font-size);
+      line-height: var(--site-line-height);
     }
 
     .archive-close {
@@ -125,50 +150,63 @@
       color: #000000 !important;
     }
 
-    #archiveClose {
-      display: none;
+    .about-highlight {
+      cursor: pointer;
+      text-decoration: underline;
     }
 
     .archive-detail-top-row {
       display: flex;
       align-items: center;
+      gap: 24px;
       width: 100%;
-      background: var(--bg-event);
+      background: #f2f2f2;
     }
 
-    #detailClose {
+    .feed-separator {
+      width: 100%;
+      padding: 0 var(--page-padding-right) 0 var(--page-padding-left);
+      line-height: var(--site-line-height);
+    }
+
+    #scrollSpacer {
+      width: 100%;
+      padding: 0 var(--page-padding-right) 0 var(--page-padding-left);
+      line-height: var(--site-line-height);
+      overflow: hidden;
+    }
+
+    .about-fill {
+      width: 100%;
+      max-width: 720px;
+      padding-left: var(--page-padding-left);
+      line-height: var(--site-line-height);
+      color: #999;
+      overflow: hidden;
+    }
+
+    #ver2AboutFill {
+      max-width: none;
+      padding-left: var(--page-padding-left);
+    }
+
+    .about-fill span {
+      font-family: monospace;
+    }
+
+    #scrollSpacer span {
+      font-family: monospace;
+    }
+
+    .detail-close {
       margin-left: auto;
-    }
-
-    .archive-section.visible {
-      display: block;
-    }
-
-    .menu-bar {
-      display: flex;
-      align-items: center;
-      padding: 0 var(--page-padding);
-      border-top: 1px solid #ccc;
-      border-bottom: 1px solid #ccc;
-      margin: 0;
-    }
-
-    .menu-container {
-      position: relative;
-      width: auto;
-      max-width: 100%;
-    }
-
-    .menu-nav-wrap {
-      position: relative;
-      height: auto;
     }
 
     .content-container {
       display: none;
       width: 100%;
       background: var(--bg-event);
-      padding: 0 var(--page-padding);
+      padding: 0 var(--page-padding-right) 0 var(--page-padding-left);
       gap: 0;
     }
 
@@ -179,14 +217,18 @@
 
     .content-body-row {
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
+    }
+
+    .accordion-item + .accordion-item {
+      border-top: 1px solid #000000;
     }
 
     .content-media-col {
       display: flex;
       flex-direction: column;
       gap: 0;
-      width: 60%;
+      width: 100%;
       align-self: flex-start;
     }
 
@@ -200,6 +242,13 @@
 
     .content-gallery-col-auto {
       height: auto;
+      width: 50%;
+    }
+
+    @media (max-width: 700px) {
+      .content-gallery-col-auto {
+        width: 100%;
+      }
     }
 
     .content-gallery-strip {
@@ -248,10 +297,70 @@
     }
 
     .content-text-col {
-      width: 40%;
+      width: 50%;
       min-width: 0;
       padding-right: 20px;
       margin-top: 0;
+      text-align: left;
+    }
+
+    .accordion-item {
+      width: 100%;
+    }
+
+    .accordion-toggle-row {
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .accordion-toggle {
+      display: block;
+      flex: 1 1 auto;
+      text-align: left;
+      background: none;
+      border: none;
+      font: inherit;
+      line-height: var(--site-line-height);
+      color: inherit;
+      letter-spacing: inherit;
+      padding: 0 var(--page-padding-right) 0 0;
+      cursor: pointer;
+    }
+
+    .accordion-item.open .accordion-toggle {
+      color: #999;
+    }
+
+    .accordion-toggle-row .accordion-collapse {
+      display: none;
+      flex: 0 0 auto;
+      margin-left: auto;
+      padding: 0 var(--page-padding-right) 0 var(--page-padding-left);
+    }
+
+    .accordion-item.open .accordion-toggle-row .accordion-collapse {
+      display: block;
+    }
+
+    .accordion-item.open {
+      width: 50%;
+      background: #f2f2f2;
+      border-right: 1px solid #000000;
+    }
+
+    .accordion-item.open .content-text-col,
+    .accordion-item.open .content-additional-text {
+      width: 100%;
+      padding-right: 1rem;
+    }
+
+    .accordion-panel {
+      display: none;
+    }
+
+    .accordion-panel.open {
+      display: block;
     }
 
     svg {
@@ -268,10 +377,12 @@
 
     .nav-static a {
       text-decoration: none;
-      padding: 2px 0;
+      padding: 0;
       cursor: pointer;
       color: var(--color-menu);
       opacity: 0.4;
+      font-size: var(--nav-font-size);
+      line-height: var(--site-line-height);
     }
 
     .nav-static a:hover {
@@ -284,18 +395,23 @@
     }
 
     .archive {
-      display: block;
+      display: none;
+      position: relative;
       width: 100%;
-      padding: 0 var(--page-padding);
+      padding: 0 var(--page-padding-right) 0 var(--page-padding-left);
       overflow-x: hidden;
       background: var(--bg-archive);
+    }
+
+    .archive.visible {
+      display: block;
     }
 
     .archive-header {
       display: flex;
       align-items: center;
-      padding: 0 var(--page-padding);
-      margin: 0 calc(-1 * var(--page-padding));
+      padding: 0 var(--page-padding-right) 0 var(--page-padding-left);
+      margin: 0 calc(-1 * var(--page-padding-right)) 0 calc(-1 * var(--page-padding-left));
       color: var(--color-archive);
       background: #ffffff;
     }
@@ -325,7 +441,6 @@
 
     .archive-row {
       width: 100%;
-      border-bottom: 1px solid #ccc;
     }
 
     .archive-item {
@@ -338,18 +453,22 @@
 
     .archive-item .archive-date {
       flex: 0 0 220px;
+      color: var(--color-archive);
     }
 
     .archive-item .archive-authors {
       flex: 0 0 380px;
+      color: var(--color-archive);
     }
 
     .archive-item .archive-title {
       flex: 0 0 340px;
+      color: var(--color-archive);
     }
 
     .archive-item .archive-number {
       flex: 0 0 30px;
+      color: #999;
     }
 
     .archive-item.active {
@@ -360,18 +479,14 @@
       color: #000000;
     }
 
-    .archive-item.has-image:hover .archive-number,
-    .archive-item.has-image:hover .archive-title,
-    .archive-item.has-image:hover .archive-authors,
-    .archive-item.has-image:hover .archive-date {
-      background-image: var(--row-image);
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      -webkit-text-fill-color: transparent;
+    @media (max-width: 1200px) {
+      .archive-item .archive-title {
+        margin-left: 0 !important;
+      }
+
+      .archive-item {
+        gap: 12px;
+      }
     }
 
     @media (max-width: 700px) {
@@ -382,7 +497,7 @@
       .archive-item {
         flex-direction: column;
         gap: 0;
-        padding: 12px 0;
+        padding: 0;
       }
 
       .archive-item .archive-date,
@@ -393,28 +508,11 @@
         margin-left: 0 !important;
       }
 
-      .content-body-row {
-        flex-direction: column;
-      }
-
-      .content-media-col {
-        width: 100%;
-        margin-top: 0;
-        order: -1;
-      }
-
-      .content-text-col {
+      .content-text-col,
+      .content-additional-text {
         width: 100%;
         padding-right: 0;
-        margin-top: 24px;
       }
-    }
-
-    .archive-detail-lines {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin-bottom: 0;
     }
 
     .archive-detail-line {
@@ -427,12 +525,17 @@
       color: var(--color-event-title);
     }
 
-    .archive-detail-spacer {
-      height: 1.3em;
-    }
-
     .archive-detail-body {
       color: var(--color-event-text);
+    }
+
+    .content-additional-text {
+      color: var(--color-event-text);
+      width: 50%;
+      min-width: 0;
+      padding-right: 20px;
+      margin-top: 0;
+      text-align: left;
     }
 
     .archive-detail-body p,
@@ -440,14 +543,48 @@
     .archive-detail-body h3,
     .archive-detail-body blockquote,
     .archive-detail-body ul,
-    .archive-detail-body ol {
+    .archive-detail-body ol,
+    .content-additional-text p,
+    .content-additional-text h2,
+    .content-additional-text h3,
+    .content-additional-text blockquote,
+    .content-additional-text ul,
+    .content-additional-text ol {
       margin-bottom: 16px;
+    }
+
+    .archive-detail-body > :last-child,
+    .content-additional-text > :last-child {
+      margin-bottom: 0;
+    }
+
+    .archive-detail-body h1,
+    .content-additional-text h1,
+    .ver2-hero-about h1 {
+      font-size: inherit;
+      font-weight: inherit;
+      letter-spacing: 2px;
     }
 
     .archive-detail-body blockquote {
       border-left: 2px solid #ccc;
       padding-left: 16px;
       font-style: italic;
+    }
+
+    .archive-detail-body hr,
+    .content-additional-text hr {
+      width: 100%;
+      border: none;
+      border-top: 1px solid #ccc;
+      margin: 8px 0 16px 0;
+    }
+
+    .content-divider-line {
+      display: inline-block;
+      width: 100%;
+      border-top: 1px solid #ccc;
+      vertical-align: middle;
     }
 
     .archive-detail-body a {
@@ -593,8 +730,7 @@
       height: 100vh;
       background: #ffffff;
       z-index: 200;
-      align-items: center;
-      justify-content: center;
+      flex-direction: column;
     }
 
     .carousel.visible {
@@ -603,80 +739,74 @@
 
     .carousel-close {
       position: absolute;
-      top: 20px;
-      right: 30px;
-      color: #000000;
-      font-family: Arial, sans-serif;
-      font-size: 28px;
-      cursor: pointer;
-      line-height: 1;
-      user-select: none;
-    }
-
-    .carousel-counter {
-      position: absolute;
-      top: 26px;
-      left: 30px;
-      color: #000000;
-      font-family: Arial, sans-serif;
-      font-size: 16px;
-      letter-spacing: 0.3px;
-      user-select: none;
-    }
-
-    .carousel-arrow {
-      color: #000000;
-      font-family: Arial, sans-serif;
-      font-size: 40px;
-      cursor: pointer;
-      user-select: none;
-      padding: 0 30px;
-      flex: 0 0 auto;
+      top: 0;
+      right: 0;
+      padding-right: 5px;
+      z-index: 1;
     }
 
     .carousel-image-wrap {
+      position: relative;
       flex: 1 1 auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      max-width: 80vw;
-      height: 100vh;
+      min-height: 0;
+      width: 100%;
     }
 
     .carousel-image-wrap img {
-      max-width: 80vw;
-      height: 100vh;
       display: block;
+      width: 100%;
+      height: 100%;
       object-fit: contain;
+    }
+
+    .carousel-nav-zone {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      width: 50%;
+      user-select: none;
+    }
+
+    .carousel-nav-prev {
+      left: 0;
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ctext x='0' y='23' font-family='Times New Roman, serif' font-size='26'%3E%E2%86%90%3C/text%3E%3C/svg%3E") 16 16, w-resize;
+    }
+
+    .carousel-nav-next {
+      right: 0;
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ctext x='4' y='23' font-family='Times New Roman, serif' font-size='26'%3E%E2%86%92%3C/text%3E%3C/svg%3E") 16 16, e-resize;
+    }
+
+    .carousel-caption {
+      flex: 0 0 auto;
+      width: 100%;
+      padding-left: 5px;
+      background: #ffffff;
+      color: #000000;
+      line-height: var(--site-line-height);
+      text-align: left;
     }
   </style>
 </head>
 <body>
   <div class="layout">
-    <div class="home-section" id="homeSection">
-      <div class="home-row">
-        <div class="info-col">
-          <div class="about-overlay" id="aboutOverlay"></div>
-        </div>
-
-        <div class="menu-col">
-          <div class="menu-bar">
-            <div class="menu-container">
-              <div class="menu-nav-wrap">
-                <div class="nav-static" id="navStatic">
-                  <a href="#" data-view="archive">Archive</a>
-                  <a href="#" data-view="program">Program</a>
-                  <a href="#" data-view="special-projects">Special Projects</a>
-                </div>
-              </div>
-            </div>
-            <a href="#" class="archive-close" id="archiveClose">Close</a>
+    <div class="ver2-section" id="ver2Section">
+      <div class="ver2-top-screen">
+        <div class="ver2-nav-bar">
+          <a href="#" class="ver2-wordmark" id="ver2Wordmark">139 Documentary Center</a>
+          <div class="nav-static" id="navStaticVer2">
+            <a href="#" data-view="archive">Archive</a>
+            <a href="#" data-view="program">Program</a>
+            <a href="#" data-view="special-projects">Special Projects</a>
           </div>
         </div>
+        <div class="ver2-hero-about" id="ver2HeroAbout"></div>
+        <div class="about-fill" id="ver2AboutFill"></div>
       </div>
-    </div>
-
-    <div class="archive-section" id="archiveSection">
+      <div class="ver2-section-label" id="ver2SectionLabel">
+        <span id="ver2SectionLabelText">Archive</span>
+        <a href="#" class="archive-close" id="archiveCloseVer2">Close</a>
+      </div>
       <div class="archive" id="archiveView">
         <div class="archive-header">
           <div class="archive-header-labels">
@@ -689,21 +819,25 @@
         <div class="archive-loading" id="archiveLoading">Loading…</div>
         <div id="archiveList"></div>
       </div>
-
-      <div class="content-container" id="archiveDetail">
-        <div class="archive-detail-placeholder">Select an event to view details.</div>
+      <div class="ver2-detail-full" id="ver2DetailFull">
+        <div class="content-container" id="archiveDetail">
+          <div class="archive-detail-placeholder">Select an event to view details.</div>
+        </div>
       </div>
     </div>
+
   </div>
 
+  <div id="scrollSpacer"></div>
+
   <div class="carousel" id="carousel">
-    <div class="carousel-counter" id="carouselCounter"></div>
-    <div class="carousel-close" id="carouselClose">&times;</div>
-    <div class="carousel-arrow" id="carouselPrev">&#8249;</div>
+    <a href="#" class="archive-close carousel-close" id="carouselClose">Close</a>
+    <div class="carousel-caption" id="carouselCaption"></div>
     <div class="carousel-image-wrap">
       <img id="carouselImage" src="" alt="">
+      <div class="carousel-nav-zone carousel-nav-prev" id="carouselPrev"></div>
+      <div class="carousel-nav-zone carousel-nav-next" id="carouselNext"></div>
     </div>
-    <div class="carousel-arrow" id="carouselNext">&#8250;</div>
   </div>
 
   <div class="dev-panel" id="devPanel">
@@ -713,12 +847,16 @@
       <input type="range" id="siteFontSize" min="10" max="36" step="1" value="18">
     </label>
     <label>
-      <span><span>Line height</span><span id="siteLineHeightVal">1.10</span></span>
-      <input type="range" id="siteLineHeight" min="0.9" max="2" step="0.05" value="1.1">
+      <span><span>Line height</span><span id="siteLineHeightVal">1.30</span></span>
+      <input type="range" id="siteLineHeight" min="0.9" max="2" step="0.05" value="1.3">
     </label>
     <label>
       <span><span>Letter spacing (px)</span><span id="siteLetterSpacingVal">1.00</span></span>
       <input type="range" id="siteLetterSpacing" min="-1" max="4" step="0.05" value="1">
+    </label>
+    <label>
+      <span><span>Nav text size (px)</span><span id="navFontSizeVal">18</span></span>
+      <input type="range" id="navFontSize" min="10" max="36" step="1" value="18">
     </label>
     <label>
       <span><span>Color</span><input type="text" class="dev-panel-hex" id="siteColorVal" value="#000000"></span>
@@ -787,23 +925,31 @@
     const SANITY_PROJECT_ID = 'jvmgvacm';
     const SANITY_DATASET = 'production';
 
-    const homeSection = document.getElementById('homeSection');
-    const archiveSection = document.getElementById('archiveSection');
-    document.getElementById('archiveClose').addEventListener('click', (e) => {
-      e.preventDefault();
-      archiveSection.classList.remove('visible');
-      archiveDetail.classList.remove('visible');
-      navigate('home');
-    });
+    const ver2Section = document.getElementById('ver2Section');
+    const ver2HeroAbout = document.getElementById('ver2HeroAbout');
     const archiveView = document.getElementById('archiveView');
+    const archiveDetail = document.getElementById('archiveDetail');
+
+    function closeArchiveAndReturn(e) {
+      e.preventDefault();
+      archiveView.classList.remove('visible');
+      archiveDetail.classList.remove('visible');
+      navigate('ver2');
+    }
+    document.getElementById('archiveCloseVer2').addEventListener('click', closeArchiveAndReturn);
+    document.getElementById('ver2Wordmark').addEventListener('click', (e) => {
+      e.preventDefault();
+      archiveView.classList.remove('visible');
+      archiveDetail.classList.remove('visible');
+      navigate('ver2');
+    });
     const archiveLoading = document.getElementById('archiveLoading');
     const archiveList = document.getElementById('archiveList');
-    const archiveDetail = document.getElementById('archiveDetail');
-    const navStatic = document.getElementById('navStatic');
-    const navLinksOriginalOrder = Array.from(navStatic.children);
+    const navStaticVer2 = document.getElementById('navStaticVer2');
+    const navLinksOriginalOrderVer2 = Array.from(navStaticVer2.children);
 
     let archiveLoaded = false;
-    let currentView = 'home';
+    let currentView = 'ver2';
     let archiveEvents = [];
     let pendingSlug = null;
 
@@ -812,7 +958,7 @@
       if (parts[0] === 'archive') {
         return { view: 'archive', slug: parts[1] || null };
       }
-      return { view: 'home', slug: null };
+      return { view: 'ver2', slug: null };
     }
 
     function pathForRoute(view, slug) {
@@ -820,40 +966,101 @@
       return '/';
     }
 
-    function scrollToArchive(behavior) {
-      archiveSection.scrollIntoView({ behavior, block: 'start' });
+    let scrollToTopObserver = null;
+
+    function fillSpacer(scrollSpacer, px) {
+      if (px <= 0) {
+        scrollSpacer.innerHTML = '';
+        return;
+      }
+      const lineHeightPx = parseFloat(getComputedStyle(scrollSpacer).lineHeight) || 24;
+      const lines = Math.max(1, Math.ceil(px / lineHeightPx));
+      scrollSpacer.innerHTML = '<div><span>*</span></div>'.repeat(lines);
+    }
+
+    function scrollToTop(target) {
+      const scrollSpacer = document.getElementById('scrollSpacer');
+
+      if (scrollToTopObserver) {
+        scrollToTopObserver.disconnect();
+        scrollToTopObserver = null;
+      }
+
+      function updateSpacer() {
+        // Important: never zero the spacer out before measuring. Doing so
+        // (while observing document.body for resizes) would shrink the page,
+        // force the browser to immediately clamp the current scroll position
+        // down to fit, and then every subsequent recalculation would measure
+        // from that already-clamped (wrong) position — converging on a
+        // too-small value instead of the correct one.
+        const currentSpacerHeight = scrollSpacer.getBoundingClientRect().height;
+        const targetTop = target.getBoundingClientRect().top + window.scrollY;
+        const naturalScrollHeight = document.documentElement.scrollHeight - currentSpacerHeight;
+        const maxScrollWithoutSpacer = naturalScrollHeight - window.innerHeight;
+        const needed = Math.max(0, targetTop - maxScrollWithoutSpacer);
+        fillSpacer(scrollSpacer, needed);
+      }
+
+      updateSpacer();
+      // Instant (non-smooth) on purpose: a smooth scroll here gets
+      // interrupted/frozen by async image loads changing the page height
+      // mid-animation.
+      target.scrollIntoView({ behavior: 'auto', block: 'start' });
+
+      // Images/fonts inside the page can finish loading after this point and
+      // change the document's total height, which would leave the spacer too
+      // small to reach the target later. Keep the spacer sized correctly —
+      // but only ever adjust the spacer here, never re-scroll, so this can't
+      // fight the user's own scrolling once they start reading.
+      scrollToTopObserver = new ResizeObserver(() => {
+        updateSpacer();
+      });
+      scrollToTopObserver.observe(document.body);
+
+      setTimeout(() => {
+        if (scrollToTopObserver) {
+          scrollToTopObserver.disconnect();
+          scrollToTopObserver = null;
+        }
+      }, 3000);
+    }
+
+    function setNavActiveOnly(links, view) {
+      links.forEach((a) => {
+        a.classList.toggle('active', a.dataset.view === view);
+      });
     }
 
     function setView(view, { scroll = 'smooth' } = {}) {
       currentView = view;
-      navLinksOriginalOrder.forEach((a) => {
-        a.classList.toggle('active', a.dataset.view === view && view !== 'home');
-      });
-      const activeLink = navLinksOriginalOrder.find((a) => a.classList.contains('active'));
-      const ordered = activeLink
-        ? [activeLink, ...navLinksOriginalOrder.filter((a) => a !== activeLink)]
-        : navLinksOriginalOrder;
-      ordered.forEach((a) => navStatic.appendChild(a));
+      setNavActiveOnly(navLinksOriginalOrderVer2, view);
       if (view === 'archive') {
-        archiveSection.classList.add('visible');
+        archiveView.classList.add('visible');
         if (!archiveLoaded) loadArchive();
       } else {
-        archiveSection.classList.remove('visible');
+        archiveView.classList.remove('visible');
         archiveDetail.classList.remove('visible');
       }
-      document.getElementById('archiveClose').style.display = view === 'archive' ? 'block' : 'none';
-      if (scroll) {
-        if (view === 'archive') {
-          scrollToArchive(scroll);
-        } else {
-          homeSection.scrollIntoView({ behavior: scroll, block: 'start' });
+      const SECTION_VIEW_LABELS = { archive: 'Archive', program: 'Program', 'special-projects': 'Special Projects' };
+      const sectionLabel = SECTION_VIEW_LABELS[view] || '';
+      document.getElementById('archiveCloseVer2').style.display = sectionLabel ? 'block' : 'none';
+      document.getElementById('ver2SectionLabelText').textContent = sectionLabel;
+      document.getElementById('ver2SectionLabel').classList.toggle('visible', !!sectionLabel);
+      if (view !== 'archive') {
+        if (scrollToTopObserver) {
+          scrollToTopObserver.disconnect();
+          scrollToTopObserver = null;
         }
+        document.getElementById('scrollSpacer').innerHTML = '';
+      }
+      if (scroll && view !== 'archive') {
+        ver2Section.scrollIntoView({ behavior: scroll, block: 'start' });
       }
     }
 
-    function navigate(view, { replace, scroll = 'smooth' } = {}) {
+    function navigate(view, { replace, scroll = 'smooth', slug } = {}) {
       setView(view, { scroll });
-      const path = pathForRoute(view, null);
+      const path = pathForRoute(view, slug || null);
       if (location.pathname !== path) {
         if (replace) {
           history.replaceState({ view }, '', path);
@@ -887,6 +1094,7 @@
         "venue": venue->title,
         "curatedBy": curatedBy->name,
         "authors": authors[]->name,
+        textTitle,
         text[]{
           ...,
           markDefs[]{...},
@@ -896,6 +1104,12 @@
           name,
           type,
           images[]{ ..., "url": asset->url }
+        },
+        additionalTextTitle,
+        additionalText[]{
+          ...,
+          markDefs[]{...},
+          _type == "image" => { ..., "url": asset->url }
         }
       }`);
       const url = `https://${SANITY_PROJECT_ID}.apicdn.sanity.io/v2024-01-01/data/query/${SANITY_DATASET}?query=${query}`;
@@ -907,8 +1121,6 @@
         if (pendingSlug) {
           openEventBySlug(pendingSlug, { updateUrl: false });
           pendingSlug = null;
-        } else if (currentView === 'archive') {
-          scrollToArchive('smooth');
         }
       } catch (err) {
         archiveLoading.textContent = 'Could not load archive.';
@@ -933,6 +1145,25 @@
       return `${Number(day)} ${monthName} ${y}`;
     }
 
+    function nudgeScrollHint(el) {
+      const run = () => {
+        if (el.scrollWidth <= el.clientWidth) return;
+        const distance = Math.min(60, el.scrollWidth - el.clientWidth);
+        const duration = 550;
+        const start = performance.now();
+        const ease = (t) => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+        function step(now) {
+          const t = Math.min(1, (now - start) / duration);
+          const half = t < 0.5 ? t * 2 : (1 - t) * 2;
+          el.scrollLeft = distance * ease(half);
+          if (t < 1) requestAnimationFrame(step);
+          else el.scrollLeft = 0;
+        }
+        requestAnimationFrame(step);
+      };
+      requestAnimationFrame(() => setTimeout(run, 300));
+    }
+
     function hasContent(e) {
       return (e.text && e.text.length > 0) || (e.galleries && e.galleries.length > 0);
     }
@@ -950,13 +1181,9 @@
           const active = true;
           const tag = 'a';
           const href = e.slug ? ` href="/archive/${escapeHtml(e.slug)}"` : ` href="#"`;
-          const firstGalleryImage = ((e.galleries || [])[0] || {}).images || [];
-          const firstImage = firstGalleryImage[0];
-          const hasImage = Boolean(firstImage && firstImage.url);
-          const rowStyle = hasImage ? ` style="--row-image: url('${imageUrl(firstImage.url, 988)}');"` : '';
           return `
             <div class="archive-row">
-              <${tag} class="archive-item${active ? ' active' : ''}${hasImage ? ' has-image' : ''}" data-index="${i}"${href}${rowStyle}>
+              <${tag} class="archive-item${active ? ' active' : ''}" data-index="${i}"${href}>
                 <div class="archive-number">${i + 1}</div>
                 <div class="archive-title" style="margin-left: ${(i + 1) * 20}px;">${escapeHtml(e.title)}</div>
                 <div class="archive-authors">${escapeHtml(parts)}</div>
@@ -980,6 +1207,138 @@
       if (idx >= 0) selectEvent(idx, { updateUrl });
     }
 
+    function galleryBlockHtml(images, name, type, index, uid) {
+      const nameHtml = name ? `<span class="content-gallery-name">${escapeHtml(name)}</span>` : '';
+
+      if (type === 'photoHorizontal') {
+        return `
+          <div class="content-gallery-col content-gallery-col-auto" data-gallery-index="${index}">
+            <div class="content-gallery-horizontal" data-uid="${uid}" data-gallery-index="${index}" data-image-index="0">
+              <img src="${imageUrl(images[0].url, 1800)}" alt="">
+            </div>
+            <div class="content-image-count">${nameHtml}</div>
+          </div>
+        `;
+      }
+
+      const stripItems = images
+        .map((img, imgIndex) => `
+          <div class="content-gallery-strip-item" data-uid="${uid}" data-gallery-index="${index}" data-image-index="${imgIndex}">
+            <img src="${imageUrl(img.url, 1800)}" alt="">
+          </div>
+        `)
+        .join('');
+      return `
+        <div class="content-gallery-col" data-gallery-index="${index}">
+          <div class="content-gallery-strip">
+            ${stripItems}
+          </div>
+          <div class="content-image-count">${nameHtml}</div>
+        </div>
+      `;
+    }
+
+    // Builds one event's detail markup. `uid` disambiguates element ids when
+    // several of these are rendered on the page at once (the "A" feed view).
+    function buildEventDetailHtml(e, uid) {
+      const authors = (e.authors || []).filter(Boolean).join(', ');
+      const bodyHtml = renderPortableText(e.text || []);
+      const additionalTextHtml = renderPortableText(e.additionalText || []);
+
+      const galleries = (e.galleries || []).filter((g) => g.images && g.images.length);
+      const galleryBlocksHtml = galleries
+        .map((g, gi) => galleryBlockHtml(g.images, g.name, g.type, gi, uid))
+        .join('');
+
+      const textPanelId = `text-panel-1-${uid}`;
+      const additionalTextPanelId = `text-panel-2-${uid}`;
+
+      return `
+        <div class="archive-detail-block" data-uid="${uid}">
+          <div class="archive-detail-top-row">
+            <div class="archive-detail-line archive-detail-title">${escapeHtml(e.title)}</div>
+            <div class="archive-detail-line archive-detail-date">${fmtDate(e.date)}</div>
+            ${authors ? `<div class="archive-detail-line archive-detail-authors">${escapeHtml(authors)}</div>` : ''}
+            <a href="#" class="archive-close detail-close" data-uid="${uid}">Close</a>
+          </div>
+          <div class="content-body-row">
+            ${e.text && e.text.length ? `
+              <div class="accordion-item">
+                <div class="accordion-toggle-row">
+                  <button type="button" class="accordion-toggle" data-target="${textPanelId}">${escapeHtml(e.textTitle) || 'Text'}</button>
+                  <a href="#" class="archive-close accordion-collapse" data-target="${textPanelId}">Close</a>
+                </div>
+                <div class="accordion-panel" id="${textPanelId}">
+                  <div class="content-text-col">
+                    <div class="archive-detail-body hyphenate" lang="ru">${bodyHtml}</div>
+                  </div>
+                </div>
+              </div>
+            ` : ''}
+            ${e.additionalText && e.additionalText.length ? `
+              <div class="accordion-item">
+                <div class="accordion-toggle-row">
+                  <button type="button" class="accordion-toggle" data-target="${additionalTextPanelId}">${escapeHtml(e.additionalTextTitle) || 'Additional text'}</button>
+                  <a href="#" class="archive-close accordion-collapse" data-target="${additionalTextPanelId}">Close</a>
+                </div>
+                <div class="accordion-panel" id="${additionalTextPanelId}">
+                  <div class="content-additional-text">${additionalTextHtml}</div>
+                </div>
+              </div>
+            ` : ''}
+            <div class="content-media-col">
+              ${galleryBlocksHtml}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Wires up interactivity for every `.archive-detail-block` currently
+    // inside `container` (there may be one, for a single selected event, or
+    // many, for the "A" continuous feed).
+    function wireEventDetailBlocks(container, eventsByUid) {
+      container.querySelectorAll('.accordion-toggle').forEach((toggle) => {
+        toggle.addEventListener('click', () => {
+          const panel = document.getElementById(toggle.dataset.target);
+          const isOpen = toggle.classList.toggle('open');
+          if (panel) panel.classList.toggle('open', isOpen);
+          const item = toggle.closest('.accordion-item');
+          if (item) item.classList.toggle('open', isOpen);
+        });
+      });
+
+      container.querySelectorAll('.accordion-collapse').forEach((closeLink) => {
+        closeLink.addEventListener('click', (evt) => {
+          evt.preventDefault();
+          const panel = document.getElementById(closeLink.dataset.target);
+          const toggle = container.querySelector(`.accordion-toggle[data-target="${closeLink.dataset.target}"]`);
+          if (panel) panel.classList.remove('open');
+          if (toggle) toggle.classList.remove('open');
+          const item = closeLink.closest('.accordion-item');
+          if (item) item.classList.remove('open');
+        });
+      });
+
+      container.querySelectorAll('.content-gallery-strip-item, .content-gallery-horizontal').forEach((item) => {
+        const uid = item.dataset.uid;
+        const galleries = (eventsByUid[uid].galleries || []).filter((g) => g.images && g.images.length);
+        const gi = Number(item.dataset.galleryIndex);
+        const imgIndex = Number(item.dataset.imageIndex);
+        item.addEventListener('click', () => openCarousel(galleries[gi].images, imgIndex, galleries[gi].name));
+      });
+
+      container.querySelectorAll('.content-gallery-strip').forEach((strip) => {
+        nudgeScrollHint(strip);
+      });
+
+      if (window.Hyphenopoly && Hyphenopoly.hyphenators && Hyphenopoly.hyphenators.ru) {
+        Hyphenopoly.hyphenators.ru.then((hyphenateRU) => {
+          container.querySelectorAll('.archive-detail-body').forEach((el) => hyphenateRU(el));
+        });
+      }
+    }
+
     function selectEvent(index, { updateUrl = true } = {}) {
       const e = archiveEvents[index];
       if (!e) return;
@@ -989,96 +1348,84 @@
       });
 
       if (updateUrl && e.slug) {
-        const path = `/archive/${e.slug}`;
+        const path = pathForRoute('archive', e.slug);
         if (location.pathname !== path) {
           history.pushState({ view: 'archive', slug: e.slug }, '', path);
         }
       }
 
-      const authors = (e.authors || []).filter(Boolean).join(', ');
+      const uid = String(index);
+      archiveDetail.innerHTML = buildEventDetailHtml(e, uid);
+      wireEventDetailBlocks(archiveDetail, { [uid]: e });
 
-      const bodyHtml = renderPortableText(e.text || []);
-
-      function galleryBlockHtml(images, name, type, index) {
-        const nameHtml = name ? `<span class="content-gallery-name">${escapeHtml(name)}</span>` : '';
-
-        if (type === 'photoHorizontal') {
-          return `
-            <div class="content-gallery-col content-gallery-col-auto" data-gallery-index="${index}">
-              <div class="content-gallery-horizontal" data-gallery-index="${index}" data-image-index="0">
-                <img src="${imageUrl(images[0].url, 1800)}" alt="">
-              </div>
-              <div class="content-image-count">${nameHtml}</div>
-            </div>
-          `;
-        }
-
-        const stripItems = images
-          .map((img, imgIndex) => `
-            <div class="content-gallery-strip-item" data-gallery-index="${index}" data-image-index="${imgIndex}">
-              <img src="${imageUrl(img.url, 1800)}" alt="">
-            </div>
-          `)
-          .join('');
-        return `
-          <div class="content-gallery-col" data-gallery-index="${index}">
-            <div class="content-gallery-strip">
-              ${stripItems}
-            </div>
-            <div class="content-image-count">${nameHtml}</div>
-          </div>
-        `;
-      }
-
-      const galleries = (e.galleries || []).filter((g) => g.images && g.images.length);
-      const galleryBlocksHtml = galleries
-        .map((g, gi) => galleryBlockHtml(g.images, g.name, g.type, gi))
-        .join('');
-
-      archiveDetail.innerHTML = `
-        <div class="archive-detail-top-row">
-          <div class="archive-detail-lines">
-            <div class="archive-detail-line archive-detail-title">${escapeHtml(e.title)}</div>
-            <div class="archive-detail-line archive-detail-date">${fmtDate(e.date)}</div>
-            ${authors ? `<div class="archive-detail-line archive-detail-authors">${escapeHtml(authors)}</div>` : ''}
-          </div>
-          <a href="#" class="archive-close" id="detailClose">Close</a>
-        </div>
-        <div class="content-body-row">
-          <div class="content-text-col">
-            <div class="archive-detail-spacer"></div>
-            <div class="archive-detail-body hyphenate" lang="ru">${bodyHtml}</div>
-          </div>
-          <div class="content-media-col">
-            ${galleryBlocksHtml}
-          </div>
-        </div>
-      `;
-
-      archiveDetail.querySelectorAll('.content-gallery-strip-item, .content-gallery-horizontal').forEach((item) => {
-        const gi = Number(item.dataset.galleryIndex);
-        const imgIndex = Number(item.dataset.imageIndex);
-        item.addEventListener('click', () => openCarousel(galleries[gi].images, imgIndex));
-      });
-
-      if (window.Hyphenopoly && Hyphenopoly.hyphenators && Hyphenopoly.hyphenators.ru) {
-        Hyphenopoly.hyphenators.ru.then((hyphenateRU) => {
-          const el = archiveDetail.querySelector('.archive-detail-body');
-          if (el) hyphenateRU(el);
-        });
-      }
-
-      document.getElementById('detailClose').addEventListener('click', (e) => {
-        e.preventDefault();
+      archiveDetail.querySelector('.detail-close').addEventListener('click', (evt) => {
+        evt.preventDefault();
         archiveDetail.classList.remove('visible');
         archiveList.querySelectorAll('.archive-item').forEach((el) => el.classList.remove('selected'));
+        if (scrollToTopObserver) {
+          scrollToTopObserver.disconnect();
+          scrollToTopObserver = null;
+        }
+        document.getElementById('scrollSpacer').innerHTML = '';
+        navigate('archive', { scroll: false });
       });
 
       archiveDetail.classList.add('visible');
       const topRowEl = archiveDetail.querySelector('.archive-detail-top-row');
-      (topRowEl || archiveDetail).scrollIntoView({ behavior: 'smooth', block: 'start' });
+      scrollToTop(topRowEl || archiveDetail);
+
       updateDetailTopHeight();
     }
+
+    let allEventsFeedOpen = false;
+
+    function hasImages(e) {
+      return (e.galleries || []).some((g) => g.images && g.images.length);
+    }
+
+    function renderAllEventsFeed() {
+      const eventsByUid = {};
+      const feedSeparatorLine = '<div><span style="font-family: monospace;">*</span></div>';
+      const feedSeparator = `<div class="feed-separator">${feedSeparatorLine.repeat(3)}</div>`;
+      archiveDetail.innerHTML = archiveEvents
+        .filter(hasImages)
+        .map((e, i) => {
+          eventsByUid[String(i)] = e;
+          return buildEventDetailHtml(e, String(i));
+        })
+        .join(feedSeparator);
+      wireEventDetailBlocks(archiveDetail, eventsByUid);
+      archiveDetail.querySelectorAll('.detail-close').forEach((closeLink) => {
+        closeLink.addEventListener('click', (evt) => {
+          evt.preventDefault();
+          const uid = closeLink.dataset.uid;
+          const block = archiveDetail.querySelector(`.archive-detail-block[data-uid="${uid}"]`);
+          if (block) block.remove();
+        });
+      });
+    }
+
+    function toggleAllEventsFeed() {
+      if (!archiveEvents.some(hasImages)) return;
+      allEventsFeedOpen = !allEventsFeedOpen;
+      if (allEventsFeedOpen) {
+        archiveList.querySelectorAll('.archive-item').forEach((el) => el.classList.remove('selected'));
+        renderAllEventsFeed();
+        archiveDetail.classList.add('visible');
+        if (currentView !== 'archive') navigate('archive', { scroll: false });
+        updateDetailTopHeight();
+      } else {
+        archiveDetail.classList.remove('visible');
+        archiveDetail.innerHTML = '<div class="archive-detail-placeholder">Select an event to view details.</div>';
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'a' && e.key !== 'A') return;
+      const tag = document.activeElement && document.activeElement.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+      toggleAllEventsFeed();
+    });
 
     function updateDetailTopHeight() {
       const topRow = archiveDetail.querySelector('.archive-detail-top-row');
@@ -1096,18 +1443,20 @@
 
     const carousel = document.getElementById('carousel');
     const carouselImage = document.getElementById('carouselImage');
-    const carouselCounter = document.getElementById('carouselCounter');
+    const carouselCaption = document.getElementById('carouselCaption');
     const carouselClose = document.getElementById('carouselClose');
     const carouselPrev = document.getElementById('carouselPrev');
     const carouselNext = document.getElementById('carouselNext');
 
     let carouselImages = [];
     let carouselIndex = 0;
+    let carouselCaptionText = '';
 
-    function openCarousel(images, startIndex) {
+    function openCarousel(images, startIndex, caption) {
       if (!images.length) return;
       carouselImages = images;
       carouselIndex = startIndex;
+      carouselCaptionText = caption || '';
       showCarouselImage();
       carousel.classList.add('visible');
     }
@@ -1119,7 +1468,7 @@
     function showCarouselImage() {
       const img = carouselImages[carouselIndex];
       carouselImage.src = imageUrl(img.url, 1600);
-      carouselCounter.textContent = `${carouselIndex + 1} / ${carouselImages.length}`;
+      carouselCaption.textContent = carouselCaptionText;
     }
 
     function carouselStep(delta) {
@@ -1127,12 +1476,12 @@
       showCarouselImage();
     }
 
-    carouselClose.addEventListener('click', closeCarousel);
+    carouselClose.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeCarousel();
+    });
     carouselPrev.addEventListener('click', () => carouselStep(-1));
     carouselNext.addEventListener('click', () => carouselStep(1));
-    carousel.addEventListener('click', (e) => {
-      if (e.target === carousel) closeCarousel();
-    });
 
     document.addEventListener('keydown', (e) => {
       if (!carousel.classList.contains('visible')) return;
@@ -1177,6 +1526,11 @@
           html += `<img src="${imageUrl(block.url, 800)}" alt="">`;
           return;
         }
+        if (block._type === 'divider') {
+          closeList();
+          html += '<hr>';
+          return;
+        }
         if (block._type !== 'block') return;
 
         const listItem = block.listItem;
@@ -1193,15 +1547,23 @@
 
         closeList();
         const inner = (block.children || []).map((c) => renderSpan(c, block.markDefs)).join('');
-        const tag = { h2: 'h2', h3: 'h3', blockquote: 'blockquote' }[block.style] || 'p';
-        html += `<${tag}>${inner}</${tag}>`;
+        const tag = { h1: 'h1', h2: 'h2', h3: 'h3', blockquote: 'blockquote' }[block.style] || 'p';
+
+        const isDividerLine = (line) => /^\*{3,}$/.test(line.replace(/<[^>]+>/g, '').trim());
+        const withDividers = inner
+          .split('<br>')
+          .map((line) => {
+            if (isDividerLine(line)) return '<span class="content-divider-line"></span>';
+            if (!line.trim()) return '<span style="font-family: monospace; color: #999;">*</span>';
+            return line;
+          })
+          .join('<br>');
+        html += `<${tag}>${withDividers}</${tag}>`;
       });
 
       closeList();
       return html;
     }
-
-    const aboutOverlay = document.getElementById('aboutOverlay');
 
     async function loadAbout() {
       const query = encodeURIComponent(`*[_id == "about"][0]{
@@ -1215,26 +1577,41 @@
       try {
         const res = await fetch(url);
         const { result } = await res.json();
-        const html = renderPortableText((result && result.text) || []);
-        aboutOverlay.innerHTML = html.replace(
+        const rawHtml = renderPortableText((result && result.text) || []);
+        const html = rawHtml.replace(/\*/g, '<span style="font-family: monospace;">*</span>');
+        ver2HeroAbout.innerHTML = html.replace(
           /139 Documentary Center/g,
           '<span class="about-highlight">139 Documentary Center</span>'
         );
-        aboutOverlay.querySelectorAll('.about-highlight').forEach((el) => {
+        ver2HeroAbout.querySelectorAll('.about-highlight').forEach((el) => {
           el.addEventListener('click', () => {
-            archiveSection.classList.remove('visible');
+            archiveView.classList.remove('visible');
             archiveDetail.classList.remove('visible');
-            navigate('home');
+            navigate('ver2');
           });
         });
       } catch (err) {
-        aboutOverlay.innerHTML = '<p>Could not load About.</p>';
+        ver2HeroAbout.innerHTML = '<p>Could not load About.</p>';
       }
+      updateAboutFill();
     }
+
+    function fillToFirstScreen(el) {
+      el.innerHTML = '';
+      const fillTop = el.getBoundingClientRect().top + window.scrollY;
+      const needed = window.innerHeight - fillTop;
+      fillSpacer(el, needed);
+    }
+
+    function updateAboutFill() {
+      fillToFirstScreen(document.getElementById('ver2AboutFill'));
+    }
+
+    window.addEventListener('resize', updateAboutFill);
 
     loadAbout();
 
-    navStatic.querySelectorAll('a').forEach((a) => {
+    navStaticVer2.querySelectorAll('a').forEach((a) => {
       a.addEventListener('click', (e) => {
         e.preventDefault();
         navigate(a.dataset.view);
@@ -1287,6 +1664,14 @@
       document.documentElement.style.setProperty('--site-letter-spacing', `${siteLetterSpacing.value}px`);
       siteLetterSpacingVal.textContent = Number(siteLetterSpacing.value).toFixed(2);
       updateDetailTopHeight();
+    });
+
+    const navFontSize = document.getElementById('navFontSize');
+    const navFontSizeVal = document.getElementById('navFontSizeVal');
+
+    navFontSize.addEventListener('input', () => {
+      document.documentElement.style.setProperty('--nav-font-size', `${navFontSize.value}px`);
+      navFontSizeVal.textContent = navFontSize.value;
     });
 
     const HEX_COLOR_RE = /^#[0-9a-f]{6}$/i;
@@ -1344,6 +1729,7 @@
 - Text size: ${siteFontSize.value}px
 - Line height: ${siteLineHeight.value}
 - Letter spacing: ${siteLetterSpacing.value}px
+- Nav text size: ${navFontSize.value}px
 - Color: ${siteColor.value}
 - About color: ${document.getElementById('colorAbout').value}
 - Archive color: ${document.getElementById('colorArchive').value}
@@ -1359,7 +1745,7 @@
 
     // --- Persist typography settings in this browser ---
     const TYPOGRAPHY_STORAGE_KEY = 'typographySettings';
-    const SLIDER_IDS = ['siteFontSize', 'siteLineHeight', 'siteLetterSpacing', 'siteColor', 'colorAbout', 'colorArchive', 'colorEventTitle', 'colorEventText', 'colorMenu', 'bgAbout', 'bgArchive', 'bgEvent', 'hyphMinWordLength', 'hyphLeftmin', 'hyphRightmin'];
+    const SLIDER_IDS = ['siteFontSize', 'siteLineHeight', 'siteLetterSpacing', 'navFontSize', 'siteColor', 'colorAbout', 'colorArchive', 'colorEventTitle', 'colorEventText', 'colorMenu', 'bgAbout', 'bgArchive', 'bgEvent', 'hyphMinWordLength', 'hyphLeftmin', 'hyphRightmin'];
 
     function collectSettings() {
       const settings = {};
