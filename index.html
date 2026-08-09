@@ -38,6 +38,15 @@
       --page-padding-bottom: 10px;
       --page-padding-left: 10px;
       --site-font-size: 18px;
+      --archive-text-font-size: 18px;
+      --archive-list-font-size: 18px;
+      --archive-label-font-size: 15px;
+      --gallery-title-font-size-desktop: 18px;
+      --gallery-title-font-size-mobile: 18px;
+      --gallery-image-gap: 21px;
+      --gallery-row-gap: 21px;
+      --gallery-block-gap: 21px;
+      --gallery-image-height: 25vh;
       --nav-font-size: 18px;
       --site-line-height: 1.3;
       --site-letter-spacing: 1px;
@@ -50,6 +59,8 @@
       --bg-about: #ffffff;
       --bg-archive: #ffffff;
       --bg-event: #ffffff;
+      --bg-event-gallery: #ffffff;
+      --bg-event-text: #ffffff;
     }
 
     * {
@@ -79,6 +90,7 @@
     .ver2-section {
       position: relative;
       width: 100%;
+      padding-bottom: var(--page-padding-bottom);
     }
 
     .ver2-top-screen {
@@ -92,38 +104,99 @@
       flex-direction: column;
       align-items: flex-start;
       gap: 0;
-      padding: var(--page-padding-top) var(--page-padding-right) 0 var(--page-padding-left);
-      width: 100%;
+      padding-top: var(--page-padding-top);
+      padding-bottom: 2px;
+      margin: 0 var(--page-padding-right) 0 var(--page-padding-left);
       flex: 0 0 auto;
+      border-bottom: 1px solid #000000;
+    }
+
+    .ver2-nav-top-row {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      min-height: calc(var(--nav-font-size) * var(--site-line-height));
+    }
+
+    .ver2-nav-current {
+      color: var(--color-menu);
+      font-size: var(--nav-font-size);
+      line-height: var(--site-line-height);
     }
 
     .ver2-nav-bar .nav-static {
+      display: none;
+    }
+
+    .ver2-nav-bar.open .nav-static {
+      display: flex;
+      position: fixed;
+      inset: 0;
+      background: #ffffff;
       flex-direction: column;
-      gap: 0;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      z-index: 300;
+    }
+
+    .ver2-nav-bar.open .nav-static .ver2-nav-close {
+      display: block;
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: none;
+      border: none;
+      font: inherit;
+      color: var(--color-menu);
+      letter-spacing: inherit;
+      line-height: var(--site-line-height);
+      font-size: var(--nav-font-size);
+      cursor: pointer;
+    }
+
+    .ver2-nav-dropdown-toggle {
+      display: block;
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      font: inherit;
+      color: var(--color-menu);
+      letter-spacing: inherit;
+      line-height: var(--site-line-height);
+      font-size: var(--nav-font-size);
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .ver2-nav-dropdown-toggle:hover {
+      color: #000000;
+    }
+
+    .ver2-nav-close {
+      display: none;
     }
 
     .ver2-detail-full {
       width: 100%;
-    }
-
-    .ver2-section-label {
-      display: none;
-      align-items: center;
-      flex: 0 0 auto;
-      padding: 0 var(--page-padding-right) 0 var(--page-padding-left);
-      background: #f2f2f2;
-      color: var(--color-archive);
-    }
-
-    .ver2-section-label.visible {
-      display: flex;
+      padding-bottom: var(--page-padding-bottom);
     }
 
     .ver2-hero-about {
+      display: none;
       flex: 0 0 auto;
       width: 100%;
       padding: 0 var(--page-padding-right) 0 var(--page-padding-left);
       color: var(--color-menu);
+    }
+
+    .ver2-hero-about.visible {
+      display: block;
     }
 
     .ver2-hero-about p {
@@ -135,18 +208,26 @@
     }
 
     .ver2-wordmark {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
       text-decoration: none;
       color: #000000;
       cursor: pointer;
-      flex: 0 0 auto;
       font-size: var(--nav-font-size);
       line-height: var(--site-line-height);
+      white-space: nowrap;
     }
 
     .archive-close {
       margin-left: auto;
       text-decoration: none;
       cursor: pointer;
+      color: #999999 !important;
+    }
+
+    .archive-close:hover {
       color: #000000 !important;
     }
 
@@ -155,12 +236,36 @@
       text-decoration: underline;
     }
 
-    .archive-detail-top-row {
+    .archive-detail-header {
+      position: relative;
       display: flex;
-      align-items: center;
-      gap: 24px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
       width: 100%;
-      background: #f2f2f2;
+      padding-top: 2px;
+      padding-bottom: 3px;
+      margin: 0 var(--page-padding-right) 0 0;
+      border-top: 1px solid #000000;
+    }
+
+    .archive-detail-header .detail-close {
+      position: absolute;
+      top: 2px;
+      right: 0;
+      margin-left: 0;
+    }
+
+    .archive-detail-identity-row {
+      display: grid;
+      grid-template-columns: 3ch 34ch 22ch 38ch;
+      column-gap: 8px;
+      width: 100%;
+      font-size: var(--archive-list-font-size);
+    }
+
+    .archive-detail-identity-row .archive-item {
+      cursor: default;
     }
 
     .feed-separator {
@@ -169,38 +274,6 @@
       line-height: var(--site-line-height);
     }
 
-    #scrollSpacer {
-      width: 100%;
-      padding: 0 var(--page-padding-right) 0 var(--page-padding-left);
-      line-height: var(--site-line-height);
-      overflow: hidden;
-    }
-
-    .about-fill {
-      width: 100%;
-      max-width: 720px;
-      padding-left: var(--page-padding-left);
-      line-height: var(--site-line-height);
-      color: #999;
-      overflow: hidden;
-    }
-
-    #ver2AboutFill {
-      max-width: none;
-      padding-left: var(--page-padding-left);
-    }
-
-    .about-fill span {
-      font-family: monospace;
-    }
-
-    #scrollSpacer span {
-      font-family: monospace;
-    }
-
-    .detail-close {
-      margin-left: auto;
-    }
 
     .content-container {
       display: none;
@@ -215,49 +288,44 @@
       flex-direction: column;
     }
 
-    .content-body-row {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .accordion-item + .accordion-item {
-      border-top: 1px solid #000000;
-    }
-
     .content-media-col {
       display: flex;
-      flex-direction: column;
-      gap: 0;
+      flex-direction: row;
+      flex-wrap: wrap;
+      row-gap: var(--gallery-block-gap);
+      column-gap: var(--page-padding-right);
+      background: var(--bg-event-gallery);
       width: 100%;
+      flex: 1 1 auto;
       align-self: flex-start;
+      padding-top: 0;
+      margin-top: 0;
+      margin-bottom: var(--gallery-block-gap);
     }
 
     .content-gallery-col {
       position: relative;
+      box-sizing: border-box;
       width: 100%;
       display: flex;
       flex-direction: column;
-      height: 25vh;
+      height: auto;
     }
 
     .content-gallery-col-auto {
       height: auto;
-      width: 50%;
-    }
-
-    @media (max-width: 700px) {
-      .content-gallery-col-auto {
-        width: 100%;
-      }
+      box-sizing: border-box;
+      width: calc(50% - var(--page-padding-right) / 2);
     }
 
     .content-gallery-strip {
       display: flex;
       flex-direction: row;
-      height: calc(25vh - 24px);
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      row-gap: var(--gallery-row-gap);
+      column-gap: var(--gallery-image-gap);
       width: 100%;
-      overflow-x: auto;
-      overflow-y: hidden;
     }
 
     .content-gallery-strip-item {
@@ -265,7 +333,7 @@
       cursor: pointer;
       display: block;
       flex: 0 0 auto;
-      height: 100%;
+      height: var(--gallery-image-height);
     }
 
     .content-gallery-strip-item img {
@@ -296,71 +364,44 @@
       margin-top: 0;
     }
 
+    .content-gallery-name {
+      color: #999;
+      font-size: var(--gallery-title-font-size-desktop);
+    }
+
     .content-text-col {
-      width: 50%;
+      width: 100%;
       min-width: 0;
-      padding-right: 20px;
       margin-top: 0;
       text-align: left;
     }
 
-    .accordion-item {
-      width: 100%;
-    }
-
-    .accordion-toggle-row {
-      display: flex;
-      align-items: center;
-      width: 100%;
-    }
-
-    .accordion-toggle {
-      display: block;
-      flex: 1 1 auto;
-      text-align: left;
-      background: none;
-      border: none;
-      font: inherit;
-      line-height: var(--site-line-height);
-      color: inherit;
-      letter-spacing: inherit;
-      padding: 0 var(--page-padding-right) 0 0;
-      cursor: pointer;
-    }
-
-    .accordion-item.open .accordion-toggle {
+    .content-panel-header {
+      border-top: 1px solid #000000;
+      padding-top: 2px;
+      padding-bottom: 3px;
+      font-size: 15px;
+      margin: 0;
       color: #999;
     }
 
-    .accordion-toggle-row .accordion-collapse {
-      display: none;
-      flex: 0 0 auto;
-      margin-left: auto;
-      padding: 0 var(--page-padding-right) 0 var(--page-padding-left);
+    .content-panel-header + .archive-detail-body,
+    .content-panel-header + .content-additional-text {
+      margin-top: 0;
     }
 
-    .accordion-item.open .accordion-toggle-row .accordion-collapse {
-      display: block;
-    }
-
-    .accordion-item.open {
-      width: 50%;
-      background: #f2f2f2;
-      border-right: 1px solid #000000;
-    }
-
-    .accordion-item.open .content-text-col,
-    .accordion-item.open .content-additional-text {
+    .content-text-row {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: var(--page-padding-right);
       width: 100%;
-      padding-right: 1rem;
+      background: var(--bg-event-text);
     }
 
-    .accordion-panel {
-      display: none;
-    }
-
-    .accordion-panel.open {
-      display: block;
+    .content-text-row .accordion-panel {
+      box-sizing: border-box;
+      width: calc(50% - var(--page-padding-right) / 2);
     }
 
     svg {
@@ -387,9 +428,6 @@
 
     .nav-static a:hover {
       text-decoration: none;
-    }
-
-    .nav-static a.active {
       opacity: 1;
       color: #000000;
     }
@@ -407,6 +445,37 @@
       display: block;
     }
 
+    @media (max-width: 700px) {
+      .ver2-section:has(#archiveDetail.visible) .archive.visible {
+        display: none;
+      }
+
+      .ver2-nav-bar {
+        position: sticky;
+        top: 0;
+        background: #ffffff;
+        z-index: 100;
+      }
+
+      .content-gallery-strip {
+        flex-direction: column;
+      }
+
+      .content-gallery-strip-item {
+        width: 100%;
+        height: auto;
+      }
+
+      .content-gallery-strip-item img {
+        width: 100%;
+        height: auto;
+      }
+
+      .content-gallery-name {
+        font-size: var(--gallery-title-font-size-mobile);
+      }
+    }
+
     .archive-header {
       display: flex;
       align-items: center;
@@ -417,57 +486,58 @@
     }
 
     .archive-header-labels {
-      display: none;
-      align-items: center;
-      gap: 24px;
-      flex: 1;
-    }
-
-    .archive-header .archive-date {
-      flex: 0 0 220px;
-    }
-
-    .archive-header .archive-title {
-      flex: 0 0 340px;
-    }
-
-    .archive-header .archive-authors {
-      flex: 0 0 380px;
-    }
-
-    .archive-header .archive-number {
-      flex: 0 0 30px;
-    }
-
-    .archive-row {
+      display: grid;
+      grid-template-columns: 3ch 34ch 22ch 38ch;
+      column-gap: 8px;
       width: 100%;
+      font-size: var(--archive-label-font-size);
+    }
+
+    #archiveList {
+      display: grid;
+      grid-template-columns: 3ch 34ch 22ch 38ch;
+      column-gap: 8px;
+      row-gap: 0;
+      width: 100%;
+      font-size: var(--archive-list-font-size);
     }
 
     .archive-item {
-      display: flex;
-      gap: 24px;
-      padding: 0 10px 0 0;
+      display: contents;
+      cursor: pointer;
       text-decoration: none;
       color: var(--color-archive);
     }
 
+    #archiveList .archive-item,
+    #archiveList .archive-item .archive-number,
+    #archiveList .archive-item .archive-date,
+    #archiveList .archive-item .archive-authors,
+    #archiveList .archive-item .archive-title {
+      color: #999;
+    }
+
+    #archiveList .archive-item:hover,
+    #archiveList .archive-item:hover .archive-number,
+    #archiveList .archive-item:hover .archive-date,
+    #archiveList .archive-item:hover .archive-authors,
+    #archiveList .archive-item:hover .archive-title {
+      color: #000000;
+    }
+
     .archive-item .archive-date {
-      flex: 0 0 220px;
       color: var(--color-archive);
     }
 
     .archive-item .archive-authors {
-      flex: 0 0 380px;
       color: var(--color-archive);
     }
 
     .archive-item .archive-title {
-      flex: 0 0 340px;
       color: var(--color-archive);
     }
 
     .archive-item .archive-number {
-      flex: 0 0 30px;
       color: #999;
     }
 
@@ -479,63 +549,90 @@
       color: #000000;
     }
 
-    @media (max-width: 1200px) {
-      .archive-item .archive-title {
-        margin-left: 0 !important;
-      }
-
-      .archive-item {
-        gap: 12px;
-      }
-    }
-
     @media (max-width: 700px) {
       .archive-header-labels {
         display: none;
       }
 
-      .archive-item {
+      #archiveList .archive-item,
+      #archiveList .archive-item .archive-date,
+      #archiveList .archive-item .archive-authors,
+      #archiveList .archive-item .archive-title {
+        color: #000000;
+      }
+
+      #archiveList .archive-item .archive-number {
+        color: #999;
+      }
+
+      #archiveList {
+        display: flex;
         flex-direction: column;
-        gap: 0;
-        padding: 0;
       }
 
-      .archive-item .archive-date,
-      .archive-item .archive-title,
-      .archive-item .archive-authors,
-      .archive-item .archive-number {
-        flex: none;
-        margin-left: 0 !important;
+      .archive-detail-identity-row {
+        display: block;
       }
 
-      .content-text-col,
-      .content-additional-text {
+      #archiveList .archive-item,
+      .archive-detail-identity-row .archive-item {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
         width: 100%;
-        padding-right: 0;
+        padding-bottom: 3px;
       }
-    }
 
-    .archive-detail-line {
-      display: block;
-    }
+      #archiveList .archive-item {
+        border-bottom: 1px solid #000000;
+      }
 
-    .archive-detail-title,
-    .archive-detail-date,
-    .archive-detail-authors {
-      color: var(--color-event-title);
+      #archiveList .archive-item:last-child {
+        border-bottom: none;
+      }
+
+      #archiveList .archive-item .archive-number,
+      .archive-detail-identity-row .archive-item .archive-number {
+        order: -2;
+      }
+
+      #archiveList .archive-item .archive-title,
+      .archive-detail-identity-row .archive-item .archive-title {
+        order: -1;
+      }
+
+      .content-text-row .accordion-panel {
+        width: 100%;
+      }
+
+      .archive-detail-body,
+      .content-additional-text {
+        padding-left: 0;
+      }
     }
 
     .archive-detail-body {
-      color: var(--color-event-text);
+      color: #999;
+      max-width: 75ch;
+      padding-left: 38px;
+      font-size: var(--archive-text-font-size);
     }
 
     .content-additional-text {
-      color: var(--color-event-text);
-      width: 50%;
+      color: #999;
+      width: 100%;
+      max-width: 75ch;
       min-width: 0;
-      padding-right: 20px;
+      padding-left: 38px;
       margin-top: 0;
       text-align: left;
+      font-size: var(--archive-text-font-size);
+    }
+
+    .accordion-panel:hover .content-panel-header,
+    .accordion-panel:hover .archive-detail-body,
+    .accordion-panel:hover .content-additional-text {
+      color: var(--color-event-text);
     }
 
     .archive-detail-body p,
@@ -607,12 +704,14 @@
       position: fixed;
       top: 16px;
       right: 16px;
+      bottom: 16px;
       z-index: 100;
       background: #e3f5ec;
       border: 1px solid #ccc;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
       padding: 16px;
       width: 260px;
+      max-height: calc(100vh - 32px);
       overflow-y: auto;
       font-family: Arial, sans-serif;
       font-size: 12px;
@@ -625,9 +724,14 @@
 
     .dev-panel h4 {
       font-size: 12px;
+      margin-top: 16px;
       margin-bottom: 12px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+    }
+
+    .dev-panel h4:first-child {
+      margin-top: 0;
     }
 
     .dev-panel label {
@@ -791,29 +895,29 @@
 <body>
   <div class="layout">
     <div class="ver2-section" id="ver2Section">
-      <div class="ver2-top-screen">
-        <div class="ver2-nav-bar">
+      <div class="ver2-nav-bar" id="ver2NavBar">
+        <div class="ver2-nav-top-row">
+          <span class="ver2-nav-current" id="ver2NavCurrent"></span>
           <a href="#" class="ver2-wordmark" id="ver2Wordmark">139 Documentary Center</a>
-          <div class="nav-static" id="navStaticVer2">
-            <a href="#" data-view="archive">Archive</a>
-            <a href="#" data-view="program">Program</a>
-            <a href="#" data-view="special-projects">Special Projects</a>
-          </div>
+          <button type="button" class="ver2-nav-dropdown-toggle" id="ver2NavDropdownToggle">Меню</button>
         </div>
-        <div class="ver2-hero-about" id="ver2HeroAbout"></div>
-        <div class="about-fill" id="ver2AboutFill"></div>
+        <div class="nav-static" id="navStaticVer2">
+          <button type="button" class="ver2-nav-close" id="ver2NavClose">Закрыть</button>
+          <a href="#" data-view="archive">Архив</a>
+          <a href="#" data-view="program">Программа</a>
+          <a href="#" data-view="special-projects">Спецпроекты</a>
+        </div>
       </div>
-      <div class="ver2-section-label" id="ver2SectionLabel">
-        <span id="ver2SectionLabelText">Archive</span>
-        <a href="#" class="archive-close" id="archiveCloseVer2">Close</a>
+      <div class="ver2-top-screen">
+        <div class="ver2-hero-about" id="ver2HeroAbout"></div>
       </div>
       <div class="archive" id="archiveView">
         <div class="archive-header">
           <div class="archive-header-labels">
             <div class="archive-number"></div>
-            <div class="archive-title">Title</div>
-            <div class="archive-authors">Authors</div>
-            <div class="archive-date">Date</div>
+            <div class="archive-title">Название</div>
+            <div class="archive-date">Дата</div>
+            <div class="archive-authors">Автор</div>
           </div>
         </div>
         <div class="archive-loading" id="archiveLoading">Loading…</div>
@@ -828,8 +932,6 @@
 
   </div>
 
-  <div id="scrollSpacer"></div>
-
   <div class="carousel" id="carousel">
     <a href="#" class="archive-close carousel-close" id="carouselClose">Close</a>
     <div class="carousel-caption" id="carouselCaption"></div>
@@ -841,11 +943,37 @@
   </div>
 
   <div class="dev-panel" id="devPanel">
-    <h4>Site Typography</h4>
+    <h4>Font sizes</h4>
     <label>
       <span><span>Text size (px)</span><span id="siteFontSizeVal">18</span></span>
       <input type="range" id="siteFontSize" min="10" max="36" step="1" value="18">
     </label>
+    <label>
+      <span><span>Archive text size (px)</span><span id="archiveTextFontSizeVal">18</span></span>
+      <input type="range" id="archiveTextFontSize" min="10" max="36" step="1" value="18">
+    </label>
+    <label>
+      <span><span>Archive list text size (px)</span><span id="archiveListFontSizeVal">18</span></span>
+      <input type="range" id="archiveListFontSize" min="10" max="36" step="1" value="18">
+    </label>
+    <label>
+      <span><span>Archive label text size (px)</span><span id="archiveLabelFontSizeVal">15</span></span>
+      <input type="range" id="archiveLabelFontSize" min="10" max="36" step="1" value="15">
+    </label>
+    <label>
+      <span><span>Gallery title size desktop (px)</span><span id="galleryTitleFontSizeDesktopVal">18</span></span>
+      <input type="range" id="galleryTitleFontSizeDesktop" min="10" max="36" step="1" value="18">
+    </label>
+    <label>
+      <span><span>Gallery title size mobile (px)</span><span id="galleryTitleFontSizeMobileVal">18</span></span>
+      <input type="range" id="galleryTitleFontSizeMobile" min="10" max="36" step="1" value="18">
+    </label>
+    <label>
+      <span><span>Nav text size (px)</span><span id="navFontSizeVal">18</span></span>
+      <input type="range" id="navFontSize" min="10" max="36" step="1" value="18">
+    </label>
+
+    <h4>Line &amp; spacing</h4>
     <label>
       <span><span>Line height</span><span id="siteLineHeightVal">1.30</span></span>
       <input type="range" id="siteLineHeight" min="0.9" max="2" step="0.05" value="1.3">
@@ -854,10 +982,26 @@
       <span><span>Letter spacing (px)</span><span id="siteLetterSpacingVal">1.00</span></span>
       <input type="range" id="siteLetterSpacing" min="-1" max="4" step="0.05" value="1">
     </label>
+
+    <h4>Gallery layout</h4>
     <label>
-      <span><span>Nav text size (px)</span><span id="navFontSizeVal">18</span></span>
-      <input type="range" id="navFontSize" min="10" max="36" step="1" value="18">
+      <span><span>Gallery image gap (px)</span><span id="galleryImageGapVal">21</span></span>
+      <input type="range" id="galleryImageGap" min="0" max="60" step="1" value="21">
     </label>
+    <label>
+      <span><span>Gallery row gap (px)</span><span id="galleryRowGapVal">21</span></span>
+      <input type="range" id="galleryRowGap" min="0" max="60" step="1" value="21">
+    </label>
+    <label>
+      <span><span>Gallery block gap (px)</span><span id="galleryBlockGapVal">21</span></span>
+      <input type="range" id="galleryBlockGap" min="0" max="60" step="1" value="21">
+    </label>
+    <label>
+      <span><span>Gallery image height (vh, desktop)</span><span id="galleryImageHeightVal">25</span></span>
+      <input type="range" id="galleryImageHeight" min="5" max="60" step="1" value="25">
+    </label>
+
+    <h4>Colors</h4>
     <label>
       <span><span>Color</span><input type="text" class="dev-panel-hex" id="siteColorVal" value="#000000"></span>
       <input type="color" id="siteColor" value="#000000">
@@ -894,6 +1038,14 @@
       <span><span>Event bg</span><input type="text" class="dev-panel-hex" id="bgEventVal" value="#ffffff"></span>
       <input type="color" id="bgEvent" value="#ffffff">
     </label>
+    <label>
+      <span><span>Event gallery bg</span><input type="text" class="dev-panel-hex" id="bgEventGalleryVal" value="#ffffff"></span>
+      <input type="color" id="bgEventGallery" value="#ffffff">
+    </label>
+    <label>
+      <span><span>Event text bg</span><input type="text" class="dev-panel-hex" id="bgEventTextVal" value="#ffffff"></span>
+      <input type="color" id="bgEventText" value="#ffffff">
+    </label>
 
     <h4>Hyphenation (reloads on release)</h4>
     <label>
@@ -929,18 +1081,93 @@
     const ver2HeroAbout = document.getElementById('ver2HeroAbout');
     const archiveView = document.getElementById('archiveView');
     const archiveDetail = document.getElementById('archiveDetail');
+    const ver2DetailFull = document.getElementById('ver2DetailFull');
 
-    function closeArchiveAndReturn(e) {
-      e.preventDefault();
-      archiveView.classList.remove('visible');
-      archiveDetail.classList.remove('visible');
-      navigate('ver2');
+    let detailRestTop = 0;
+
+    // Fallback target for slideDetailOverList when no list-row anchor is
+    // available (e.g. the header labels row is display:none on mobile).
+    function navBarBottom() {
+      const navBar = document.getElementById('ver2NavBar');
+      return navBar.getBoundingClientRect().bottom;
     }
-    document.getElementById('archiveCloseVer2').addEventListener('click', closeArchiveAndReturn);
+
+    function resetDetailPosition() {
+      ver2DetailFull.style.position = '';
+      ver2DetailFull.style.top = '';
+      ver2DetailFull.style.left = '';
+      ver2DetailFull.style.width = '';
+      ver2DetailFull.style.zIndex = '';
+      ver2DetailFull.style.background = '';
+      ver2DetailFull.style.transition = '';
+    }
+
+    // Slides `.ver2-detail-full` (which normally sits below the archive
+    // list, in flow) up so it overlaps/covers the list and comes to rest
+    // directly under the anchor point (the Название/Автор/Дата header row),
+    // instead of scrolling the page. `anchorY` is a viewport-relative Y
+    // coordinate captured by the caller *before* opening the detail — on
+    // mobile, opening the detail hides the whole list via a `:has()` rule,
+    // so measuring the anchor element after that point would read a
+    // collapsed (0,0,0,0) rect and misplace the detail under the nav bar.
+    function slideDetailOverList(anchorY) {
+      resetDetailPosition();
+      // Force a reflow so the natural (in-flow) position below is measured
+      // fresh, not left over from a previous animation.
+      // eslint-disable-next-line no-unused-expressions
+      ver2DetailFull.offsetHeight;
+
+      const parentRect = ver2Section.getBoundingClientRect();
+      const startTop = ver2DetailFull.getBoundingClientRect().top - parentRect.top;
+      const targetTop = anchorY != null ? anchorY - parentRect.top : startTop;
+      detailRestTop = startTop;
+
+      if (Math.abs(targetTop - startTop) < 1) return;
+
+      ver2DetailFull.style.position = 'absolute';
+      ver2DetailFull.style.left = '0';
+      ver2DetailFull.style.width = '100%';
+      ver2DetailFull.style.background = '#ffffff';
+      ver2DetailFull.style.zIndex = '20';
+      ver2DetailFull.style.top = `${startTop}px`;
+      ver2DetailFull.style.transition = 'none';
+      // eslint-disable-next-line no-unused-expressions
+      ver2DetailFull.offsetHeight;
+      ver2DetailFull.style.transition = 'top 0.4s ease';
+      requestAnimationFrame(() => {
+        ver2DetailFull.style.top = `${targetTop}px`;
+      });
+    }
+
+    // Reverses slideDetailOverList: slides `.ver2-detail-full` all the way
+    // down past the bottom edge of the viewport before hiding it, so
+    // closing feels like it descends away rather than vanishing instantly.
+    function slideDetailAway(afterClose) {
+      if (ver2DetailFull.style.position !== 'absolute') {
+        resetDetailPosition();
+        if (afterClose) afterClose();
+        return;
+      }
+      const onEnd = (evt) => {
+        if (evt.propertyName !== 'top') return;
+        ver2DetailFull.removeEventListener('transitionend', onEnd);
+        resetDetailPosition();
+        if (afterClose) afterClose();
+      };
+      ver2DetailFull.addEventListener('transitionend', onEnd);
+      ver2DetailFull.style.transition = 'top 0.4s ease';
+      const parentRect = ver2Section.getBoundingClientRect();
+      const belowViewportTop = window.innerHeight - parentRect.top;
+      requestAnimationFrame(() => {
+        ver2DetailFull.style.top = `${belowViewportTop}px`;
+      });
+    }
+
     document.getElementById('ver2Wordmark').addEventListener('click', (e) => {
       e.preventDefault();
       archiveView.classList.remove('visible');
       archiveDetail.classList.remove('visible');
+      resetDetailPosition();
       navigate('ver2');
     });
     const archiveLoading = document.getElementById('archiveLoading');
@@ -966,63 +1193,8 @@
       return '/';
     }
 
-    let scrollToTopObserver = null;
-
-    function fillSpacer(scrollSpacer, px) {
-      if (px <= 0) {
-        scrollSpacer.innerHTML = '';
-        return;
-      }
-      const lineHeightPx = parseFloat(getComputedStyle(scrollSpacer).lineHeight) || 24;
-      const lines = Math.max(1, Math.ceil(px / lineHeightPx));
-      scrollSpacer.innerHTML = '<div><span>*</span></div>'.repeat(lines);
-    }
-
     function scrollToTop(target) {
-      const scrollSpacer = document.getElementById('scrollSpacer');
-
-      if (scrollToTopObserver) {
-        scrollToTopObserver.disconnect();
-        scrollToTopObserver = null;
-      }
-
-      function updateSpacer() {
-        // Important: never zero the spacer out before measuring. Doing so
-        // (while observing document.body for resizes) would shrink the page,
-        // force the browser to immediately clamp the current scroll position
-        // down to fit, and then every subsequent recalculation would measure
-        // from that already-clamped (wrong) position — converging on a
-        // too-small value instead of the correct one.
-        const currentSpacerHeight = scrollSpacer.getBoundingClientRect().height;
-        const targetTop = target.getBoundingClientRect().top + window.scrollY;
-        const naturalScrollHeight = document.documentElement.scrollHeight - currentSpacerHeight;
-        const maxScrollWithoutSpacer = naturalScrollHeight - window.innerHeight;
-        const needed = Math.max(0, targetTop - maxScrollWithoutSpacer);
-        fillSpacer(scrollSpacer, needed);
-      }
-
-      updateSpacer();
-      // Instant (non-smooth) on purpose: a smooth scroll here gets
-      // interrupted/frozen by async image loads changing the page height
-      // mid-animation.
       target.scrollIntoView({ behavior: 'auto', block: 'start' });
-
-      // Images/fonts inside the page can finish loading after this point and
-      // change the document's total height, which would leave the spacer too
-      // small to reach the target later. Keep the spacer sized correctly —
-      // but only ever adjust the spacer here, never re-scroll, so this can't
-      // fight the user's own scrolling once they start reading.
-      scrollToTopObserver = new ResizeObserver(() => {
-        updateSpacer();
-      });
-      scrollToTopObserver.observe(document.body);
-
-      setTimeout(() => {
-        if (scrollToTopObserver) {
-          scrollToTopObserver.disconnect();
-          scrollToTopObserver = null;
-        }
-      }, 3000);
     }
 
     function setNavActiveOnly(links, view) {
@@ -1034,25 +1206,19 @@
     function setView(view, { scroll = 'smooth' } = {}) {
       currentView = view;
       setNavActiveOnly(navLinksOriginalOrderVer2, view);
+      ver2HeroAbout.classList.toggle('visible', view === 'ver2');
+      resetDetailPosition();
       if (view === 'archive') {
         archiveView.classList.add('visible');
+        archiveDetail.classList.remove('visible');
+        archiveList.querySelectorAll('.archive-item').forEach((el) => el.classList.remove('selected'));
         if (!archiveLoaded) loadArchive();
       } else {
         archiveView.classList.remove('visible');
         archiveDetail.classList.remove('visible');
       }
-      const SECTION_VIEW_LABELS = { archive: 'Archive', program: 'Program', 'special-projects': 'Special Projects' };
-      const sectionLabel = SECTION_VIEW_LABELS[view] || '';
-      document.getElementById('archiveCloseVer2').style.display = sectionLabel ? 'block' : 'none';
-      document.getElementById('ver2SectionLabelText').textContent = sectionLabel;
-      document.getElementById('ver2SectionLabel').classList.toggle('visible', !!sectionLabel);
-      if (view !== 'archive') {
-        if (scrollToTopObserver) {
-          scrollToTopObserver.disconnect();
-          scrollToTopObserver = null;
-        }
-        document.getElementById('scrollSpacer').innerHTML = '';
-      }
+      const SECTION_VIEW_LABELS = { archive: 'Архив', program: 'Программа', 'special-projects': 'Спецпроекты' };
+      document.getElementById('ver2NavCurrent').textContent = SECTION_VIEW_LABELS[view] || '';
       if (scroll && view !== 'archive') {
         ver2Section.scrollIntoView({ behavior: scroll, block: 'start' });
       }
@@ -1182,14 +1348,12 @@
           const tag = 'a';
           const href = e.slug ? ` href="/archive/${escapeHtml(e.slug)}"` : ` href="#"`;
           return `
-            <div class="archive-row">
-              <${tag} class="archive-item${active ? ' active' : ''}" data-index="${i}"${href}>
-                <div class="archive-number">${i + 1}</div>
-                <div class="archive-title" style="margin-left: ${(i + 1) * 20}px;">${escapeHtml(e.title)}</div>
-                <div class="archive-authors">${escapeHtml(parts)}</div>
-                <div class="archive-date">${fmtDate(e.date)}</div>
-              </${tag}>
-            </div>
+            <${tag} class="archive-item${active ? ' active' : ''}" data-index="${i}"${href}>
+              <div class="archive-number">${i + 1}</div>
+              <div class="archive-title">${escapeHtml(e.title)}</div>
+              <div class="archive-date">${fmtDate(e.date)}</div>
+              <div class="archive-authors">${escapeHtml(parts)}</div>
+            </${tag}>
           `;
         })
         .join('');
@@ -1242,6 +1406,8 @@
     // several of these are rendered on the page at once (the "A" feed view).
     function buildEventDetailHtml(e, uid) {
       const authors = (e.authors || []).filter(Boolean).join(', ');
+      const listParts = [authors, e.venue].filter(Boolean).join(' — ');
+      const listNumber = archiveEvents.indexOf(e) + 1;
       const bodyHtml = renderPortableText(e.text || []);
       const additionalTextHtml = renderPortableText(e.additionalText || []);
 
@@ -1252,44 +1418,42 @@
 
       const textPanelId = `text-panel-1-${uid}`;
       const additionalTextPanelId = `text-panel-2-${uid}`;
+      const galleryAnchorId = `gallery-${uid}`;
 
       return `
         <div class="archive-detail-block" data-uid="${uid}">
-          <div class="archive-detail-top-row">
-            <div class="archive-detail-line archive-detail-title">${escapeHtml(e.title)}</div>
-            <div class="archive-detail-line archive-detail-date">${fmtDate(e.date)}</div>
-            ${authors ? `<div class="archive-detail-line archive-detail-authors">${escapeHtml(authors)}</div>` : ''}
+          <div class="archive-detail-header">
+            <div class="archive-detail-identity-row">
+              <div class="archive-item">
+                <div class="archive-number">${listNumber > 0 ? listNumber : ''}</div>
+                <div class="archive-title">${escapeHtml(e.title)}</div>
+                <div class="archive-date">${fmtDate(e.date)}</div>
+                <div class="archive-authors">${escapeHtml(listParts)}</div>
+              </div>
+            </div>
             <a href="#" class="archive-close detail-close" data-uid="${uid}">Close</a>
           </div>
-          <div class="content-body-row">
-            ${e.text && e.text.length ? `
-              <div class="accordion-item">
-                <div class="accordion-toggle-row">
-                  <button type="button" class="accordion-toggle" data-target="${textPanelId}">${escapeHtml(e.textTitle) || 'Text'}</button>
-                  <a href="#" class="archive-close accordion-collapse" data-target="${textPanelId}">Close</a>
-                </div>
+          <div class="content-media-col" id="${galleryAnchorId}">
+            ${galleryBlocksHtml}
+          </div>
+          ${(e.text && e.text.length) || (e.additionalText && e.additionalText.length) ? `
+            <div class="content-text-row">
+              ${e.text && e.text.length ? `
                 <div class="accordion-panel" id="${textPanelId}">
                   <div class="content-text-col">
-                    <div class="archive-detail-body hyphenate" lang="ru">${bodyHtml}</div>
+                    <div class="content-panel-header">${escapeHtml(e.textTitle || 'Текст')}</div>
+                    <div class="archive-detail-body hyphenate" lang="ru">${bodyHtml}<p style="margin-top: -16px; margin-bottom: calc(var(--site-line-height) * 1em);"><br><span style="font-family: monospace; color: #999;">*</span></p></div>
                   </div>
                 </div>
-              </div>
-            ` : ''}
-            ${e.additionalText && e.additionalText.length ? `
-              <div class="accordion-item">
-                <div class="accordion-toggle-row">
-                  <button type="button" class="accordion-toggle" data-target="${additionalTextPanelId}">${escapeHtml(e.additionalTextTitle) || 'Additional text'}</button>
-                  <a href="#" class="archive-close accordion-collapse" data-target="${additionalTextPanelId}">Close</a>
-                </div>
+              ` : ''}
+              ${e.additionalText && e.additionalText.length ? `
                 <div class="accordion-panel" id="${additionalTextPanelId}">
+                  <div class="content-panel-header">${escapeHtml(e.additionalTextTitle || 'Дополнительный текст')}</div>
                   <div class="content-additional-text">${additionalTextHtml}</div>
                 </div>
-              </div>
-            ` : ''}
-            <div class="content-media-col">
-              ${galleryBlocksHtml}
+              ` : ''}
             </div>
-          </div>
+          ` : ''}
         </div>
       `;
     }
@@ -1298,28 +1462,6 @@
     // inside `container` (there may be one, for a single selected event, or
     // many, for the "A" continuous feed).
     function wireEventDetailBlocks(container, eventsByUid) {
-      container.querySelectorAll('.accordion-toggle').forEach((toggle) => {
-        toggle.addEventListener('click', () => {
-          const panel = document.getElementById(toggle.dataset.target);
-          const isOpen = toggle.classList.toggle('open');
-          if (panel) panel.classList.toggle('open', isOpen);
-          const item = toggle.closest('.accordion-item');
-          if (item) item.classList.toggle('open', isOpen);
-        });
-      });
-
-      container.querySelectorAll('.accordion-collapse').forEach((closeLink) => {
-        closeLink.addEventListener('click', (evt) => {
-          evt.preventDefault();
-          const panel = document.getElementById(closeLink.dataset.target);
-          const toggle = container.querySelector(`.accordion-toggle[data-target="${closeLink.dataset.target}"]`);
-          if (panel) panel.classList.remove('open');
-          if (toggle) toggle.classList.remove('open');
-          const item = closeLink.closest('.accordion-item');
-          if (item) item.classList.remove('open');
-        });
-      });
-
       container.querySelectorAll('.content-gallery-strip-item, .content-gallery-horizontal').forEach((item) => {
         const uid = item.dataset.uid;
         const galleries = (eventsByUid[uid].galleries || []).filter((g) => g.images && g.images.length);
@@ -1343,6 +1485,13 @@
       const e = archiveEvents[index];
       if (!e) return;
 
+      // On mobile the archive list is hidden entirely once the detail opens
+      // (see the `:has(#archiveDetail.visible)` rule), which can suddenly
+      // shrink the page shorter than the current scroll position and leave
+      // the browser to clamp scrollY to an arbitrary spot. Scroll to the top
+      // first so opening an event always lands somewhere deliberate.
+      window.scrollTo({ top: 0, behavior: 'auto' });
+
       archiveList.querySelectorAll('.archive-item').forEach((el) => {
         el.classList.toggle('selected', Number(el.dataset.index) === index);
       });
@@ -1360,19 +1509,33 @@
 
       archiveDetail.querySelector('.detail-close').addEventListener('click', (evt) => {
         evt.preventDefault();
-        archiveDetail.classList.remove('visible');
         archiveList.querySelectorAll('.archive-item').forEach((el) => el.classList.remove('selected'));
-        if (scrollToTopObserver) {
-          scrollToTopObserver.disconnect();
-          scrollToTopObserver = null;
+        slideDetailAway(() => {
+          archiveDetail.classList.remove('visible');
+        });
+        // Update the URL/history directly instead of calling navigate()/setView(),
+        // which would hide the detail and reset its position immediately,
+        // cutting the close animation short.
+        currentView = 'archive';
+        const path = pathForRoute('archive', null);
+        if (location.pathname !== path) {
+          history.pushState({ view: 'archive' }, '', path);
         }
-        document.getElementById('scrollSpacer').innerHTML = '';
-        navigate('archive', { scroll: false });
       });
 
+      // .archive-item is display:contents (no box of its own), so measure
+      // one of its real child boxes instead to find this row's position.
+      // This must happen *before* the detail becomes visible: on mobile,
+      // showing it hides the whole list via a `:has()` rule, which would
+      // collapse the anchor's rect to (0,0,0,0) if measured afterward.
+      const listRowAnchor = archiveList.querySelector(`.archive-item[data-index="${index}"] .archive-number`);
+      const headerLabels = document.querySelector('.archive-header-labels');
+      const anchorEl = listRowAnchor || headerLabels;
+      const anchorRect = anchorEl ? anchorEl.getBoundingClientRect() : null;
+      const anchorY = anchorRect && anchorRect.width > 0 ? anchorRect.top : null;
+
       archiveDetail.classList.add('visible');
-      const topRowEl = archiveDetail.querySelector('.archive-detail-top-row');
-      scrollToTop(topRowEl || archiveDetail);
+      slideDetailOverList(anchorY != null ? anchorY : navBarBottom());
 
       updateDetailTopHeight();
     }
@@ -1408,6 +1571,7 @@
     function toggleAllEventsFeed() {
       if (!archiveEvents.some(hasImages)) return;
       allEventsFeedOpen = !allEventsFeedOpen;
+      resetDetailPosition();
       if (allEventsFeedOpen) {
         archiveList.querySelectorAll('.archive-item').forEach((el) => el.classList.remove('selected'));
         renderAllEventsFeed();
@@ -1428,7 +1592,7 @@
     });
 
     function updateDetailTopHeight() {
-      const topRow = archiveDetail.querySelector('.archive-detail-top-row');
+      const topRow = archiveDetail.querySelector('.archive-detail-header');
       if (topRow) {
         document.documentElement.style.setProperty('--detail-top-height', `${topRow.offsetHeight}px`);
       }
@@ -1554,7 +1718,6 @@
           .split('<br>')
           .map((line) => {
             if (isDividerLine(line)) return '<span class="content-divider-line"></span>';
-            if (!line.trim()) return '<span style="font-family: monospace; color: #999;">*</span>';
             return line;
           })
           .join('<br>');
@@ -1593,29 +1756,35 @@
       } catch (err) {
         ver2HeroAbout.innerHTML = '<p>Could not load About.</p>';
       }
-      updateAboutFill();
     }
-
-    function fillToFirstScreen(el) {
-      el.innerHTML = '';
-      const fillTop = el.getBoundingClientRect().top + window.scrollY;
-      const needed = window.innerHeight - fillTop;
-      fillSpacer(el, needed);
-    }
-
-    function updateAboutFill() {
-      fillToFirstScreen(document.getElementById('ver2AboutFill'));
-    }
-
-    window.addEventListener('resize', updateAboutFill);
 
     loadAbout();
+
+    const ver2NavBar = document.getElementById('ver2NavBar');
+    const ver2NavDropdownToggle = document.getElementById('ver2NavDropdownToggle');
+
+    ver2NavDropdownToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      ver2NavBar.classList.toggle('open');
+    });
+
+    document.getElementById('ver2NavClose').addEventListener('click', (e) => {
+      e.preventDefault();
+      ver2NavBar.classList.remove('open');
+    });
 
     navStaticVer2.querySelectorAll('a').forEach((a) => {
       a.addEventListener('click', (e) => {
         e.preventDefault();
+        ver2NavBar.classList.remove('open');
         navigate(a.dataset.view);
       });
+    });
+
+    navStaticVer2.addEventListener('click', (e) => {
+      if (e.target === navStaticVer2) {
+        ver2NavBar.classList.remove('open');
+      }
     });
 
     const redirectPath = sessionStorage.getItem('redirectPath');
@@ -1651,6 +1820,114 @@
     siteFontSize.addEventListener('input', () => {
       document.documentElement.style.setProperty('--site-font-size', `${siteFontSize.value}px`);
       siteFontSizeVal.textContent = siteFontSize.value;
+      updateDetailTopHeight();
+    });
+
+    const archiveTextFontSize = document.getElementById('archiveTextFontSize');
+    const archiveTextFontSizeVal = document.getElementById('archiveTextFontSizeVal');
+
+    archiveTextFontSize.addEventListener('input', () => {
+      document.documentElement.style.setProperty('--archive-text-font-size', `${archiveTextFontSize.value}px`);
+      archiveTextFontSizeVal.textContent = archiveTextFontSize.value;
+      updateDetailTopHeight();
+    });
+
+    const archiveListFontSize = document.getElementById('archiveListFontSize');
+    const archiveListFontSizeVal = document.getElementById('archiveListFontSizeVal');
+
+    // The three archive grids (#archiveList, .archive-header-labels,
+    // .archive-detail-identity-row) must share identical column widths to
+    // stay pixel-aligned, but the header-labels row is allowed its own
+    // independent font-size (--archive-label-font-size). Since `ch` is
+    // relative to each element's *own* font-size, columns can't be kept in
+    // sync with plain CSS once the label row's size diverges from the
+    // list's. Instead, compute the pixel widths once (from the list's font
+    // size) and apply them as an inline override to all three containers.
+    const ARCHIVE_GRID_CH = [3, 34, 22, 38];
+
+    function syncArchiveGridColumns() {
+      const fontSizePx = parseFloat(
+        getComputedStyle(document.documentElement).getPropertyValue('--archive-list-font-size')
+      ) || 18;
+      const canvas = syncArchiveGridColumns._canvas || (syncArchiveGridColumns._canvas = document.createElement('canvas'));
+      const ctx = canvas.getContext('2d');
+      ctx.font = `${fontSizePx}px 'Helvetica Neue', Helvetica, sans-serif`;
+      const chWidth = ctx.measureText('0').width;
+      const cols = ARCHIVE_GRID_CH.map((n) => `${(n * chWidth).toFixed(2)}px`).join(' ');
+      document.querySelectorAll('#archiveList, .archive-header-labels, .archive-detail-identity-row').forEach((el) => {
+        el.style.gridTemplateColumns = cols;
+      });
+    }
+
+    archiveListFontSize.addEventListener('input', () => {
+      document.documentElement.style.setProperty('--archive-list-font-size', `${archiveListFontSize.value}px`);
+      archiveListFontSizeVal.textContent = archiveListFontSize.value;
+      syncArchiveGridColumns();
+      updateDetailTopHeight();
+    });
+
+    const archiveLabelFontSize = document.getElementById('archiveLabelFontSize');
+    const archiveLabelFontSizeVal = document.getElementById('archiveLabelFontSizeVal');
+
+    archiveLabelFontSize.addEventListener('input', () => {
+      document.documentElement.style.setProperty('--archive-label-font-size', `${archiveLabelFontSize.value}px`);
+      archiveLabelFontSizeVal.textContent = archiveLabelFontSize.value;
+      updateDetailTopHeight();
+    });
+
+    syncArchiveGridColumns();
+
+    const galleryTitleFontSizeDesktop = document.getElementById('galleryTitleFontSizeDesktop');
+    const galleryTitleFontSizeDesktopVal = document.getElementById('galleryTitleFontSizeDesktopVal');
+
+    galleryTitleFontSizeDesktop.addEventListener('input', () => {
+      document.documentElement.style.setProperty('--gallery-title-font-size-desktop', `${galleryTitleFontSizeDesktop.value}px`);
+      galleryTitleFontSizeDesktopVal.textContent = galleryTitleFontSizeDesktop.value;
+      updateDetailTopHeight();
+    });
+
+    const galleryTitleFontSizeMobile = document.getElementById('galleryTitleFontSizeMobile');
+    const galleryTitleFontSizeMobileVal = document.getElementById('galleryTitleFontSizeMobileVal');
+
+    galleryTitleFontSizeMobile.addEventListener('input', () => {
+      document.documentElement.style.setProperty('--gallery-title-font-size-mobile', `${galleryTitleFontSizeMobile.value}px`);
+      galleryTitleFontSizeMobileVal.textContent = galleryTitleFontSizeMobile.value;
+      updateDetailTopHeight();
+    });
+
+    const galleryImageGap = document.getElementById('galleryImageGap');
+    const galleryImageGapVal = document.getElementById('galleryImageGapVal');
+
+    galleryImageGap.addEventListener('input', () => {
+      document.documentElement.style.setProperty('--gallery-image-gap', `${galleryImageGap.value}px`);
+      galleryImageGapVal.textContent = galleryImageGap.value;
+      updateDetailTopHeight();
+    });
+
+    const galleryRowGap = document.getElementById('galleryRowGap');
+    const galleryRowGapVal = document.getElementById('galleryRowGapVal');
+
+    galleryRowGap.addEventListener('input', () => {
+      document.documentElement.style.setProperty('--gallery-row-gap', `${galleryRowGap.value}px`);
+      galleryRowGapVal.textContent = galleryRowGap.value;
+      updateDetailTopHeight();
+    });
+
+    const galleryBlockGap = document.getElementById('galleryBlockGap');
+    const galleryBlockGapVal = document.getElementById('galleryBlockGapVal');
+
+    galleryBlockGap.addEventListener('input', () => {
+      document.documentElement.style.setProperty('--gallery-block-gap', `${galleryBlockGap.value}px`);
+      galleryBlockGapVal.textContent = galleryBlockGap.value;
+      updateDetailTopHeight();
+    });
+
+    const galleryImageHeight = document.getElementById('galleryImageHeight');
+    const galleryImageHeightVal = document.getElementById('galleryImageHeightVal');
+
+    galleryImageHeight.addEventListener('input', () => {
+      document.documentElement.style.setProperty('--gallery-image-height', `${galleryImageHeight.value}vh`);
+      galleryImageHeightVal.textContent = galleryImageHeight.value;
       updateDetailTopHeight();
     });
 
@@ -1702,6 +1979,8 @@
       { id: 'bgAbout', cssVar: '--bg-about' },
       { id: 'bgArchive', cssVar: '--bg-archive' },
       { id: 'bgEvent', cssVar: '--bg-event' },
+      { id: 'bgEventGallery', cssVar: '--bg-event-gallery' },
+      { id: 'bgEventText', cssVar: '--bg-event-text' },
     ];
 
     SECTION_COLORS.forEach(({ id, cssVar }) => {
@@ -1727,6 +2006,15 @@
       const md = `# Site Typography Settings
 
 - Text size: ${siteFontSize.value}px
+- Archive text size: ${archiveTextFontSize.value}px
+- Archive list text size: ${archiveListFontSize.value}px
+- Archive label text size: ${archiveLabelFontSize.value}px
+- Gallery title size desktop: ${galleryTitleFontSizeDesktop.value}px
+- Gallery title size mobile: ${galleryTitleFontSizeMobile.value}px
+- Gallery image gap: ${galleryImageGap.value}px
+- Gallery row gap: ${galleryRowGap.value}px
+- Gallery block gap: ${galleryBlockGap.value}px
+- Gallery image height: ${galleryImageHeight.value}vh
 - Line height: ${siteLineHeight.value}
 - Letter spacing: ${siteLetterSpacing.value}px
 - Nav text size: ${navFontSize.value}px
@@ -1739,13 +2027,15 @@
 - About bg: ${document.getElementById('bgAbout').value}
 - Archive bg: ${document.getElementById('bgArchive').value}
 - Event bg: ${document.getElementById('bgEvent').value}
+- Event gallery bg: ${document.getElementById('bgEventGallery').value}
+- Event text bg: ${document.getElementById('bgEventText').value}
 `;
       downloadMarkdown('site-typography-settings.md', md);
     });
 
     // --- Persist typography settings in this browser ---
     const TYPOGRAPHY_STORAGE_KEY = 'typographySettings';
-    const SLIDER_IDS = ['siteFontSize', 'siteLineHeight', 'siteLetterSpacing', 'navFontSize', 'siteColor', 'colorAbout', 'colorArchive', 'colorEventTitle', 'colorEventText', 'colorMenu', 'bgAbout', 'bgArchive', 'bgEvent', 'hyphMinWordLength', 'hyphLeftmin', 'hyphRightmin'];
+    const SLIDER_IDS = ['siteFontSize', 'archiveTextFontSize', 'archiveListFontSize', 'archiveLabelFontSize', 'galleryTitleFontSizeDesktop', 'galleryTitleFontSizeMobile', 'galleryImageGap', 'galleryRowGap', 'galleryBlockGap', 'galleryImageHeight', 'siteLineHeight', 'siteLetterSpacing', 'navFontSize', 'siteColor', 'colorAbout', 'colorArchive', 'colorEventTitle', 'colorEventText', 'colorMenu', 'bgAbout', 'bgArchive', 'bgEvent', 'bgEventGallery', 'bgEventText', 'hyphMinWordLength', 'hyphLeftmin', 'hyphRightmin'];
 
     function collectSettings() {
       const settings = {};
