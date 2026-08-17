@@ -40,13 +40,16 @@
       --site-font-size: 18px;
       --archive-text-font-size: 18px;
       --archive-list-font-size: 18px;
-      --archive-label-font-size: 15px;
+      --archive-list-title-font-size: 22px;
+      --archive-list-date-font-size: 16px;
+      --archive-list-author-font-size: 13px;
       --gallery-title-font-size-desktop: 18px;
       --gallery-title-font-size-mobile: 18px;
       --gallery-image-gap: 21px;
       --gallery-row-gap: 21px;
       --gallery-block-gap: 21px;
       --gallery-image-height: 25vh;
+      --gallery-horizontal-image-height: 50vh;
       --nav-font-size: 18px;
       --site-line-height: 1.3;
       --site-letter-spacing: 1px;
@@ -90,6 +93,7 @@
     .ver2-section {
       position: relative;
       width: 100%;
+      padding-top: var(--page-padding-top);
       padding-bottom: var(--page-padding-bottom);
     }
 
@@ -102,84 +106,47 @@
     .ver2-nav-bar {
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
+      text-align: center;
       gap: 0;
-      padding-top: var(--page-padding-top);
-      padding-bottom: 2px;
       margin: 0 var(--page-padding-right) 0 var(--page-padding-left);
       flex: 0 0 auto;
-      border-bottom: 1px solid #000000;
     }
 
     .ver2-nav-top-row {
       position: relative;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
       width: 100%;
       min-height: calc(var(--nav-font-size) * var(--site-line-height));
     }
 
-    .ver2-nav-current {
+    .archive-category-label {
       color: var(--color-menu);
       font-size: var(--nav-font-size);
       line-height: var(--site-line-height);
-    }
-
-    .ver2-nav-bar .nav-static {
-      display: none;
-    }
-
-    .ver2-nav-bar.open .nav-static {
-      display: flex;
-      position: fixed;
-      inset: 0;
-      background: #ffffff;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 24px;
-      z-index: 300;
-    }
-
-    .ver2-nav-bar.open .nav-static .ver2-nav-close {
-      display: block;
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      background: none;
-      border: none;
-      font: inherit;
-      color: var(--color-menu);
-      letter-spacing: inherit;
-      line-height: var(--site-line-height);
-      font-size: var(--nav-font-size);
-      cursor: pointer;
+      text-align: center;
     }
 
     .ver2-nav-dropdown-toggle {
-      display: block;
-      position: absolute;
-      right: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      font: inherit;
-      color: var(--color-menu);
-      letter-spacing: inherit;
-      line-height: var(--site-line-height);
-      font-size: var(--nav-font-size);
-      cursor: pointer;
-      padding: 0;
-    }
-
-    .ver2-nav-dropdown-toggle:hover {
-      color: #000000;
+      display: none;
     }
 
     .ver2-nav-close {
       display: none;
+    }
+
+    .ver2-nav-bar .nav-static {
+      display: flex;
+      position: static;
+      background: none;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 1em;
+      width: 100%;
     }
 
     .ver2-detail-full {
@@ -196,7 +163,41 @@
     }
 
     .ver2-hero-about.visible {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    /* Debug visualization: every spacing gap introduced this session is a
+       real element with a random background instead of invisible
+       margin/gap, so the spacing itself is visible. Direct children of
+       .ver2-section (which has no horizontal padding) span the full page
+       width on their own; spacers nested inside a padded container use a
+       negative-margin breakout matching that container's own padding. */
+    .gap-spacer {
       display: block;
+      width: 100%;
+    }
+
+    .gap-spacer-breakout {
+      display: block;
+      width: auto;
+      margin-left: calc(-1 * var(--page-padding-left));
+      margin-right: calc(-1 * var(--page-padding-right));
+    }
+
+    .about-gap-spacer {
+      flex: 0 0 1em;
+      align-self: stretch;
+    }
+
+    .ver2-hero-about-col {
+      flex: 1 1 calc(50% - 0.5em);
+      min-width: 0;
+    }
+
+    .about-gap-spacer ~ .ver2-hero-about-col {
+      padding-left: calc(var(--page-padding-left) / 2);
     }
 
     .ver2-hero-about p {
@@ -208,10 +209,6 @@
     }
 
     .ver2-wordmark {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
       text-decoration: none;
       color: #000000;
       cursor: pointer;
@@ -244,28 +241,40 @@
       gap: 0;
       width: 100%;
       padding-top: 2px;
-      padding-bottom: 3px;
-      margin: 0 var(--page-padding-right) 0 0;
-      border-top: 1px solid #000000;
+      margin: 0 var(--page-padding-right) calc(var(--site-line-height) * 1em) 0;
     }
 
     .archive-detail-header .detail-close {
       position: absolute;
       top: 2px;
       right: 0;
-      margin-left: 0;
     }
 
+
     .archive-detail-identity-row {
-      display: grid;
-      grid-template-columns: 3ch 34ch 22ch 38ch;
-      column-gap: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
       width: 100%;
-      font-size: var(--archive-list-font-size);
     }
 
     .archive-detail-identity-row .archive-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       cursor: default;
+    }
+
+    .archive-detail-identity-row .archive-item .archive-number,
+    .archive-detail-identity-row .archive-item .archive-title,
+    .archive-detail-identity-row .archive-item .archive-date,
+    .archive-detail-identity-row .archive-item .archive-authors {
+      font-size: var(--nav-font-size);
+    }
+
+    .archive-detail-identity-row .archive-item .archive-number {
+      display: none;
     }
 
     .feed-separator {
@@ -288,6 +297,65 @@
       flex-direction: column;
     }
 
+    .archive-detail-tabs {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      margin-bottom: 5px;
+      font-size: var(--nav-font-size);
+      line-height: var(--site-line-height);
+    }
+
+    .archive-detail-tab {
+      cursor: pointer;
+      color: #999999;
+    }
+
+    .archive-detail-tab.active {
+      color: #000000;
+    }
+
+    .archive-detail-switch {
+      position: relative;
+      flex: 0 0 auto;
+      width: 2.2em;
+      height: 1.2em;
+      border-radius: 1em;
+      background: #000000;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+    }
+
+    .archive-detail-switch-knob {
+      position: absolute;
+      top: 0.15em;
+      left: 0.15em;
+      width: 0.9em;
+      height: 0.9em;
+      border-radius: 50%;
+      background: #ffffff;
+      transition: transform 0.2s ease;
+    }
+
+    .archive-detail-switch[data-active-tab="images"] .archive-detail-switch-knob {
+      transform: translateX(1em);
+    }
+
+    .archive-detail-columns {
+      width: 100%;
+    }
+
+    .archive-detail-columns[data-active-tab="images"] .content-text-row {
+      display: none;
+    }
+
+    .archive-detail-columns[data-active-tab="text"] .content-media-col {
+      display: none;
+    }
+
     .content-media-col {
       display: flex;
       flex-direction: row;
@@ -296,11 +364,8 @@
       column-gap: var(--page-padding-right);
       background: var(--bg-event-gallery);
       width: 100%;
-      flex: 1 1 auto;
-      align-self: flex-start;
       padding-top: 0;
       margin-top: 0;
-      margin-bottom: var(--gallery-block-gap);
     }
 
     .content-gallery-col {
@@ -315,7 +380,7 @@
     .content-gallery-col-auto {
       height: auto;
       box-sizing: border-box;
-      width: calc(50% - var(--page-padding-right) / 2);
+      width: 100%;
     }
 
     .content-gallery-strip {
@@ -345,15 +410,26 @@
 
     .content-gallery-horizontal {
       position: relative;
-      cursor: pointer;
       display: block;
       width: 100%;
     }
 
-    .content-gallery-horizontal img {
-      display: block;
+    .content-gallery-horizontal-img {
+      display: none;
       width: 100%;
-      height: auto;
+      height: var(--gallery-horizontal-image-height);
+      object-fit: contain;
+      object-position: left top;
+    }
+
+    .content-gallery-horizontal-img.active {
+      display: block;
+    }
+
+    .content-gallery-horizontal-hit {
+      position: absolute;
+      top: 0;
+      left: 0;
     }
 
     .content-image-count {
@@ -365,7 +441,7 @@
     }
 
     .content-gallery-name {
-      color: #999;
+      color: #000000;
       font-size: var(--gallery-title-font-size-desktop);
     }
 
@@ -374,15 +450,18 @@
       min-width: 0;
       margin-top: 0;
       text-align: left;
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      column-gap: 10px;
+      align-items: start;
     }
 
     .content-panel-header {
-      border-top: 1px solid #000000;
-      padding-top: 2px;
+      padding-top: 0;
       padding-bottom: 3px;
-      font-size: 15px;
       margin: 0;
-      color: #999;
+      font-size: var(--archive-text-font-size);
+      color: #000000;
     }
 
     .content-panel-header + .archive-detail-body,
@@ -392,16 +471,20 @@
 
     .content-text-row {
       display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      gap: var(--page-padding-right);
+      flex-direction: column;
+      align-items: center;
       width: 100%;
       background: var(--bg-event-text);
     }
 
+    .content-text-row .gap-spacer-breakout {
+      height: 1em;
+    }
+
     .content-text-row .accordion-panel {
       box-sizing: border-box;
-      width: calc(50% - var(--page-padding-right) / 2);
+      width: auto;
+      max-width: 100%;
     }
 
     svg {
@@ -432,13 +515,41 @@
       color: #000000;
     }
 
+    .nav-language-group {
+      position: absolute;
+      right: 0;
+      top: 0;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-language-group a {
+      text-decoration: none;
+      cursor: pointer;
+      color: var(--color-menu);
+      opacity: 0.4;
+      font-size: var(--archive-list-title-font-size);
+      line-height: var(--site-line-height);
+    }
+
+    .nav-language-group a:hover {
+      opacity: 1;
+      color: #000000;
+    }
+
+    .nav-language-group a.active {
+      opacity: 1;
+      color: #000000;
+    }
+
     .archive {
       display: none;
       position: relative;
       width: 100%;
       padding: 0 var(--page-padding-right) 0 var(--page-padding-left);
       overflow-x: hidden;
-      background: var(--bg-archive);
     }
 
     .archive.visible {
@@ -446,16 +557,41 @@
     }
 
     @media (max-width: 700px) {
-      .ver2-section:has(#archiveDetail.visible) .archive.visible {
+      .archive-hover-preview {
         display: none;
       }
 
-      .ver2-nav-bar {
-        position: sticky;
-        top: 0;
-        background: #ffffff;
-        z-index: 100;
+      .archive-detail-tabs {
+        margin-bottom: 0;
       }
+
+      .archive-detail-header {
+        margin-bottom: 0;
+      }
+
+      .ver2-hero-about.visible {
+        flex-direction: column;
+      }
+
+      .content-text-col {
+        display: block;
+      }
+
+      .content-panel-header {
+        width: 100%;
+        text-align: center;
+        margin-top: calc(2 * var(--site-line-height) * 1em);
+        margin-bottom: calc(2 * var(--site-line-height) * 1em);
+      }
+
+      .about-gap-spacer {
+        flex-basis: 1em;
+        align-self: auto;
+        width: auto;
+        margin-left: calc(-1 * var(--page-padding-left));
+        margin-right: calc(-1 * var(--page-padding-right));
+      }
+
 
       .content-gallery-strip {
         flex-direction: column;
@@ -476,30 +612,68 @@
       }
     }
 
-    .archive-header {
-      display: flex;
-      align-items: center;
-      padding: 0 var(--page-padding-right) 0 var(--page-padding-left);
-      margin: 0 calc(-1 * var(--page-padding-right)) 0 calc(-1 * var(--page-padding-left));
-      color: var(--color-archive);
-      background: #ffffff;
-    }
-
     .archive-header-labels {
       display: grid;
-      grid-template-columns: 3ch 34ch 22ch 38ch;
+      grid-template-columns: 3ch 1fr 1fr 1fr;
       column-gap: 8px;
       width: 100%;
-      font-size: var(--archive-label-font-size);
+      font-size: 15px;
+      color: #999;
     }
 
     #archiveList {
-      display: grid;
-      grid-template-columns: 3ch 34ch 22ch 38ch;
-      column-gap: 8px;
-      row-gap: 0;
+      display: flex;
+      flex-direction: column;
       width: 100%;
       font-size: var(--archive-list-font-size);
+      --archive-number-col-width: 3ch;
+    }
+
+    /* Each row is its own real grid box (matching column widths via the
+       shared --archive-number-col-width custom property, kept in sync by
+       JS) rather than .archive-item being display:contents inside one big
+       grid. That gives each row a single box to hover/background, so the
+       highlight can be one continuous bar with no gaps between columns. */
+    #archiveList .archive-item {
+      position: relative;
+      z-index: 0;
+      display: grid;
+      grid-template-columns: var(--archive-number-col-width) 1fr 1fr 1fr;
+      column-gap: 8px;
+      width: 100%;
+      border-bottom: 1px solid #000000;
+    }
+
+    #archiveList .archive-item:last-child {
+      border-bottom: none;
+    }
+
+    /* The highlight bleeds past .archive's own left/right page padding to
+       reach the true page edges, without shifting the row's actual content
+       (a pseudo-element handles the bleed instead of margins on the row
+       itself). */
+    #archiveList .archive-item:hover::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: calc(-1 * var(--page-padding-left));
+      right: calc(-1 * var(--page-padding-right));
+      background: #f0f0f0;
+      z-index: -1;
+    }
+
+    #archiveList .archive-item .archive-title {
+      font-size: var(--archive-list-title-font-size);
+      font-style: italic;
+    }
+
+    #archiveList .archive-item .archive-date {
+      font-size: var(--archive-list-date-font-size);
+    }
+
+    #archiveList .archive-item .archive-authors {
+      font-size: var(--archive-list-author-font-size);
     }
 
     .archive-item {
@@ -507,22 +681,6 @@
       cursor: pointer;
       text-decoration: none;
       color: var(--color-archive);
-    }
-
-    #archiveList .archive-item,
-    #archiveList .archive-item .archive-number,
-    #archiveList .archive-item .archive-date,
-    #archiveList .archive-item .archive-authors,
-    #archiveList .archive-item .archive-title {
-      color: #999;
-    }
-
-    #archiveList .archive-item:hover,
-    #archiveList .archive-item:hover .archive-number,
-    #archiveList .archive-item:hover .archive-date,
-    #archiveList .archive-item:hover .archive-authors,
-    #archiveList .archive-item:hover .archive-title {
-      color: #000000;
     }
 
     .archive-item .archive-date {
@@ -538,7 +696,7 @@
     }
 
     .archive-item .archive-number {
-      color: #999;
+      color: var(--color-archive);
     }
 
     .archive-item.active {
@@ -550,19 +708,9 @@
     }
 
     @media (max-width: 700px) {
+
       .archive-header-labels {
         display: none;
-      }
-
-      #archiveList .archive-item,
-      #archiveList .archive-item .archive-date,
-      #archiveList .archive-item .archive-authors,
-      #archiveList .archive-item .archive-title {
-        color: #000000;
-      }
-
-      #archiveList .archive-item .archive-number {
-        color: #999;
       }
 
       #archiveList {
@@ -570,12 +718,7 @@
         flex-direction: column;
       }
 
-      .archive-detail-identity-row {
-        display: block;
-      }
-
-      #archiveList .archive-item,
-      .archive-detail-identity-row .archive-item {
+      #archiveList .archive-item {
         display: flex;
         flex-direction: column;
         gap: 2px;
@@ -583,56 +726,30 @@
         padding-bottom: 3px;
       }
 
-      #archiveList .archive-item {
-        border-bottom: 1px solid #000000;
-      }
-
-      #archiveList .archive-item:last-child {
-        border-bottom: none;
-      }
-
-      #archiveList .archive-item .archive-number,
-      .archive-detail-identity-row .archive-item .archive-number {
+      #archiveList .archive-item .archive-number {
         order: -2;
       }
 
-      #archiveList .archive-item .archive-title,
-      .archive-detail-identity-row .archive-item .archive-title {
+      #archiveList .archive-item .archive-title {
         order: -1;
       }
 
-      .content-text-row .accordion-panel {
-        width: 100%;
-      }
-
-      .archive-detail-body,
-      .content-additional-text {
-        padding-left: 0;
-      }
     }
 
     .archive-detail-body {
-      color: #999;
+      color: #000000;
       max-width: 75ch;
-      padding-left: 38px;
       font-size: var(--archive-text-font-size);
     }
 
     .content-additional-text {
-      color: #999;
+      color: #000000;
       width: 100%;
       max-width: 75ch;
       min-width: 0;
-      padding-left: 38px;
       margin-top: 0;
       text-align: left;
       font-size: var(--archive-text-font-size);
-    }
-
-    .accordion-panel:hover .content-panel-header,
-    .accordion-panel:hover .archive-detail-body,
-    .accordion-panel:hover .content-additional-text {
-      color: var(--color-event-text);
     }
 
     .archive-detail-body p,
@@ -664,7 +781,6 @@
     }
 
     .archive-detail-body blockquote {
-      border-left: 2px solid #ccc;
       padding-left: 16px;
       font-style: italic;
     }
@@ -673,14 +789,12 @@
     .content-additional-text hr {
       width: 100%;
       border: none;
-      border-top: 1px solid #ccc;
       margin: 8px 0 16px 0;
     }
 
     .content-divider-line {
       display: inline-block;
       width: 100%;
-      border-top: 1px solid #ccc;
       vertical-align: middle;
     }
 
@@ -825,6 +939,41 @@
       background: #000;
     }
 
+    .archive-body {
+      position: relative;
+      width: 100%;
+    }
+
+    .archive-list-col {
+      width: 100%;
+    }
+
+    .archive-hover-preview {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: flex-start;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 50%;
+      pointer-events: none;
+    }
+
+    .archive-hover-preview img {
+      display: none;
+      max-width: 100%;
+      max-height: 25vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .archive-hover-preview.visible img {
+      display: block;
+    }
+
     .carousel {
       display: none;
       position: fixed;
@@ -882,10 +1031,12 @@
     }
 
     .carousel-caption {
-      flex: 0 0 auto;
-      width: 100%;
-      padding-left: 5px;
-      background: #ffffff;
+      position: absolute;
+      left: 5px;
+      bottom: 5px;
+      padding-left: 10px;
+      z-index: 1;
+      background: none;
       color: #000000;
       line-height: var(--site-line-height);
       text-align: left;
@@ -897,32 +1048,40 @@
     <div class="ver2-section" id="ver2Section">
       <div class="ver2-nav-bar" id="ver2NavBar">
         <div class="ver2-nav-top-row">
-          <span class="ver2-nav-current" id="ver2NavCurrent"></span>
           <a href="#" class="ver2-wordmark" id="ver2Wordmark">139 Documentary Center</a>
-          <button type="button" class="ver2-nav-dropdown-toggle" id="ver2NavDropdownToggle">Меню</button>
+          <div class="nav-language-group" id="navLanguageGroup"></div>
         </div>
         <div class="nav-static" id="navStaticVer2">
-          <button type="button" class="ver2-nav-close" id="ver2NavClose">Закрыть</button>
-          <a href="#" data-view="archive">Архив</a>
-          <a href="#" data-view="program">Программа</a>
-          <a href="#" data-view="special-projects">Спецпроекты</a>
+          <a href="#" data-view="archive" data-i18n="archive">Архив</a>
+          <a href="#" data-view="program" data-i18n="program">Программа</a>
+          <a href="#" data-view="special-projects" data-i18n="specialProjects">Спецпроекты</a>
+          <a href="#" id="navInfoToggle" data-i18n="info">Инфо</a>
         </div>
       </div>
+      <div class="gap-spacer" data-gap="nav-about" style="height: 1em;"></div>
       <div class="ver2-top-screen">
         <div class="ver2-hero-about" id="ver2HeroAbout"></div>
       </div>
+      <div class="gap-spacer" data-gap="about-category" style="height: calc(var(--site-line-height) * 1em);"></div>
       <div class="archive" id="archiveView">
-        <div class="archive-header">
-          <div class="archive-header-labels">
-            <div class="archive-number"></div>
-            <div class="archive-title">Название</div>
-            <div class="archive-date">Дата</div>
-            <div class="archive-authors">Автор</div>
+        <div class="archive-category-label" id="archiveCategoryLabel"></div>
+        <div class="archive-body">
+          <div class="archive-list-col">
+            <div class="archive-header-labels" id="archiveHeaderLabels">
+              <div></div>
+              <div data-i18n="labelTitle">Название</div>
+              <div data-i18n="labelDate">Дата</div>
+              <div data-i18n="labelAuthor">Автор</div>
+            </div>
+            <div class="archive-loading" id="archiveLoading">Loading…</div>
+            <div id="archiveList"></div>
+          </div>
+          <div class="archive-hover-preview" id="archiveHoverPreview">
+            <img id="archiveHoverPreviewImg" src="" alt="">
           </div>
         </div>
-        <div class="archive-loading" id="archiveLoading">Loading…</div>
-        <div id="archiveList"></div>
       </div>
+      <div class="gap-spacer" data-gap="list-detail" style="height: calc(var(--site-line-height) * 1em);"></div>
       <div class="ver2-detail-full" id="ver2DetailFull">
         <div class="content-container" id="archiveDetail">
           <div class="archive-detail-placeholder">Select an event to view details.</div>
@@ -957,8 +1116,16 @@
       <input type="range" id="archiveListFontSize" min="10" max="36" step="1" value="18">
     </label>
     <label>
-      <span><span>Archive label text size (px)</span><span id="archiveLabelFontSizeVal">15</span></span>
-      <input type="range" id="archiveLabelFontSize" min="10" max="36" step="1" value="15">
+      <span><span>Archive list title size (px)</span><span id="archiveListTitleFontSizeVal">22</span></span>
+      <input type="range" id="archiveListTitleFontSize" min="8" max="48" step="1" value="22">
+    </label>
+    <label>
+      <span><span>Archive list date size (px)</span><span id="archiveListDateFontSizeVal">16</span></span>
+      <input type="range" id="archiveListDateFontSize" min="8" max="48" step="1" value="16">
+    </label>
+    <label>
+      <span><span>Archive list author size (px)</span><span id="archiveListAuthorFontSizeVal">13</span></span>
+      <input type="range" id="archiveListAuthorFontSize" min="8" max="48" step="1" value="13">
     </label>
     <label>
       <span><span>Gallery title size desktop (px)</span><span id="galleryTitleFontSizeDesktopVal">18</span></span>
@@ -983,6 +1150,24 @@
       <input type="range" id="siteLetterSpacing" min="-1" max="4" step="0.05" value="1">
     </label>
 
+    <h4>Page padding</h4>
+    <label>
+      <span><span>Page padding top (px)</span><span id="pagePaddingTopVal">8</span></span>
+      <input type="range" id="pagePaddingTop" min="0" max="60" step="1" value="8">
+    </label>
+    <label>
+      <span><span>Page padding right (px)</span><span id="pagePaddingRightVal">10</span></span>
+      <input type="range" id="pagePaddingRight" min="0" max="60" step="1" value="10">
+    </label>
+    <label>
+      <span><span>Page padding bottom (px)</span><span id="pagePaddingBottomVal">10</span></span>
+      <input type="range" id="pagePaddingBottom" min="0" max="60" step="1" value="10">
+    </label>
+    <label>
+      <span><span>Page padding left (px)</span><span id="pagePaddingLeftVal">10</span></span>
+      <input type="range" id="pagePaddingLeft" min="0" max="60" step="1" value="10">
+    </label>
+
     <h4>Gallery layout</h4>
     <label>
       <span><span>Gallery image gap (px)</span><span id="galleryImageGapVal">21</span></span>
@@ -999,6 +1184,10 @@
     <label>
       <span><span>Gallery image height (vh, desktop)</span><span id="galleryImageHeightVal">25</span></span>
       <input type="range" id="galleryImageHeight" min="5" max="60" step="1" value="25">
+    </label>
+    <label>
+      <span><span>Gallery horizontal image height (vh)</span><span id="galleryHorizontalImageHeightVal">50</span></span>
+      <input type="range" id="galleryHorizontalImageHeight" min="10" max="100" step="1" value="50">
     </label>
 
     <h4>Colors</h4>
@@ -1072,6 +1261,14 @@
       if (e.key === 'd' || e.key === 'D') {
         devPanel.classList.toggle('visible');
       }
+    });
+
+    // Gap-spacer debug colors are off by default; press "G" to toggle them.
+    let gapSpacersColored = false;
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'g' && e.key !== 'G') return;
+      gapSpacersColored = !gapSpacersColored;
+      colorizeGapSpacers();
     });
 
     const SANITY_PROJECT_ID = 'jvmgvacm';
@@ -1180,6 +1377,40 @@
     let archiveEvents = [];
     let pendingSlug = null;
 
+    // Site language: content is fetched with all locales already loaded
+    // (see LOCALE_BLOCK_FIELD), so switching language is just a re-render,
+    // no re-fetch. Falls back to Russian when a locale field is empty.
+    const SITE_LANGUAGES = ['ru', 'uz', 'en'];
+    let currentLang = localStorage.getItem('siteLang') || 'ru';
+    if (!SITE_LANGUAGES.includes(currentLang)) currentLang = 'ru';
+
+    function L(localeString) {
+      if (!localeString) return '';
+      return localeString[currentLang] || localeString.ru || '';
+    }
+
+    function LB(localeBlockContent) {
+      if (!localeBlockContent) return [];
+      return localeBlockContent[currentLang] || localeBlockContent.ru || [];
+    }
+
+    // Fixed UI chrome copy (not editor content) in each site language.
+    const UI_STRINGS = {
+      menu: { ru: 'Меню', uz: 'Menyu', en: 'Menu' },
+      close: { ru: 'Закрыть', uz: 'Yopish', en: 'Close' },
+      archive: { ru: 'Архив', uz: 'Arxiv', en: 'Archive' },
+      program: { ru: 'Программа', uz: 'Dastur', en: 'Program' },
+      specialProjects: { ru: 'Спецпроекты', uz: 'Maxsus loyihalar', en: 'Special Projects' },
+      info: { ru: 'Инфо', uz: 'Ma\'lumot', en: 'Info' },
+      text: { ru: 'Текст', uz: 'Matn', en: 'Text' },
+      additionalText: { ru: 'Дополнительный текст', uz: "Qo'shimcha matn", en: 'Additional text' },
+      tabText: { ru: 'Текст', uz: 'Matn', en: 'Text' },
+      tabImages: { ru: 'Изображения', uz: 'Rasmlar', en: 'Images' },
+      labelTitle: { ru: 'Название', uz: 'Nomi', en: 'Title' },
+      labelDate: { ru: 'Дата', uz: 'Sana', en: 'Date' },
+      labelAuthor: { ru: 'Автор', uz: 'Muallif', en: 'Author' },
+    };
+
     function parsePath(path) {
       const parts = path.replace(/\/+$/, '').split('/').filter(Boolean);
       if (parts[0] === 'archive') {
@@ -1203,10 +1434,15 @@
       });
     }
 
+    function updateCategoryLabel() {
+      const SECTION_VIEW_LABELS = { archive: UI_STRINGS.archive, program: UI_STRINGS.program, 'special-projects': UI_STRINGS.specialProjects };
+      const sectionLabel = SECTION_VIEW_LABELS[currentView];
+      document.getElementById('archiveCategoryLabel').textContent = sectionLabel ? sectionLabel[currentLang] || sectionLabel.ru : '';
+    }
+
     function setView(view, { scroll = 'smooth' } = {}) {
       currentView = view;
       setNavActiveOnly(navLinksOriginalOrderVer2, view);
-      ver2HeroAbout.classList.toggle('visible', view === 'ver2');
       resetDetailPosition();
       if (view === 'archive') {
         archiveView.classList.add('visible');
@@ -1217,8 +1453,7 @@
         archiveView.classList.remove('visible');
         archiveDetail.classList.remove('visible');
       }
-      const SECTION_VIEW_LABELS = { archive: 'Архив', program: 'Программа', 'special-projects': 'Спецпроекты' };
-      document.getElementById('ver2NavCurrent').textContent = SECTION_VIEW_LABELS[view] || '';
+      updateCategoryLabel();
       if (scroll && view !== 'archive') {
         ver2Section.scrollIntoView({ behavior: scroll, block: 'start' });
       }
@@ -1251,9 +1486,19 @@
       applyRoute(location.pathname);
     });
 
+    // title/textTitle/additionalTextTitle are localeString objects
+    // ({ru, uz, en}) and can be fetched as plain fields. text/additionalText
+    // are localeBlockContent objects — each locale is its own blockContent
+    // array needing the usual markDefs/image-url expansion.
+    const LOCALE_BLOCK_FIELD = `{
+      ru[]{ ..., markDefs[]{...}, _type == "image" => { ..., "url": asset->url } },
+      uz[]{ ..., markDefs[]{...}, _type == "image" => { ..., "url": asset->url } },
+      en[]{ ..., markDefs[]{...}, _type == "image" => { ..., "url": asset->url } }
+    }`;
+
     async function loadArchive() {
       archiveLoaded = true;
-      const query = encodeURIComponent(`*[_type == "event"] | order(date desc){
+      const query = encodeURIComponent(`*[_type == "event"] | order(date asc){
         title,
         date,
         "slug": slug.current,
@@ -1261,22 +1506,14 @@
         "curatedBy": curatedBy->name,
         "authors": authors[]->name,
         textTitle,
-        text[]{
-          ...,
-          markDefs[]{...},
-          _type == "image" => { ..., "url": asset->url }
-        },
+        text${LOCALE_BLOCK_FIELD},
         galleries[]{
           name,
           type,
           images[]{ ..., "url": asset->url }
         },
         additionalTextTitle,
-        additionalText[]{
-          ...,
-          markDefs[]{...},
-          _type == "image" => { ..., "url": asset->url }
-        }
+        additionalText${LOCALE_BLOCK_FIELD}
       }`);
       const url = `https://${SANITY_PROJECT_ID}.apicdn.sanity.io/v2024-01-01/data/query/${SANITY_DATASET}?query=${query}`;
       try {
@@ -1293,21 +1530,68 @@
       }
     }
 
+    // Debug visualization: give every gap-spacer element a fresh random
+    // color so the spacing that was added this session is actually visible.
+    // All 148 CSS Color Module Level 4 named colors (the standard web
+    // "named colors" list), so the gap-spacer debug backgrounds can pick
+    // from the full named palette instead of a narrow generated range.
+    const CSS_NAMED_COLORS = [
+      'aliceblue', 'antiquewhite', 'aqua', 'aquamarine', 'azure', 'beige', 'bisque', 'black',
+      'blanchedalmond', 'blue', 'blueviolet', 'brown', 'burlywood', 'cadetblue', 'chartreuse',
+      'chocolate', 'coral', 'cornflowerblue', 'cornsilk', 'crimson', 'cyan', 'darkblue', 'darkcyan',
+      'darkgoldenrod', 'darkgray', 'darkgreen', 'darkgrey', 'darkkhaki', 'darkmagenta',
+      'darkolivegreen', 'darkorange', 'darkorchid', 'darkred', 'darksalmon', 'darkseagreen',
+      'darkslateblue', 'darkslategray', 'darkslategrey', 'darkturquoise', 'darkviolet', 'deeppink',
+      'deepskyblue', 'dimgray', 'dimgrey', 'dodgerblue', 'firebrick', 'floralwhite', 'forestgreen',
+      'fuchsia', 'gainsboro', 'ghostwhite', 'gold', 'goldenrod', 'gray', 'green', 'greenyellow',
+      'grey', 'honeydew', 'hotpink', 'indianred', 'indigo', 'ivory', 'khaki', 'lavender',
+      'lavenderblush', 'lawngreen', 'lemonchiffon', 'lightblue', 'lightcoral', 'lightcyan',
+      'lightgoldenrodyellow', 'lightgray', 'lightgreen', 'lightgrey', 'lightpink', 'lightsalmon',
+      'lightseagreen', 'lightskyblue', 'lightslategray', 'lightslategrey', 'lightsteelblue',
+      'lightyellow', 'lime', 'limegreen', 'linen', 'magenta', 'maroon', 'mediumaquamarine',
+      'mediumblue', 'mediumorchid', 'mediumpurple', 'mediumseagreen', 'mediumslateblue',
+      'mediumspringgreen', 'mediumturquoise', 'mediumvioletred', 'midnightblue', 'mintcream',
+      'mistyrose', 'moccasin', 'navajowhite', 'navy', 'oldlace', 'olive', 'olivedrab', 'orange',
+      'orangered', 'orchid', 'palegoldenrod', 'palegreen', 'paleturquoise', 'palevioletred',
+      'papayawhip', 'peachpuff', 'peru', 'pink', 'plum', 'powderblue', 'purple', 'rebeccapurple',
+      'red', 'rosybrown', 'royalblue', 'saddlebrown', 'salmon', 'sandybrown', 'seagreen',
+      'seashell', 'sienna', 'silver', 'skyblue', 'slateblue', 'slategray', 'slategrey', 'snow',
+      'springgreen', 'steelblue', 'tan', 'teal', 'thistle', 'tomato', 'turquoise', 'violet',
+      'wheat', 'white', 'whitesmoke', 'yellow', 'yellowgreen',
+    ];
+
+    function colorizeGapSpacers() {
+      document.querySelectorAll('.gap-spacer, .gap-spacer-breakout, .about-gap-spacer').forEach((el) => {
+        if (!gapSpacersColored) {
+          el.style.background = 'transparent';
+          return;
+        }
+        const color = CSS_NAMED_COLORS[Math.floor(Math.random() * CSS_NAMED_COLORS.length)];
+        el.style.background = color;
+      });
+    }
+
     function escapeHtml(str) {
       const div = document.createElement('div');
       div.textContent = str || '';
       return div.innerHTML;
     }
 
-    const RU_MONTHS = [
-      'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
-      'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря',
-    ];
+    const MONTH_NAMES = {
+      ru: ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+        'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'],
+      uz: ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun',
+        'iyul', 'avgust', 'sentabr', 'oktabr', 'noyabr', 'dekabr'],
+      en: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    };
 
     function fmtDate(d) {
       if (!d) return '';
       const [y, m, day] = d.split('-');
-      const monthName = RU_MONTHS[Number(m) - 1] || m;
+      const months = MONTH_NAMES[currentLang] || MONTH_NAMES.ru;
+      const monthName = months[Number(m) - 1] || m;
+      if (currentLang === 'en') return `${monthName} ${Number(day)}, ${y}`;
       return `${Number(day)} ${monthName} ${y}`;
     }
 
@@ -1331,7 +1615,7 @@
     }
 
     function hasContent(e) {
-      return (e.text && e.text.length > 0) || (e.galleries && e.galleries.length > 0);
+      return LB(e.text).length > 0 || (e.galleries && e.galleries.length > 0);
     }
 
     function renderArchive(events) {
@@ -1342,15 +1626,15 @@
       }
       archiveList.innerHTML = events
         .map((e, i) => {
-          const authors = (e.authors || []).filter(Boolean).join(', ');
-          const parts = [authors, e.venue].filter(Boolean).join(' — ');
+          const authors = (e.authors || []).map(L).filter(Boolean).join(', ');
+          const parts = [authors, L(e.venue)].filter(Boolean).join(' — ');
           const active = true;
           const tag = 'a';
           const href = e.slug ? ` href="/archive/${escapeHtml(e.slug)}"` : ` href="#"`;
           return `
             <${tag} class="archive-item${active ? ' active' : ''}" data-index="${i}"${href}>
               <div class="archive-number">${i + 1}</div>
-              <div class="archive-title">${escapeHtml(e.title)}</div>
+              <div class="archive-title">${escapeHtml(L(e.title))}</div>
               <div class="archive-date">${fmtDate(e.date)}</div>
               <div class="archive-authors">${escapeHtml(parts)}</div>
             </${tag}>
@@ -1363,7 +1647,43 @@
           e.preventDefault();
           selectEvent(Number(el.dataset.index));
         });
+
+        const e = events[Number(el.dataset.index)];
+        const firstGallery = (e.galleries || []).find((g) => g.images && g.images.length);
+        if (firstGallery) {
+          el.addEventListener('mouseenter', () => startArchiveHoverPreview(firstGallery.images));
+          el.addEventListener('mouseleave', stopArchiveHoverPreview);
+        }
       });
+    }
+
+    // Hovering a list row previews that event's first gallery in the
+    // dedicated column next to the list, cycling through its images as a
+    // slideshow.
+    const archiveHoverPreview = document.getElementById('archiveHoverPreview');
+    const archiveHoverPreviewImg = document.getElementById('archiveHoverPreviewImg');
+    let archiveHoverPreviewTimer = null;
+
+    function startArchiveHoverPreview(images) {
+      stopArchiveHoverPreview();
+      let i = 0;
+      archiveHoverPreviewImg.src = imageUrl(images[0].url, 1200);
+      archiveHoverPreview.classList.add('visible');
+      if (images.length > 1) {
+        archiveHoverPreviewTimer = setInterval(() => {
+          i = (i + 1) % images.length;
+          archiveHoverPreviewImg.src = imageUrl(images[i].url, 1200);
+        }, 1200);
+      }
+    }
+
+    function stopArchiveHoverPreview() {
+      if (archiveHoverPreviewTimer) {
+        clearInterval(archiveHoverPreviewTimer);
+        archiveHoverPreviewTimer = null;
+      }
+      archiveHoverPreview.classList.remove('visible');
+      archiveHoverPreviewImg.src = '';
     }
 
     function openEventBySlug(slug, { updateUrl } = {}) {
@@ -1375,10 +1695,22 @@
       const nameHtml = name ? `<span class="content-gallery-name">${escapeHtml(name)}</span>` : '';
 
       if (type === 'photoHorizontal') {
+        const horizontalImages = images
+          .map((img, i) => `<img src="${imageUrl(img.url, 1800)}" alt="" data-image-index="${i}" class="content-gallery-horizontal-img${i === 0 ? ' active' : ''}">`)
+          .join('');
+        const horizontalNav = images.length > 1
+          ? `
+            <div class="content-gallery-horizontal-hit" data-horizontal-hit>
+              <div class="carousel-nav-zone carousel-nav-prev" data-horizontal-nav="prev"></div>
+              <div class="carousel-nav-zone carousel-nav-next" data-horizontal-nav="next"></div>
+            </div>
+          `
+          : '';
         return `
           <div class="content-gallery-col content-gallery-col-auto" data-gallery-index="${index}">
-            <div class="content-gallery-horizontal" data-uid="${uid}" data-gallery-index="${index}" data-image-index="0">
-              <img src="${imageUrl(images[0].url, 1800)}" alt="">
+            <div class="content-gallery-horizontal" data-uid="${uid}" data-gallery-index="${index}" data-current-index="0">
+              ${horizontalImages}
+              ${horizontalNav}
             </div>
             <div class="content-image-count">${nameHtml}</div>
           </div>
@@ -1405,15 +1737,18 @@
     // Builds one event's detail markup. `uid` disambiguates element ids when
     // several of these are rendered on the page at once (the "A" feed view).
     function buildEventDetailHtml(e, uid) {
-      const authors = (e.authors || []).filter(Boolean).join(', ');
-      const listParts = [authors, e.venue].filter(Boolean).join(' — ');
-      const listNumber = archiveEvents.indexOf(e) + 1;
-      const bodyHtml = renderPortableText(e.text || []);
-      const additionalTextHtml = renderPortableText(e.additionalText || []);
+      const authors = (e.authors || []).map(L).filter(Boolean).join(', ');
+      const listParts = [authors, L(e.venue)].filter(Boolean).join(' — ');
+      const eventIndex = archiveEvents.indexOf(e);
+      const listNumber = eventIndex >= 0 ? eventIndex + 1 : 0;
+      const eventText = LB(e.text);
+      const eventAdditionalText = LB(e.additionalText);
+      const bodyHtml = renderPortableText(eventText);
+      const additionalTextHtml = renderPortableText(eventAdditionalText);
 
       const galleries = (e.galleries || []).filter((g) => g.images && g.images.length);
       const galleryBlocksHtml = galleries
-        .map((g, gi) => galleryBlockHtml(g.images, g.name, g.type, gi, uid))
+        .map((g, gi) => galleryBlockHtml(g.images, L(g.name), g.type, gi, uid))
         .join('');
 
       const textPanelId = `text-panel-1-${uid}`;
@@ -1426,34 +1761,48 @@
             <div class="archive-detail-identity-row">
               <div class="archive-item">
                 <div class="archive-number">${listNumber > 0 ? listNumber : ''}</div>
-                <div class="archive-title">${escapeHtml(e.title)}</div>
+                <div class="archive-title">${escapeHtml(L(e.title))}</div>
                 <div class="archive-date">${fmtDate(e.date)}</div>
                 <div class="archive-authors">${escapeHtml(listParts)}</div>
               </div>
             </div>
-            <a href="#" class="archive-close detail-close" data-uid="${uid}">Close</a>
+            <a href="#" class="archive-close detail-close" data-uid="${uid}">(${UI_STRINGS.close[currentLang] || UI_STRINGS.close.ru})</a>
           </div>
+          ${galleries.length && (eventText.length || eventAdditionalText.length) ? `
+            <div class="archive-detail-tabs">
+              <span class="archive-detail-tab" data-tab="text">${UI_STRINGS.tabText[currentLang]}</span>
+              <button type="button" class="archive-detail-switch" data-active-tab="images" aria-label="Toggle text/images">
+                <span class="archive-detail-switch-knob"></span>
+              </button>
+              <span class="archive-detail-tab active" data-tab="images">${UI_STRINGS.tabImages[currentLang]}</span>
+            </div>
+          ` : ''}
+          <div class="archive-detail-columns" data-active-tab="images">
           <div class="content-media-col" id="${galleryAnchorId}">
             ${galleryBlocksHtml}
           </div>
-          ${(e.text && e.text.length) || (e.additionalText && e.additionalText.length) ? `
+          ${eventText.length || eventAdditionalText.length ? `
             <div class="content-text-row">
-              ${e.text && e.text.length ? `
+              ${eventText.length ? `
                 <div class="accordion-panel" id="${textPanelId}">
                   <div class="content-text-col">
-                    <div class="content-panel-header">${escapeHtml(e.textTitle || 'Текст')}</div>
-                    <div class="archive-detail-body hyphenate" lang="ru">${bodyHtml}<p style="margin-top: -16px; margin-bottom: calc(var(--site-line-height) * 1em);"><br><span style="font-family: monospace; color: #999;">*</span></p></div>
+                    <div class="content-panel-header">${escapeHtml(L(e.textTitle) || UI_STRINGS.text[currentLang])}</div>
+                    <div class="archive-detail-body hyphenate" lang="${currentLang}">${bodyHtml}</div>
                   </div>
                 </div>
               ` : ''}
-              ${e.additionalText && e.additionalText.length ? `
+              ${eventText.length && eventAdditionalText.length ? '<div class="gap-spacer-breakout"></div>' : ''}
+              ${eventAdditionalText.length ? `
                 <div class="accordion-panel" id="${additionalTextPanelId}">
-                  <div class="content-panel-header">${escapeHtml(e.additionalTextTitle || 'Дополнительный текст')}</div>
-                  <div class="content-additional-text">${additionalTextHtml}</div>
+                  <div class="content-text-col">
+                    <div class="content-panel-header">${escapeHtml(L(e.additionalTextTitle) || UI_STRINGS.additionalText[currentLang])}</div>
+                    <div class="content-additional-text">${additionalTextHtml}</div>
+                  </div>
                 </div>
               ` : ''}
             </div>
           ` : ''}
+          </div>
         </div>
       `;
     }
@@ -1462,16 +1811,100 @@
     // inside `container` (there may be one, for a single selected event, or
     // many, for the "A" continuous feed).
     function wireEventDetailBlocks(container, eventsByUid) {
-      container.querySelectorAll('.content-gallery-strip-item, .content-gallery-horizontal').forEach((item) => {
+      // Text/Images switch: only one of the gallery or the text panels is
+      // shown at a time, toggled by the animated capsule switch (or by
+      // clicking either label directly) under the event title.
+      container.querySelectorAll('.archive-detail-tabs').forEach((tabs) => {
+        const columns = tabs.nextElementSibling;
+        const switchEl = tabs.querySelector('.archive-detail-switch');
+        const labels = tabs.querySelectorAll('.archive-detail-tab');
+        const mediaCol = columns.querySelector('.content-media-col');
+        const textRow = columns.querySelector('.content-text-row');
+
+        // Pin the columns container to the taller of the two panels so
+        // switching tabs never shrinks the page height - that shrink was
+        // what made the browser clamp scroll position and jump the view.
+        if (mediaCol && textRow) {
+          const originalActiveTab = columns.dataset.activeTab;
+          columns.removeAttribute('data-active-tab');
+          const mediaHeight = mediaCol.offsetHeight;
+          const textHeight = textRow.offsetHeight;
+          columns.dataset.activeTab = originalActiveTab;
+          columns.style.minHeight = Math.max(mediaHeight, textHeight) + 'px';
+        }
+
+        const setActiveTab = (tabName) => {
+          labels.forEach((label) => label.classList.toggle('active', label.dataset.tab === tabName));
+          switchEl.dataset.activeTab = tabName;
+          columns.dataset.activeTab = tabName;
+        };
+
+        switchEl.addEventListener('click', () => {
+          setActiveTab(switchEl.dataset.activeTab === 'images' ? 'text' : 'images');
+        });
+
+        labels.forEach((label) => {
+          label.addEventListener('click', () => setActiveTab(label.dataset.tab));
+        });
+      });
+
+      // photoHorizontal images render at full size directly in the detail,
+      // so they don't need to open the fullscreen carousel lightbox.
+      container.querySelectorAll('.content-gallery-strip-item').forEach((item) => {
         const uid = item.dataset.uid;
         const galleries = (eventsByUid[uid].galleries || []).filter((g) => g.images && g.images.length);
         const gi = Number(item.dataset.galleryIndex);
         const imgIndex = Number(item.dataset.imageIndex);
-        item.addEventListener('click', () => openCarousel(galleries[gi].images, imgIndex, galleries[gi].name));
+        item.addEventListener('click', () => openCarousel(galleries[gi].images, imgIndex, L(galleries[gi].name)));
       });
 
       container.querySelectorAll('.content-gallery-strip').forEach((strip) => {
         nudgeScrollHint(strip);
+      });
+
+      // Inline (non-overlay) carousel for the photoHorizontal type: step
+      // through that gallery's images in place instead of opening the
+      // fullscreen lightbox.
+      container.querySelectorAll('.content-gallery-horizontal').forEach((wrap) => {
+        const imgs = wrap.querySelectorAll('.content-gallery-horizontal-img');
+        const hit = wrap.querySelector('[data-horizontal-hit]');
+
+        // object-fit:contain can letterbox (image smaller than its box)
+        // when the photo's aspect ratio doesn't match the fixed height —
+        // size the click-through nav overlay to the exact rendered photo
+        // (anchored top-left, matching object-position:left top), not the
+        // full box, so it never covers empty letterbox space.
+        const fitHitToImage = (img) => {
+          if (!hit) return;
+          const apply = () => {
+            const boxWidth = wrap.getBoundingClientRect().width;
+            const boxHeight = img.getBoundingClientRect().height;
+            if (!img.naturalWidth || !img.naturalHeight || !boxWidth || !boxHeight) return;
+            const imageAspect = img.naturalWidth / img.naturalHeight;
+            const boxAspect = boxWidth / boxHeight;
+            const displayWidth = imageAspect > boxAspect ? boxWidth : boxHeight * imageAspect;
+            const displayHeight = imageAspect > boxAspect ? boxWidth / imageAspect : boxHeight;
+            hit.style.width = `${displayWidth}px`;
+            hit.style.height = `${displayHeight}px`;
+          };
+          if (img.complete) apply();
+          else img.addEventListener('load', apply, { once: true });
+        };
+
+        fitHitToImage(imgs[0]);
+
+        const step = (delta) => {
+          const current = Number(wrap.dataset.currentIndex) || 0;
+          const next = (current + delta + imgs.length) % imgs.length;
+          imgs[current].classList.remove('active');
+          imgs[next].classList.add('active');
+          wrap.dataset.currentIndex = String(next);
+          fitHitToImage(imgs[next]);
+        };
+        const prevZone = wrap.querySelector('[data-horizontal-nav="prev"]');
+        const nextZone = wrap.querySelector('[data-horizontal-nav="next"]');
+        if (prevZone) prevZone.addEventListener('click', () => step(-1));
+        if (nextZone) nextZone.addEventListener('click', () => step(1));
       });
 
       if (window.Hyphenopoly && Hyphenopoly.hyphenators && Hyphenopoly.hyphenators.ru) {
@@ -1485,11 +1918,8 @@
       const e = archiveEvents[index];
       if (!e) return;
 
-      // On mobile the archive list is hidden entirely once the detail opens
-      // (see the `:has(#archiveDetail.visible)` rule), which can suddenly
-      // shrink the page shorter than the current scroll position and leave
-      // the browser to clamp scrollY to an arbitrary spot. Scroll to the top
-      // first so opening an event always lands somewhere deliberate.
+      // Land at the top so opening an event always starts from a
+      // deliberate, predictable scroll position.
       window.scrollTo({ top: 0, behavior: 'auto' });
 
       archiveList.querySelectorAll('.archive-item').forEach((el) => {
@@ -1506,6 +1936,7 @@
       const uid = String(index);
       archiveDetail.innerHTML = buildEventDetailHtml(e, uid);
       wireEventDetailBlocks(archiveDetail, { [uid]: e });
+      colorizeGapSpacers();
 
       archiveDetail.querySelector('.detail-close').addEventListener('click', (evt) => {
         evt.preventDefault();
@@ -1523,19 +1954,10 @@
         }
       });
 
-      // .archive-item is display:contents (no box of its own), so measure
-      // one of its real child boxes instead to find this row's position.
-      // This must happen *before* the detail becomes visible: on mobile,
-      // showing it hides the whole list via a `:has()` rule, which would
-      // collapse the anchor's rect to (0,0,0,0) if measured afterward.
-      const listRowAnchor = archiveList.querySelector(`.archive-item[data-index="${index}"] .archive-number`);
-      const headerLabels = document.querySelector('.archive-header-labels');
-      const anchorEl = listRowAnchor || headerLabels;
-      const anchorRect = anchorEl ? anchorEl.getBoundingClientRect() : null;
-      const anchorY = anchorRect && anchorRect.width > 0 ? anchorRect.top : null;
-
+      // Let the detail render in its natural position below the archive
+      // list, rather than sliding up to cover it.
+      resetDetailPosition();
       archiveDetail.classList.add('visible');
-      slideDetailOverList(anchorY != null ? anchorY : navBarBottom());
 
       updateDetailTopHeight();
     }
@@ -1558,6 +1980,7 @@
         })
         .join(feedSeparator);
       wireEventDetailBlocks(archiveDetail, eventsByUid);
+      colorizeGapSpacers();
       archiveDetail.querySelectorAll('.detail-close').forEach((closeLink) => {
         closeLink.addEventListener('click', (evt) => {
           evt.preventDefault();
@@ -1728,31 +2151,46 @@
       return html;
     }
 
+    let aboutData = null;
+
+    function renderAboutColumn(localeBlockContent) {
+      const rawHtml = renderPortableText(LB(localeBlockContent));
+      return rawHtml.replace(/\*/g, '<span style="font-family: monospace;">*</span>').replace(
+        /139 Documentary Center/g,
+        '<span class="about-highlight">139 Documentary Center</span>'
+      );
+    }
+
+    function renderAbout() {
+      if (!aboutData) return;
+      const col1 = renderAboutColumn(aboutData.text1);
+      const col2Html = LB(aboutData.text2).length ? renderAboutColumn(aboutData.text2) : '';
+      ver2HeroAbout.innerHTML = `
+        <div class="ver2-hero-about-col">${col1}</div>
+        ${col2Html ? '<div class="about-gap-spacer"></div>' : ''}
+        ${col2Html ? `<div class="ver2-hero-about-col">${col2Html}</div>` : ''}
+      `;
+      ver2HeroAbout.querySelectorAll('.about-highlight').forEach((el) => {
+        el.addEventListener('click', () => {
+          archiveView.classList.remove('visible');
+          archiveDetail.classList.remove('visible');
+          navigate('ver2');
+        });
+      });
+      colorizeGapSpacers();
+    }
+
     async function loadAbout() {
       const query = encodeURIComponent(`*[_id == "about"][0]{
-        text[]{
-          ...,
-          markDefs[]{...},
-          _type == "image" => { ..., "url": asset->url }
-        }
+        text1${LOCALE_BLOCK_FIELD},
+        text2${LOCALE_BLOCK_FIELD}
       }`);
       const url = `https://${SANITY_PROJECT_ID}.apicdn.sanity.io/v2024-01-01/data/query/${SANITY_DATASET}?query=${query}`;
       try {
         const res = await fetch(url);
         const { result } = await res.json();
-        const rawHtml = renderPortableText((result && result.text) || []);
-        const html = rawHtml.replace(/\*/g, '<span style="font-family: monospace;">*</span>');
-        ver2HeroAbout.innerHTML = html.replace(
-          /139 Documentary Center/g,
-          '<span class="about-highlight">139 Documentary Center</span>'
-        );
-        ver2HeroAbout.querySelectorAll('.about-highlight').forEach((el) => {
-          el.addEventListener('click', () => {
-            archiveView.classList.remove('visible');
-            archiveDetail.classList.remove('visible');
-            navigate('ver2');
-          });
-        });
+        aboutData = result || {};
+        renderAbout();
       } catch (err) {
         ver2HeroAbout.innerHTML = '<p>Could not load About.</p>';
       }
@@ -1761,17 +2199,6 @@
     loadAbout();
 
     const ver2NavBar = document.getElementById('ver2NavBar');
-    const ver2NavDropdownToggle = document.getElementById('ver2NavDropdownToggle');
-
-    ver2NavDropdownToggle.addEventListener('click', (e) => {
-      e.preventDefault();
-      ver2NavBar.classList.toggle('open');
-    });
-
-    document.getElementById('ver2NavClose').addEventListener('click', (e) => {
-      e.preventDefault();
-      ver2NavBar.classList.remove('open');
-    });
 
     navStaticVer2.querySelectorAll('a').forEach((a) => {
       a.addEventListener('click', (e) => {
@@ -1835,15 +2262,10 @@
     const archiveListFontSize = document.getElementById('archiveListFontSize');
     const archiveListFontSizeVal = document.getElementById('archiveListFontSizeVal');
 
-    // The three archive grids (#archiveList, .archive-header-labels,
-    // .archive-detail-identity-row) must share identical column widths to
-    // stay pixel-aligned, but the header-labels row is allowed its own
-    // independent font-size (--archive-label-font-size). Since `ch` is
-    // relative to each element's *own* font-size, columns can't be kept in
-    // sync with plain CSS once the label row's size diverges from the
-    // list's. Instead, compute the pixel widths once (from the list's font
-    // size) and apply them as an inline override to all three containers.
-    const ARCHIVE_GRID_CH = [3, 34, 22, 38];
+    // #archiveList and .archive-detail-identity-row must share an identical
+    // number-column width to stay pixel-aligned. Compute it once (from the
+    // list's font size) and apply it as an inline override to both.
+    const ARCHIVE_NUMBER_COL_CH = 3;
 
     function syncArchiveGridColumns() {
       const fontSizePx = parseFloat(
@@ -1853,10 +2275,11 @@
       const ctx = canvas.getContext('2d');
       ctx.font = `${fontSizePx}px 'Helvetica Neue', Helvetica, sans-serif`;
       const chWidth = ctx.measureText('0').width;
-      const cols = ARCHIVE_GRID_CH.map((n) => `${(n * chWidth).toFixed(2)}px`).join(' ');
-      document.querySelectorAll('#archiveList, .archive-header-labels, .archive-detail-identity-row').forEach((el) => {
-        el.style.gridTemplateColumns = cols;
-      });
+      const numberColPx = `${(ARCHIVE_NUMBER_COL_CH * chWidth).toFixed(2)}px`;
+      const archiveListEl = document.getElementById('archiveList');
+      if (archiveListEl) archiveListEl.style.setProperty('--archive-number-col-width', numberColPx);
+      const headerLabelsEl = document.getElementById('archiveHeaderLabels');
+      if (headerLabelsEl) headerLabelsEl.style.gridTemplateColumns = `${numberColPx} 1fr 1fr 1fr`;
     }
 
     archiveListFontSize.addEventListener('input', () => {
@@ -1866,12 +2289,30 @@
       updateDetailTopHeight();
     });
 
-    const archiveLabelFontSize = document.getElementById('archiveLabelFontSize');
-    const archiveLabelFontSizeVal = document.getElementById('archiveLabelFontSizeVal');
+    const archiveListTitleFontSize = document.getElementById('archiveListTitleFontSize');
+    const archiveListTitleFontSizeVal = document.getElementById('archiveListTitleFontSizeVal');
 
-    archiveLabelFontSize.addEventListener('input', () => {
-      document.documentElement.style.setProperty('--archive-label-font-size', `${archiveLabelFontSize.value}px`);
-      archiveLabelFontSizeVal.textContent = archiveLabelFontSize.value;
+    archiveListTitleFontSize.addEventListener('input', () => {
+      document.documentElement.style.setProperty('--archive-list-title-font-size', `${archiveListTitleFontSize.value}px`);
+      archiveListTitleFontSizeVal.textContent = archiveListTitleFontSize.value;
+      updateDetailTopHeight();
+    });
+
+    const archiveListDateFontSize = document.getElementById('archiveListDateFontSize');
+    const archiveListDateFontSizeVal = document.getElementById('archiveListDateFontSizeVal');
+
+    archiveListDateFontSize.addEventListener('input', () => {
+      document.documentElement.style.setProperty('--archive-list-date-font-size', `${archiveListDateFontSize.value}px`);
+      archiveListDateFontSizeVal.textContent = archiveListDateFontSize.value;
+      updateDetailTopHeight();
+    });
+
+    const archiveListAuthorFontSize = document.getElementById('archiveListAuthorFontSize');
+    const archiveListAuthorFontSizeVal = document.getElementById('archiveListAuthorFontSizeVal');
+
+    archiveListAuthorFontSize.addEventListener('input', () => {
+      document.documentElement.style.setProperty('--archive-list-author-font-size', `${archiveListAuthorFontSize.value}px`);
+      archiveListAuthorFontSizeVal.textContent = archiveListAuthorFontSize.value;
       updateDetailTopHeight();
     });
 
@@ -1931,6 +2372,15 @@
       updateDetailTopHeight();
     });
 
+    const galleryHorizontalImageHeight = document.getElementById('galleryHorizontalImageHeight');
+    const galleryHorizontalImageHeightVal = document.getElementById('galleryHorizontalImageHeightVal');
+
+    galleryHorizontalImageHeight.addEventListener('input', () => {
+      document.documentElement.style.setProperty('--gallery-horizontal-image-height', `${galleryHorizontalImageHeight.value}vh`);
+      galleryHorizontalImageHeightVal.textContent = galleryHorizontalImageHeight.value;
+      updateDetailTopHeight();
+    });
+
     siteLineHeight.addEventListener('input', () => {
       document.documentElement.style.setProperty('--site-line-height', siteLineHeight.value);
       siteLineHeightVal.textContent = Number(siteLineHeight.value).toFixed(2);
@@ -1941,6 +2391,21 @@
       document.documentElement.style.setProperty('--site-letter-spacing', `${siteLetterSpacing.value}px`);
       siteLetterSpacingVal.textContent = Number(siteLetterSpacing.value).toFixed(2);
       updateDetailTopHeight();
+    });
+
+    [
+      ['pagePaddingTop', '--page-padding-top'],
+      ['pagePaddingRight', '--page-padding-right'],
+      ['pagePaddingBottom', '--page-padding-bottom'],
+      ['pagePaddingLeft', '--page-padding-left'],
+    ].forEach(([id, cssVar]) => {
+      const input = document.getElementById(id);
+      const valEl = document.getElementById(`${id}Val`);
+      input.addEventListener('input', () => {
+        document.documentElement.style.setProperty(cssVar, `${input.value}px`);
+        valEl.textContent = input.value;
+        updateDetailTopHeight();
+      });
     });
 
     const navFontSize = document.getElementById('navFontSize');
@@ -2008,15 +2473,22 @@
 - Text size: ${siteFontSize.value}px
 - Archive text size: ${archiveTextFontSize.value}px
 - Archive list text size: ${archiveListFontSize.value}px
-- Archive label text size: ${archiveLabelFontSize.value}px
+- Archive list title size: ${archiveListTitleFontSize.value}px
+- Archive list date size: ${archiveListDateFontSize.value}px
+- Archive list author size: ${archiveListAuthorFontSize.value}px
 - Gallery title size desktop: ${galleryTitleFontSizeDesktop.value}px
 - Gallery title size mobile: ${galleryTitleFontSizeMobile.value}px
 - Gallery image gap: ${galleryImageGap.value}px
 - Gallery row gap: ${galleryRowGap.value}px
 - Gallery block gap: ${galleryBlockGap.value}px
 - Gallery image height: ${galleryImageHeight.value}vh
+- Gallery horizontal image height: ${galleryHorizontalImageHeight.value}vh
 - Line height: ${siteLineHeight.value}
 - Letter spacing: ${siteLetterSpacing.value}px
+- Page padding top: ${document.getElementById('pagePaddingTop').value}px
+- Page padding right: ${document.getElementById('pagePaddingRight').value}px
+- Page padding bottom: ${document.getElementById('pagePaddingBottom').value}px
+- Page padding left: ${document.getElementById('pagePaddingLeft').value}px
 - Nav text size: ${navFontSize.value}px
 - Color: ${siteColor.value}
 - About color: ${document.getElementById('colorAbout').value}
@@ -2035,7 +2507,7 @@
 
     // --- Persist typography settings in this browser ---
     const TYPOGRAPHY_STORAGE_KEY = 'typographySettings';
-    const SLIDER_IDS = ['siteFontSize', 'archiveTextFontSize', 'archiveListFontSize', 'archiveLabelFontSize', 'galleryTitleFontSizeDesktop', 'galleryTitleFontSizeMobile', 'galleryImageGap', 'galleryRowGap', 'galleryBlockGap', 'galleryImageHeight', 'siteLineHeight', 'siteLetterSpacing', 'navFontSize', 'siteColor', 'colorAbout', 'colorArchive', 'colorEventTitle', 'colorEventText', 'colorMenu', 'bgAbout', 'bgArchive', 'bgEvent', 'bgEventGallery', 'bgEventText', 'hyphMinWordLength', 'hyphLeftmin', 'hyphRightmin'];
+    const SLIDER_IDS = ['siteFontSize', 'archiveTextFontSize', 'archiveListFontSize', 'archiveListTitleFontSize', 'archiveListDateFontSize', 'archiveListAuthorFontSize', 'galleryTitleFontSizeDesktop', 'galleryTitleFontSizeMobile', 'galleryImageGap', 'galleryRowGap', 'galleryBlockGap', 'galleryImageHeight', 'galleryHorizontalImageHeight', 'siteLineHeight', 'siteLetterSpacing', 'pagePaddingTop', 'pagePaddingRight', 'pagePaddingBottom', 'pagePaddingLeft', 'navFontSize', 'siteColor', 'colorAbout', 'colorArchive', 'colorEventTitle', 'colorEventText', 'colorMenu', 'bgAbout', 'bgArchive', 'bgEvent', 'bgEventGallery', 'bgEventText', 'hyphMinWordLength', 'hyphLeftmin', 'hyphRightmin'];
 
     function collectSettings() {
       const settings = {};
@@ -2077,6 +2549,66 @@
         // ignore corrupt saved settings
       }
     }
+  </script>
+  <script type="text/javascript">
+    function applyUiStrings() {
+      document.querySelectorAll('[data-i18n]').forEach((el) => {
+        const strings = UI_STRINGS[el.dataset.i18n];
+        if (strings) el.textContent = strings[currentLang] || strings.ru;
+      });
+    }
+
+    function setSiteLanguage(lang) {
+      if (!SITE_LANGUAGES.includes(lang) || lang === currentLang) return;
+      currentLang = lang;
+      localStorage.setItem('siteLang', lang);
+      document.documentElement.lang = lang;
+
+      updateNavLanguageLabel();
+      applyUiStrings();
+      updateCategoryLabel();
+      renderAbout();
+
+      if (archiveLoaded) {
+        renderArchive(archiveEvents);
+        const selectedEl = archiveList.querySelector('.archive-item.selected');
+        if (allEventsFeedOpen) {
+          renderAllEventsFeed();
+        } else if (selectedEl) {
+          selectEvent(Number(selectedEl.dataset.index), { updateUrl: false });
+        }
+      }
+    }
+
+    document.documentElement.lang = currentLang;
+    applyUiStrings();
+    colorizeGapSpacers();
+
+    const LANGUAGE_NAMES = { uz: 'Uzbek', ru: 'Russian', en: 'English' };
+    const navLanguageGroup = document.getElementById('navLanguageGroup');
+
+    function updateNavLanguageLabel() {
+      navLanguageGroup.querySelectorAll('a').forEach((a) => {
+        a.classList.toggle('active', a.dataset.lang === currentLang);
+      });
+    }
+
+    navLanguageGroup.innerHTML = SITE_LANGUAGES
+      .map((lang) => `<a href="#" data-lang="${lang}">${LANGUAGE_NAMES[lang]}</a>`)
+      .join('');
+    navLanguageGroup.querySelectorAll('a').forEach((a) => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        setSiteLanguage(a.dataset.lang);
+      });
+    });
+
+    updateNavLanguageLabel();
+
+    document.getElementById('navInfoToggle').addEventListener('click', (e) => {
+      e.preventDefault();
+      ver2HeroAbout.classList.toggle('visible');
+    });
   </script>
 </body>
 </html>

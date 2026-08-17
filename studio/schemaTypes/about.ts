@@ -12,9 +12,15 @@ export const about = defineType({
       of: [defineArrayMember({type: 'image', options: {hotspot: true}})],
     }),
     defineField({
-      name: 'text',
-      title: 'Text',
-      type: 'blockContent',
+      name: 'text1',
+      title: 'Text (column 1)',
+      type: 'localeBlockContent',
+    }),
+    defineField({
+      name: 'text2',
+      title: 'Text (column 2)',
+      description: 'Optional. Renders as a second column alongside Text 1 on desktop.',
+      type: 'localeBlockContent',
     }),
   ],
   preview: {

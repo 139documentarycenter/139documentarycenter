@@ -8,11 +8,12 @@ export const person = defineType({
     defineField({
       name: 'name',
       title: 'Name',
-      type: 'string',
+      description: 'Latin-script transliteration for uz/en; ru holds the original Cyrillic name.',
+      type: 'localeString',
       validation: (rule) => rule.required(),
     }),
   ],
   preview: {
-    select: {title: 'name'},
+    select: {title: 'name.ru'},
   },
 })

@@ -8,7 +8,7 @@ export const event = defineType({
     defineField({
       name: 'title',
       title: 'Event title',
-      type: 'string',
+      type: 'localeString',
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -22,7 +22,7 @@ export const event = defineType({
       title: 'Slug',
       description: 'Used in the URL, e.g. /archive/domashnyaya-rabota',
       type: 'slug',
-      options: {source: 'title', maxLength: 96},
+      options: {source: 'title.ru', maxLength: 96},
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -48,12 +48,12 @@ export const event = defineType({
       name: 'textTitle',
       title: 'Text label',
       description: 'Label shown on the "Text" accordion toggle. Defaults to "Text" if left empty.',
-      type: 'string',
+      type: 'localeString',
     }),
     defineField({
       name: 'text',
       title: 'Event text',
-      type: 'blockContent',
+      type: 'localeBlockContent',
     }),
     defineField({
       name: 'galleries',
@@ -66,18 +66,18 @@ export const event = defineType({
       name: 'additionalTextTitle',
       title: 'Additional text label',
       description: 'Label shown on the "Additional text" accordion toggle. Defaults to "Additional text" if left empty.',
-      type: 'string',
+      type: 'localeString',
     }),
     defineField({
       name: 'additionalText',
       title: 'Additional text',
       description: 'Shown under the galleries, in the right-hand column of the event detail page.',
-      type: 'blockContent',
+      type: 'localeBlockContent',
     }),
   ],
   preview: {
     select: {
-      title: 'title',
+      title: 'title.ru',
       date: 'date',
       media: 'galleries.0.images.0',
     },
