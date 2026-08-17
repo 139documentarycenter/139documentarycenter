@@ -115,11 +115,11 @@
 
     .ver2-nav-top-row {
       position: relative;
+      z-index: 301;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
       width: 100%;
-      min-height: calc(var(--nav-font-size) * var(--site-line-height));
     }
 
     .archive-category-label {
@@ -127,6 +127,7 @@
       font-size: var(--nav-font-size);
       line-height: var(--site-line-height);
       text-align: center;
+      margin-bottom: calc(var(--site-line-height) * 1em);
     }
 
     .ver2-nav-dropdown-toggle {
@@ -138,15 +139,54 @@
     }
 
     .ver2-nav-bar .nav-static {
+      display: none;
+    }
+
+    .ver2-nav-bar.open .nav-static {
       display: flex;
-      position: static;
-      background: none;
-      flex-direction: row;
+      position: fixed;
+      inset: 0;
+      background: #ffffff;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       text-align: center;
-      gap: 1em;
+      gap: 0;
+      line-height: var(--site-line-height);
       width: 100%;
+      padding-top: var(--nav-overlay-offset, calc(var(--page-padding-top) + var(--nav-font-size) * var(--site-line-height)));
+      z-index: 300;
+    }
+
+    .ver2-nav-bar.open .nav-static a[data-view] {
+      transform: translateX(var(--nav-overlay-center-offset, 0px));
+    }
+
+    .ver2-nav-bar.open .nav-static .nav-language-group {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .ver2-nav-burger {
+      align-self: flex-end;
+      display: block;
+      background: none;
+      border: none;
+      padding: 0;
+      margin: 0;
+      cursor: pointer;
+      font-family: inherit;
+      color: var(--color-menu);
+      opacity: 0.4;
+      font-size: var(--nav-font-size);
+      line-height: var(--site-line-height);
+    }
+
+    .ver2-nav-burger:hover {
+      opacity: 1;
+      color: #000000;
     }
 
     .ver2-detail-full {
@@ -192,7 +232,8 @@
     }
 
     .ver2-hero-about-col {
-      flex: 1 1 calc(50% - 0.5em);
+      flex: 0 0 70ch;
+      max-width: 70ch;
       min-width: 0;
     }
 
@@ -209,12 +250,13 @@
     }
 
     .ver2-wordmark {
+      display: inline-block;
       text-decoration: none;
       color: #000000;
       cursor: pointer;
       font-size: var(--nav-font-size);
       line-height: var(--site-line-height);
-      white-space: nowrap;
+      text-align: center;
     }
 
     .archive-close {
@@ -241,7 +283,7 @@
       gap: 0;
       width: 100%;
       padding-top: 2px;
-      margin: 0 var(--page-padding-right) calc(var(--site-line-height) * 1em) 0;
+      margin: calc(var(--site-line-height) * 2em) var(--page-padding-right) calc(var(--site-line-height) * 1em) 0;
     }
 
     .archive-detail-header .detail-close {
@@ -275,6 +317,10 @@
 
     .archive-detail-identity-row .archive-item .archive-number {
       display: none;
+    }
+
+    .archive-detail-identity-row .archive-item .archive-title {
+      font-style: italic;
     }
 
     .feed-separator {
@@ -516,13 +562,10 @@
     }
 
     .nav-language-group {
-      position: absolute;
-      right: 0;
-      top: 0;
       display: flex;
       flex-direction: row;
       align-items: center;
-      gap: 8px;
+      gap: 20px;
     }
 
     .nav-language-group a {
@@ -530,7 +573,7 @@
       cursor: pointer;
       color: var(--color-menu);
       opacity: 0.4;
-      font-size: var(--archive-list-title-font-size);
+      font-size: var(--nav-font-size);
       line-height: var(--site-line-height);
     }
 
@@ -557,20 +600,30 @@
     }
 
     @media (max-width: 700px) {
-      .archive-hover-preview {
-        display: none;
+
+      .ver2-nav-burger {
+        align-self: flex-start;
       }
 
       .archive-detail-tabs {
         margin-bottom: 0;
       }
 
+      .archive-detail-tabs[data-active-tab="images"] {
+        margin-bottom: calc(var(--site-line-height) * 1em);
+      }
+
       .archive-detail-header {
-        margin-bottom: 0;
+        margin-bottom: calc(var(--site-line-height) * 1em);
       }
 
       .ver2-hero-about.visible {
         flex-direction: column;
+      }
+
+      .ver2-hero-about-col {
+        flex-basis: auto;
+        max-width: 100%;
       }
 
       .content-text-col {
@@ -614,7 +667,7 @@
 
     .archive-header-labels {
       display: grid;
-      grid-template-columns: 3ch 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 2fr;
       column-gap: 8px;
       width: 100%;
       font-size: 15px;
@@ -626,22 +679,31 @@
       flex-direction: column;
       width: 100%;
       font-size: var(--archive-list-font-size);
-      --archive-number-col-width: 3ch;
     }
 
-    /* Each row is its own real grid box (matching column widths via the
-       shared --archive-number-col-width custom property, kept in sync by
-       JS) rather than .archive-item being display:contents inside one big
-       grid. That gives each row a single box to hover/background, so the
-       highlight can be one continuous bar with no gaps between columns. */
+    /* Each row is its own real grid box rather than .archive-item being
+       display:contents inside one big grid. That gives each row a single
+       box to hover/background, so the highlight can be one continuous bar
+       with no gaps between columns. Number + title share the first column
+       (1fr) so a long author list can take a wider 2fr share without
+       wrapping to a second line. */
     #archiveList .archive-item {
       position: relative;
       z-index: 0;
       display: grid;
-      grid-template-columns: var(--archive-number-col-width) 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 2fr;
       column-gap: 8px;
       width: 100%;
+      padding: 3px 0;
       border-bottom: 1px solid #000000;
+    }
+
+    .archive-num-title {
+      display: flex;
+      flex-direction: row;
+      align-items: baseline;
+      gap: 6px;
+      min-width: 0;
     }
 
     #archiveList .archive-item:last-child {
@@ -726,12 +788,8 @@
         padding-bottom: 3px;
       }
 
-      #archiveList .archive-item .archive-number {
+      #archiveList .archive-item .archive-num-title {
         order: -2;
-      }
-
-      #archiveList .archive-item .archive-title {
-        order: -1;
       }
 
     }
@@ -948,32 +1006,6 @@
       width: 100%;
     }
 
-    .archive-hover-preview {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      align-items: flex-start;
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 50%;
-      pointer-events: none;
-    }
-
-    .archive-hover-preview img {
-      display: none;
-      max-width: 100%;
-      max-height: 25vh;
-      width: auto;
-      height: auto;
-      object-fit: contain;
-    }
-
-    .archive-hover-preview.visible img {
-      display: block;
-    }
-
     .carousel {
       display: none;
       position: fixed;
@@ -1048,36 +1080,32 @@
     <div class="ver2-section" id="ver2Section">
       <div class="ver2-nav-bar" id="ver2NavBar">
         <div class="ver2-nav-top-row">
-          <a href="#" class="ver2-wordmark" id="ver2Wordmark">139 Documentary Center</a>
-          <div class="nav-language-group" id="navLanguageGroup"></div>
+          <a href="#" class="ver2-wordmark" id="ver2Wordmark">139 Documentary<br>Center</a>
+          <button type="button" class="ver2-nav-burger" id="navBurgerToggle" aria-label="Menu" data-i18n="menu">Меню</button>
         </div>
         <div class="nav-static" id="navStaticVer2">
           <a href="#" data-view="archive" data-i18n="archive">Архив</a>
           <a href="#" data-view="program" data-i18n="program">Программа</a>
           <a href="#" data-view="special-projects" data-i18n="specialProjects">Спецпроекты</a>
-          <a href="#" id="navInfoToggle" data-i18n="info">Инфо</a>
+          <div class="nav-language-group" id="navLanguageGroup"></div>
         </div>
       </div>
       <div class="gap-spacer" data-gap="nav-about" style="height: 1em;"></div>
       <div class="ver2-top-screen">
         <div class="ver2-hero-about" id="ver2HeroAbout"></div>
       </div>
-      <div class="gap-spacer" data-gap="about-category" style="height: calc(var(--site-line-height) * 1em);"></div>
+      <div class="gap-spacer" data-gap="about-category" id="aboutCategoryGap" style="height: calc(var(--site-line-height) * 1em);"></div>
       <div class="archive" id="archiveView">
         <div class="archive-category-label" id="archiveCategoryLabel"></div>
         <div class="archive-body">
           <div class="archive-list-col">
             <div class="archive-header-labels" id="archiveHeaderLabels">
-              <div></div>
               <div data-i18n="labelTitle">Название</div>
               <div data-i18n="labelDate">Дата</div>
               <div data-i18n="labelAuthor">Автор</div>
             </div>
             <div class="archive-loading" id="archiveLoading">Loading…</div>
             <div id="archiveList"></div>
-          </div>
-          <div class="archive-hover-preview" id="archiveHoverPreview">
-            <img id="archiveHoverPreviewImg" src="" alt="">
           </div>
         </div>
       </div>
@@ -1276,6 +1304,7 @@
 
     const ver2Section = document.getElementById('ver2Section');
     const ver2HeroAbout = document.getElementById('ver2HeroAbout');
+    const aboutCategoryGap = document.getElementById('aboutCategoryGap');
     const archiveView = document.getElementById('archiveView');
     const archiveDetail = document.getElementById('archiveDetail');
     const ver2DetailFull = document.getElementById('ver2DetailFull');
@@ -1453,6 +1482,8 @@
         archiveView.classList.remove('visible');
         archiveDetail.classList.remove('visible');
       }
+      ver2HeroAbout.classList.toggle('visible', view === 'ver2');
+      aboutCategoryGap.style.height = view === 'ver2' ? 'calc(var(--site-line-height) * 1em)' : '0px';
       updateCategoryLabel();
       if (scroll && view !== 'archive') {
         ver2Section.scrollIntoView({ behavior: scroll, block: 'start' });
@@ -1633,8 +1664,10 @@
           const href = e.slug ? ` href="/archive/${escapeHtml(e.slug)}"` : ` href="#"`;
           return `
             <${tag} class="archive-item${active ? ' active' : ''}" data-index="${i}"${href}>
-              <div class="archive-number">${i + 1}</div>
-              <div class="archive-title">${escapeHtml(L(e.title))}</div>
+              <div class="archive-num-title">
+                <div class="archive-number">${i + 1}</div>
+                <div class="archive-title">${escapeHtml(L(e.title))}</div>
+              </div>
               <div class="archive-date">${fmtDate(e.date)}</div>
               <div class="archive-authors">${escapeHtml(parts)}</div>
             </${tag}>
@@ -1647,43 +1680,7 @@
           e.preventDefault();
           selectEvent(Number(el.dataset.index));
         });
-
-        const e = events[Number(el.dataset.index)];
-        const firstGallery = (e.galleries || []).find((g) => g.images && g.images.length);
-        if (firstGallery) {
-          el.addEventListener('mouseenter', () => startArchiveHoverPreview(firstGallery.images));
-          el.addEventListener('mouseleave', stopArchiveHoverPreview);
-        }
       });
-    }
-
-    // Hovering a list row previews that event's first gallery in the
-    // dedicated column next to the list, cycling through its images as a
-    // slideshow.
-    const archiveHoverPreview = document.getElementById('archiveHoverPreview');
-    const archiveHoverPreviewImg = document.getElementById('archiveHoverPreviewImg');
-    let archiveHoverPreviewTimer = null;
-
-    function startArchiveHoverPreview(images) {
-      stopArchiveHoverPreview();
-      let i = 0;
-      archiveHoverPreviewImg.src = imageUrl(images[0].url, 1200);
-      archiveHoverPreview.classList.add('visible');
-      if (images.length > 1) {
-        archiveHoverPreviewTimer = setInterval(() => {
-          i = (i + 1) % images.length;
-          archiveHoverPreviewImg.src = imageUrl(images[i].url, 1200);
-        }, 1200);
-      }
-    }
-
-    function stopArchiveHoverPreview() {
-      if (archiveHoverPreviewTimer) {
-        clearInterval(archiveHoverPreviewTimer);
-        archiveHoverPreviewTimer = null;
-      }
-      archiveHoverPreview.classList.remove('visible');
-      archiveHoverPreviewImg.src = '';
     }
 
     function openEventBySlug(slug, { updateUrl } = {}) {
@@ -1769,7 +1766,7 @@
             <a href="#" class="archive-close detail-close" data-uid="${uid}">(${UI_STRINGS.close[currentLang] || UI_STRINGS.close.ru})</a>
           </div>
           ${galleries.length && (eventText.length || eventAdditionalText.length) ? `
-            <div class="archive-detail-tabs">
+            <div class="archive-detail-tabs" data-active-tab="images">
               <span class="archive-detail-tab" data-tab="text">${UI_STRINGS.tabText[currentLang]}</span>
               <button type="button" class="archive-detail-switch" data-active-tab="images" aria-label="Toggle text/images">
                 <span class="archive-detail-switch-knob"></span>
@@ -1837,6 +1834,7 @@
           labels.forEach((label) => label.classList.toggle('active', label.dataset.tab === tabName));
           switchEl.dataset.activeTab = tabName;
           columns.dataset.activeTab = tabName;
+          tabs.dataset.activeTab = tabName;
         };
 
         switchEl.addEventListener('click', () => {
@@ -2175,6 +2173,7 @@
           archiveView.classList.remove('visible');
           archiveDetail.classList.remove('visible');
           navigate('ver2');
+          setMenuOpen(false);
         });
       });
       colorizeGapSpacers();
@@ -2199,20 +2198,61 @@
     loadAbout();
 
     const ver2NavBar = document.getElementById('ver2NavBar');
+    const navBurgerToggle = document.getElementById('navBurgerToggle');
 
-    navStaticVer2.querySelectorAll('a').forEach((a) => {
+    function updateBurgerLabel() {
+      const isOpen = ver2NavBar.classList.contains('open');
+      const strings = isOpen ? UI_STRINGS.close : UI_STRINGS.menu;
+      navBurgerToggle.textContent = strings[currentLang] || strings.ru;
+    }
+
+    const ver2NavTopRow = document.querySelector('.ver2-nav-top-row');
+    const ver2Wordmark = document.getElementById('ver2Wordmark');
+
+    function syncNavOverlayOffset() {
+      const rowOffset = ver2NavTopRow.getBoundingClientRect().height;
+      ver2NavBar.style.setProperty('--nav-overlay-offset', `${rowOffset}px`);
+
+      // Nav items should be centered under the logo text itself, not under
+      // the logo+Menu pair (Menu's extra width shifts the pair's own
+      // center right of the logo's center).
+      const wordmarkRect = ver2Wordmark.getBoundingClientRect();
+      const wordmarkCenterX = wordmarkRect.left + wordmarkRect.width / 2;
+      const viewportCenterX = window.innerWidth / 2;
+      const centerOffset = wordmarkCenterX - viewportCenterX;
+      ver2NavBar.style.setProperty('--nav-overlay-center-offset', `${centerOffset}px`);
+    }
+
+    function setMenuOpen(isOpen) {
+      ver2NavBar.classList.toggle('open', isOpen);
+      updateBurgerLabel();
+      if (isOpen) syncNavOverlayOffset();
+    }
+
+    window.addEventListener('resize', () => {
+      if (ver2NavBar.classList.contains('open')) syncNavOverlayOffset();
+    });
+
+    navStaticVer2.querySelectorAll('a[data-view]').forEach((a) => {
       a.addEventListener('click', (e) => {
         e.preventDefault();
-        ver2NavBar.classList.remove('open');
+        setMenuOpen(false);
         navigate(a.dataset.view);
       });
     });
 
     navStaticVer2.addEventListener('click', (e) => {
       if (e.target === navStaticVer2) {
-        ver2NavBar.classList.remove('open');
+        setMenuOpen(false);
       }
     });
+
+    navBurgerToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      setMenuOpen(!ver2NavBar.classList.contains('open'));
+    });
+
+    updateBurgerLabel();
 
     const redirectPath = sessionStorage.getItem('redirectPath');
     if (redirectPath) {
@@ -2262,30 +2302,9 @@
     const archiveListFontSize = document.getElementById('archiveListFontSize');
     const archiveListFontSizeVal = document.getElementById('archiveListFontSizeVal');
 
-    // #archiveList and .archive-detail-identity-row must share an identical
-    // number-column width to stay pixel-aligned. Compute it once (from the
-    // list's font size) and apply it as an inline override to both.
-    const ARCHIVE_NUMBER_COL_CH = 3;
-
-    function syncArchiveGridColumns() {
-      const fontSizePx = parseFloat(
-        getComputedStyle(document.documentElement).getPropertyValue('--archive-list-font-size')
-      ) || 18;
-      const canvas = syncArchiveGridColumns._canvas || (syncArchiveGridColumns._canvas = document.createElement('canvas'));
-      const ctx = canvas.getContext('2d');
-      ctx.font = `${fontSizePx}px 'Helvetica Neue', Helvetica, sans-serif`;
-      const chWidth = ctx.measureText('0').width;
-      const numberColPx = `${(ARCHIVE_NUMBER_COL_CH * chWidth).toFixed(2)}px`;
-      const archiveListEl = document.getElementById('archiveList');
-      if (archiveListEl) archiveListEl.style.setProperty('--archive-number-col-width', numberColPx);
-      const headerLabelsEl = document.getElementById('archiveHeaderLabels');
-      if (headerLabelsEl) headerLabelsEl.style.gridTemplateColumns = `${numberColPx} 1fr 1fr 1fr`;
-    }
-
     archiveListFontSize.addEventListener('input', () => {
       document.documentElement.style.setProperty('--archive-list-font-size', `${archiveListFontSize.value}px`);
       archiveListFontSizeVal.textContent = archiveListFontSize.value;
-      syncArchiveGridColumns();
       updateDetailTopHeight();
     });
 
@@ -2315,8 +2334,6 @@
       archiveListAuthorFontSizeVal.textContent = archiveListAuthorFontSize.value;
       updateDetailTopHeight();
     });
-
-    syncArchiveGridColumns();
 
     const galleryTitleFontSizeDesktop = document.getElementById('galleryTitleFontSizeDesktop');
     const galleryTitleFontSizeDesktopVal = document.getElementById('galleryTitleFontSizeDesktopVal');
@@ -2566,6 +2583,7 @@
 
       updateNavLanguageLabel();
       applyUiStrings();
+      updateBurgerLabel();
       updateCategoryLabel();
       renderAbout();
 
@@ -2604,11 +2622,6 @@
     });
 
     updateNavLanguageLabel();
-
-    document.getElementById('navInfoToggle').addEventListener('click', (e) => {
-      e.preventDefault();
-      ver2HeroAbout.classList.toggle('visible');
-    });
   </script>
 </body>
 </html>
